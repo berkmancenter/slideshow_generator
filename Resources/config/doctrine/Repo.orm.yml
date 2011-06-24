@@ -1,0 +1,51 @@
+Berkman\SlideshowBundle\Entity\Repo:
+  type: entity
+  table: repo
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: SEQUENCE
+    name:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+    searchUrlPattern:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: search_url_pattern
+    recordUrlPattern:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: record_url_pattern
+    imageUrlPattern:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: image_url_pattern
+    metadataUrlPattern:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: metadata_url_pattern
+  oneToOne:
+    repoCode:
+      targetEntity: Resultformat
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        repo_code:
+          referencedColumnName: code
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

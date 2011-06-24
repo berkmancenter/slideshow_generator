@@ -1,0 +1,3 @@
+BerkmanSlideshowBundle_homepage:
+    pattern:  /
+    defaults: { _controller: BerkmanSlideshowBundle:Default:index }

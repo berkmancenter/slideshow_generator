@@ -1,0 +1,40 @@
+Berkman\SlideshowBundle\Entity\Image:
+  type: entity
+  table: image
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: SEQUENCE
+    recordId:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: record_id
+    imageId:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: image_id
+    metadataId:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+      column: metadata_id
+  oneToOne:
+    fromRepo:
+      targetEntity: Repo
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        from_repo_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

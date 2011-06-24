@@ -1,0 +1,18 @@
+Berkman\SlideshowBundle\Entity\Resultformat:
+  type: entity
+  table: resultformat
+  fields:
+    code:
+      id: true
+      type: string
+      length: 10
+      fixed: false
+      nullable: false
+      generator:
+        strategy: SEQUENCE
+    name:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+  lifecycleCallbacks: {  }

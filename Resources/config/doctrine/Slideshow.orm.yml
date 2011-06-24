@@ -1,0 +1,25 @@
+Berkman\SlideshowBundle\Entity\Slideshow:
+  type: entity
+  table: slideshow
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: SEQUENCE
+    name:
+      type: string
+      length: 255
+      fixed: false
+      nullable: false
+    slideDelay:
+      type: smallint
+      nullable: false
+      column: slide_delay
+    displayInfo:
+      type: boolean
+      nullable: false
+      column: display_info
+  lifecycleCallbacks: {  }
