@@ -21,3 +21,4 @@ Are we connecting this to PIN system, or how else are we allowing access to part
 
 Notes:
 http://webservices.lib.harvard.edu/rest/hollis/search/dc/?q=material-id:matPhoto+{keyword}
+Parser classes will have to parse every url in the repo class and return standardized PHP objects

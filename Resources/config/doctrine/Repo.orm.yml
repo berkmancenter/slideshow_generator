@@ -2,9 +2,8 @@ Berkman\SlideshowBundle\Entity\Repo:
   type: entity
   id:
     id:
-      type: integer
-      generator:
-        strategy: AUTO
+      type: string
+      length: 10
   fields:
     name:
       type: string
@@ -19,6 +18,3 @@ Berkman\SlideshowBundle\Entity\Repo:
   oneToOne:
     result_code:
       targetEntity: ResultFormat
-      joinColumns:
-        repo_code:
-          referencedColumnName: code

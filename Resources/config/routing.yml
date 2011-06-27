@@ -2,6 +2,10 @@ BerkmanSlideshowBundle_repo:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
     prefix:   /repo
 
+BerkmanSlideshowBundle_repo:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
+    prefix:   /repo
+
 BerkmanSlideshowBundle_homepage:
     pattern:  /
     defaults: { _controller: BerkmanSlideshowBundle:Default:index }

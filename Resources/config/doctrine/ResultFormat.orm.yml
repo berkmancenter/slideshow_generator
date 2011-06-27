@@ -1,7 +1,7 @@
 Berkman\SlideshowBundle\Entity\ResultFormat:
   type: entity
   id:
-    code:
+    id:
       type: string
       length: 10
   fields:

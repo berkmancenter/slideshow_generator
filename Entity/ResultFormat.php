@@ -59,4 +59,39 @@ class ResultFormat
     {
         return $this->name;
     }
+    /**
+     * @var string $id
+     */
+    private $id;
+
+
+    /**
+     * Set id
+     *
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * Get id
+     *
+     * @return string $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+	/**
+	 * Get string representation
+	 *
+	 * @return string $repo_code
+	 */
+	public function __toString()
+	{
+		return $this->getName();
+	}
 }

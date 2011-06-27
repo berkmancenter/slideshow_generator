@@ -174,4 +174,39 @@ class Repo
     {
         return $this->result_code;
     }
+    /**
+     * @var string $code
+     */
+    private $code;
+
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string $code
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set id
+     *
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 }
