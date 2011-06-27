@@ -1,35 +1,15 @@
 Berkman\SlideshowBundle\Entity\Slide:
   type: entity
-  table: slide
-  fields:
+  id:
     id:
-      id: true
       type: integer
-      unsigned: false
-      nullable: false
       generator:
-        strategy: SEQUENCE
+        strategy: AUTO
+  fields:
     position:
       type: integer
-      unsigned: false
-      nullable: false
   oneToOne:
     image:
       targetEntity: Image
-      cascade: {  }
-      mappedBy: null
-      inversedBy: null
-      joinColumns:
-        image_id:
-          referencedColumnName: id
-      orphanRemoval: false
     slideshow:
       targetEntity: Slideshow
-      cascade: {  }
-      mappedBy: null
-      inversedBy: null
-      joinColumns:
-        slideshow_id:
-          referencedColumnName: id
-      orphanRemoval: false
-  lifecycleCallbacks: {  }

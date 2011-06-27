@@ -1,25 +1,18 @@
 Berkman\SlideshowBundle\Entity\Slideshow:
   type: entity
-  table: slideshow
-  fields:
+  id:
     id:
-      id: true
       type: integer
-      unsigned: false
-      nullable: false
       generator:
-        strategy: SEQUENCE
+        strategy: AUTO
+  fields:
     name:
       type: string
-      length: 255
-      fixed: false
-      nullable: false
-    slideDelay:
+    slide_delay:
       type: smallint
-      nullable: false
-      column: slide_delay
-    displayInfo:
+    display_info:
       type: boolean
-      nullable: false
-      column: display_info
-  lifecycleCallbacks: {  }
+  manyToOne:
+    person:
+      targetEntity: Person
+      inversedBy: Slideshow
