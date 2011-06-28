@@ -1,0 +1,16 @@
+<h1>Search</h1>
+
+<form action="{{ path('search') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Search</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('search') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>

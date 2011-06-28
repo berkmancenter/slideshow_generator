@@ -29,6 +29,11 @@ class Slideshow
      */
     private $display_info;
 
+    /**
+     * @var Berkman\SlideshowBundle\Entity\Person
+     */
+    private $person;
+
 
     /**
      * Get id
@@ -99,36 +104,6 @@ class Slideshow
     {
         return $this->display_info;
     }
-    /**
-     * @var Berkman\SlideshowBundle\Entity\User
-     */
-    private $user;
-
-
-    /**
-     * Set user
-     *
-     * @param Berkman\SlideshowBundle\Entity\User $user
-     */
-    public function setUser(\Berkman\SlideshowBundle\Entity\User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * Get user
-     *
-     * @return Berkman\SlideshowBundle\Entity\User $user
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Person
-     */
-    private $person;
-
 
     /**
      * Set person

@@ -2,9 +2,9 @@ BerkmanSlideshowBundle_repo:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
     prefix:   /repo
 
-BerkmanSlideshowBundle_repo:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
-    prefix:   /repo
+BerkmanSlideshowBundle_search:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/search.yml"
+    prefix:   /search
 
 BerkmanSlideshowBundle_homepage:
     pattern:  /

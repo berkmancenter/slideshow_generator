@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Repo
 {
     /**
-     * @var integer $id
+     * @var string $id
      */
     private $id;
 
@@ -39,16 +39,21 @@ class Repo
      */
     private $metadata_url_pattern;
 
-    /**
-     * @var Berkman\SlideshowBundle\Entity\ResultFormat
-     */
-    private $result_code;
 
+    /**
+     * Set id
+     *
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Get id
      *
-     * @return integer $id
+     * @return string $id
      */
     public function getId()
     {
@@ -153,60 +158,5 @@ class Repo
     public function getMetadataUrlPattern()
     {
         return $this->metadata_url_pattern;
-    }
-
-    /**
-     * Set result_code
-     *
-     * @param Berkman\SlideshowBundle\Entity\ResultFormat $resultCode
-     */
-    public function setResultCode(\Berkman\SlideshowBundle\Entity\ResultFormat $resultCode)
-    {
-        $this->result_code = $resultCode;
-    }
-
-    /**
-     * Get result_code
-     *
-     * @return Berkman\SlideshowBundle\Entity\ResultFormat $resultCode
-     */
-    public function getResultCode()
-    {
-        return $this->result_code;
-    }
-    /**
-     * @var string $code
-     */
-    private $code;
-
-
-    /**
-     * Set code
-     *
-     * @param string $code
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-    }
-
-    /**
-     * Get code
-     *
-     * @return string $code
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Set id
-     *
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 }

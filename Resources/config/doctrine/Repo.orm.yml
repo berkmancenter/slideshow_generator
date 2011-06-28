@@ -15,6 +15,3 @@ Berkman\SlideshowBundle\Entity\Repo:
       type: string
     metadata_url_pattern:
       type: string
-  oneToOne:
-    result_code:
-      targetEntity: ResultFormat
