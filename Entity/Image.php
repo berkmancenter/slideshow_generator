@@ -124,4 +124,12 @@ class Image
     {
         return $this->from_repo;
     }
+
+	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null)
+	{
+		$this->setFromRepo($fromRepo);
+		$this->setId1($id1);
+		$this->setId2($id2);
+		$this->setId3($id3);
+	}
 }

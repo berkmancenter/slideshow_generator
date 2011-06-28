@@ -16,7 +16,6 @@ class RepoType extends AbstractType
             ->add('record_url_pattern')
             ->add('image_url_pattern')
             ->add('metadata_url_pattern')
-            ->add('result_code')
         ;
     }
 }

@@ -3,6 +3,7 @@
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Berkman\SlideshowBundle\Parser as Parser;
 
 /**
  * Berkman\SlideshowBundle\Entity\Repo
@@ -159,4 +160,30 @@ class Repo
     {
         return $this->metadata_url_pattern;
     }
+
+	public function search($keyword)
+	{
+		$searchUrl = str_replace('{keyword}', $keyword, $this->getSearchUrlPattern());
+		$curl = curl_init($searchUrl);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
+		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+		$response = curl_exec($curl);
+		$parser = $this->getParser();
+		$images = $parser->getImages($this, $response);
+
+		return $images;
+	}
+
+	private function getParser()
+	{
+		//TODO: figure out a better way to do this stuff
+		$className = '\\Berkman\\SlideshowBundle\\Parser\\'.$this->getId().'Parser';
+		if (class_exists($className)) {
+			$parser = new $className();
+		}
+		else {
+			#throw some exception
+		}
+		return $parser;
+	}
 }

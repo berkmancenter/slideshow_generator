@@ -3,6 +3,6 @@
 namespace Berkman\SlideshowBundle\Parser;
 
 interface RepoParserInterface {
-	public function getImages();
+	public function getImages($repo, $input);
 	public function getMetadata();
 }

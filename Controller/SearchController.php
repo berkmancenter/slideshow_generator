@@ -40,24 +40,24 @@ class SearchController extends Controller
      */
     public function showAction($keyword)
     {
+		$images = array();
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
+        $repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findAll();
 
-        if (!$entity) {
+        if (!$repos) {
             throw $this->createNotFoundException('Unable to find Repo entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+		foreach ($repos as $repo) {
+			$images += $repo->search($keyword);
+		}
 
-        return $this->render('BerkmanSlideshowBundle:Repo:show.html.twig', array(
+		return print_r($images, TRUE);
+
+        /*return $this->render('BerkmanSlideshowBundle:Search:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        ));
+		));*/
     }
-
-    public function submitAction()
-    {
-
-	}
 }
