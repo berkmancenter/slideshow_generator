@@ -126,8 +126,12 @@ class Find
 		else {
 			foreach ($this->repos as $repoInfo) {
 				$repo = $repoInfo['repo'];
-				$repoPage = ($page == $this->currentPage) ? $repoInfo['currentPage'] : $repoInfo['currentPage'] + 1;
-				$searchUrl = str_replace(array('{keyword}', '{page}'), array($keyword, $repoPage), $repo->getSearchUrlPattern());
+				//TODO: Setup some kind of real pagination
+				//$repoPage = ($page == $this->currentPage) ? $repoInfo['currentPage'] : $repoInfo['currentPage'] + 1;
+				$searchUrl = str_replace(
+					array('{keyword}', '{page}'),
+					array($keyword, $page), $repo->getSearchUrlPattern()
+				);
 				$curl = curl_init($searchUrl);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
 				#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));

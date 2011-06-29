@@ -9,15 +9,13 @@ class FindShow extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
+		$data = $builder->getData();
         $builder
-			->add('keyword')
-			->add('repos', 'entity', array(
-					'class' => 'Berkman\\SlideshowBundle\\Entity\\Repo',
-					'property' => 'name',
-					'multiple' => true,
-					'expanded' => true
-				)
-			)
+			->add('images', 'choice', array(
+				'choices' => $data['choices'],
+				'multiple' => true,
+				'expanded' => true
+			))
         ;
     }
 }
