@@ -37,15 +37,15 @@ class VIAParser implements RepoParserInterface {
 	 * @param string $input
 	 * @return array @images
 	 */
-	public function getImages($input = '')
+	public function getImages()
 	{
-		if ($input == '') {
-			if ($this->input == '') {
-				#throw some Symfony exception
-			}
-			else {
-				$input = $this->input;
-			}
+		$input = '';
+
+		if ($this->input == '') {
+			#throw some Symfony exception
+		}
+		else {
+			$input = $this->input;
 		}
 
 		$images = array();
@@ -67,17 +67,20 @@ class VIAParser implements RepoParserInterface {
 		return $images;
 	}
 
-	public function getMetadata($input = '')
+	public function getMetadata()
 	{
 	}
 
-	public function __construct(Entity\Repo $repo, $input = '')
+	public function __construct(Entity\Repo $repo)
 	{
 		$this->repo = $repo;
-		$this->input = $input;
 	}
 
-	public function getNumResults($input = '')
+	public function getNumResults()
 	{
+		$input = $this->getInput();
+		$doc = new \DOMDocument();
+		$doc->loadXML($input);
+		return (int) $doc->getElementsByTagName('totalResults')->item(0)->textContent;
 	}
 }

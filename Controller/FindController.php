@@ -38,6 +38,7 @@ class FindController extends Controller
 
 				$finder = new Find($formData['keyword'], $repos);
 				$images = $finder->getResults();
+				$numResults = $finder->getNumResults();
 
 				foreach ($images as $image) {
 					$viewImages[] = array(
@@ -47,7 +48,8 @@ class FindController extends Controller
 				}
 
 				return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
-					'images' => $viewImages
+					'images' => $viewImages,
+					'numResults' => $numResults
 				));
             }
         }

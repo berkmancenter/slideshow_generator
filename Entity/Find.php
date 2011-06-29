@@ -32,6 +32,11 @@ class Find
 	 */
 	private $currentPage;
 
+	/**
+	 * @var int $numResults
+	 */
+	private $numResults;
+
     /**
      * Set keyword
      *
@@ -50,6 +55,16 @@ class Find
     public function getKeyword()
     {
         return $this->keyword;
+    }
+
+    /**
+     * Get total number of results
+     *
+     * @return int $numResults
+     */
+    public function getNumResults()
+    {
+        return $this->numResults;
     }
 
     /**
@@ -95,6 +110,7 @@ class Find
 	public function getResults($keyword = null, $page = null)
 	{
 		$images = array();
+		$numResults = 0;
 
 		if ($page == null) {
 			$page = $this->currentPage;
@@ -117,10 +133,13 @@ class Find
 				#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
 				$response = curl_exec($curl);
 				$parser = $repo->getParser();
-				$images += $parser->getImages($response);
+				$parser->setInput($response);
+				$images += $parser->getImages();
+				$numResults += $parser->getNumResults();
 			}
 		}
 
+		$this->numResults = $numResults;
 		$this->results = $images;
 
 		return $images;
