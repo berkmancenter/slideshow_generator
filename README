@@ -28,7 +28,7 @@ Parser classes will have to parse every url in the repo class and return standar
 Turns out you can't call something Search as it's special in Symfony
 
 TODO:
-A search object that maintains page info for each repo and counts the total requests
+A search object that maintains page info for each repo and maintains a total number of results and pages
 
 Requirements:
 PHP curl lib

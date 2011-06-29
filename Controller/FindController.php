@@ -4,6 +4,7 @@ namespace Berkman\SlideshowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Berkman\SlideshowBundle\Form\FindType;
+use Berkman\SlideshowBundle\Entity\Find;
 
 /**
  * Find controller.
@@ -35,9 +36,8 @@ class FindController extends Controller
 					throw $this->createNotFoundException('Unable to find Repo entity.');
 				}
 
-				foreach ($repos as $repo) {
-					$images += $repo->search($formData['keyword']);
-				}
+				$finder = new Find($formData['keyword'], $repos);
+				$images = $finder->getResults();
 
 				foreach ($images as $image) {
 					$viewImages[] = array(
@@ -45,7 +45,6 @@ class FindController extends Controller
 						'value' => ''
 					);
 				}
-
 
 				return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
 					'images' => $viewImages
