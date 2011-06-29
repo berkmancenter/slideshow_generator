@@ -3,5 +3,5 @@ find:
     defaults: { _controller: "BerkmanSlideshowBundle:Find:index" }
 
 find_show:
-    pattern:  /{keyword}
+    pattern:  /{repos}/{keyword}/{page}
     defaults: { _controller: "BerkmanSlideshowBundle:Find:show" }

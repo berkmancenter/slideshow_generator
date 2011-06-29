@@ -26,31 +26,15 @@ class FindController extends Controller
 
             if ($form->isValid()) {
 				$formData = $form->getData();
-
-				$images = array();
-				$viewImages = array();
-
-				$repos = $formData['repos'];
-
-				if (!$repos) {
-					throw $this->createNotFoundException('Unable to find Repo entity.');
+				$repos = array();
+				foreach ($formData['repos'] as $repo) {
+					$repos[] = $repo->getId();
 				}
-
-				$finder = new Find($formData['keyword'], $repos);
-				$images = $finder->getResults();
-				$numResults = $finder->getNumResults();
-
-				foreach ($images as $image) {
-					$viewImages[] = array(
-						'url' => $image->getImageUrl(),
-						'value' => ''
-					);
-				}
-
-				return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
-					'images' => $viewImages,
-					'numResults' => $numResults
-				));
+				return $this->redirect($this->generateUrl('find_show', array(
+					'repos' => implode('+', $repos),
+					'keyword' => $formData['keyword'],
+					'page' => 1
+				)));
             }
         }
 		else {
@@ -64,12 +48,33 @@ class FindController extends Controller
      * Show the search results.
      *
      */
-    public function showAction($keyword)
+    public function showAction($repos, $keyword, $page = 1)
     {
+		$em = $this->getDoctrine()->getEntityManager();
+		$repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findBy(array(
+			'id' => explode('+', $repos)
+		));
 
-        /*return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-		));*/
+		$images = array();
+		$imagesForView = array();
+
+		if (!$repos) {
+			throw $this->createNotFoundException('Unable to find Repo entity.');
+		}
+
+		$finder = new Find($keyword, $repos);
+		$images = $finder->getResults(null, $page);
+		$numResults = $finder->getNumResults();
+
+		foreach ($images as $image) {
+			$imagesForView[] = array(
+				'url' => $image->getImageUrl(),
+			);
+		}
+
+		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
+			'images' => $imagesForView,
+			'numResults' => $numResults
+		));
     }
 }
