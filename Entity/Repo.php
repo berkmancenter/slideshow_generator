@@ -40,6 +40,10 @@ class Repo
      */
     private $metadata_url_pattern;
 
+	/**
+	 * @var Berkman\SlideshowBundle\Parser $parser
+	 */
+	public $parser;
 
     /**
      * Set id
@@ -49,6 +53,7 @@ class Repo
     public function setId($id)
     {
         $this->id = $id;
+		$this->parser = $this->getParser(); 
     }
 
     /**
@@ -161,9 +166,9 @@ class Repo
         return $this->metadata_url_pattern;
     }
 
-	public function search($keyword)
+	public function search($keyword, $page = 2)
 	{
-		$searchUrl = str_replace('{keyword}', $keyword, $this->getSearchUrlPattern());
+		$searchUrl = str_replace(array('{keyword}', '{page}'), array($keyword, $page), $this->getSearchUrlPattern());
 		$curl = curl_init($searchUrl);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
 		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
@@ -176,13 +181,20 @@ class Repo
 
 	private function getParser()
 	{
-		//TODO: figure out a better way to do this stuff
-		$className = '\\Berkman\\SlideshowBundle\\Parser\\'.$this->getId().'Parser';
-		if (class_exists($className)) {
-			$parser = new $className();
+		$parser = null;
+
+		if ($this->parser) {
+			$parser = $this->parser;
 		}
 		else {
-			#throw some exception
+			//TODO: figure out a better way to do this stuff
+			$className = '\\Berkman\\SlideshowBundle\\Parser\\'.$this->getId().'Parser';
+			if (class_exists($className)) {
+				$parser = new $className();
+			}
+			else {
+				#throw some exception
+			}
 		}
 		return $parser;
 	}

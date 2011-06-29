@@ -132,4 +132,14 @@ class Image
 		$this->setId2($id2);
 		$this->setId3($id3);
 	}
+
+	public function getImageUrl()
+	{
+		return $this->fillUrl($this->getFromRepo()->getImageUrlPattern());
+	}
+
+	private function fillUrl($url)
+	{
+		return str_replace(array('{id-1}', '{id-2}', '{id-3}'), array($this->getId1(), $this->getId2(), $this->getId3()), $url);
+	}
 }

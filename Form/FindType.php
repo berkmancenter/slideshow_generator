@@ -5,17 +5,17 @@ namespace Berkman\SlideshowBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
-class Search extends AbstractType
+class FindType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-			->add('keyword', 'text')
+			->add('keyword')
 			->add('repos', 'entity', array(
 					'class' => 'Berkman\\SlideshowBundle\\Entity\\Repo',
 					'property' => 'name',
-					'expanded' => true,
-					'multiple' => true
+					'multiple' => true,
+					'expanded' => true
 				)
 			)
         ;

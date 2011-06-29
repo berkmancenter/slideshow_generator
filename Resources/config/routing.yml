@@ -1,14 +1,18 @@
-BerkmanSlideshowBundle_repo:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
-    prefix:   /repo
+BerkmanSlideshowBundle_slideshow:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/slideshow.yml"
+    prefix:   /slideshow
 
 BerkmanSlideshowBundle_repo:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
     prefix:   /repo
 
-BerkmanSlideshowBundle_search:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/search.yml"
-    prefix:   /search
+BerkmanSlideshowBundle_repo:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
+    prefix:   /repo
+
+BerkmanSlideshowBundle_find:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/find.yml"
+    prefix:   /find
 
 BerkmanSlideshowBundle_homepage:
     pattern:  /

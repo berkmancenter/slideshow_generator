@@ -1,0 +1,21 @@
+<h1>Images</h1>
+
+{# <form action="{{ path('slideshow_new') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Finish</button>
+    </p>
+</form> #} 
+<ul>
+	{% for image in images %}
+	<li><img src="{{ image.url }}"/></li>
+	{% endfor %}
+</ul>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('find') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>

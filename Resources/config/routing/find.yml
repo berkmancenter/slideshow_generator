@@ -1,0 +1,7 @@
+find:
+    pattern:  /
+    defaults: { _controller: "BerkmanSlideshowBundle:Find:index" }
+
+find_show:
+    pattern:  /{keyword}
+    defaults: { _controller: "BerkmanSlideshowBundle:Find:show" }
