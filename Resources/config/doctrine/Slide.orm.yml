@@ -14,7 +14,7 @@ Berkman\SlideshowBundle\Entity\Slide:
   manyToOne:
     slideshow:
       targetEntity: Slideshow
-      inversedBy: Slide
+      inversedBy: slide
   uniqueConstraints:
     slideshow_position:
       columns: ["slideshow_id", "position"]

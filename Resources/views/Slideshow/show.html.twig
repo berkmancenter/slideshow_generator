@@ -13,6 +13,12 @@
     </tbody>
 </table>
 
+<ul>
+	{% for slide in entity.slides %}
+		<li><img src="{{ slide.image.imageUrl }}"/></li>
+	{% endfor %}
+</ul>
+
 <ul class="record_actions">
     <li>
         <a href="{{ path('slideshow') }}">

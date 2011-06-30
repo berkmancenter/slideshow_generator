@@ -174,11 +174,17 @@ class SlideshowController extends Controller
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
+				$slides = $em->getRepository('BerkmanSlideshowBundle:Slide')->findBy(array(
+					'slideshow' => $id
+				));
 
                 if (!$entity) {
                     throw $this->createNotFoundException('Unable to find Slideshow entity.');
                 }
 
+				foreach ($slides as $slide) {
+					$em->remove($slide);
+				}
                 $em->remove($entity);
                 $em->flush();
             }
@@ -221,10 +227,9 @@ class SlideshowController extends Controller
 			}
 			$em->persist($slideshow);
 			$em->flush();
-
 		}
 
-		return print_r($images, TRUE);
+		return $this->redirect($this->generateUrl('slideshow'));
 	}
 
     private function createDeleteForm($id)

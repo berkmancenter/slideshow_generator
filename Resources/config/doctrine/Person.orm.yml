@@ -14,4 +14,4 @@ Berkman\SlideshowBundle\Entity\Person:
   oneToMany:
     slideshows:
       targetEntity: Slideshow
-      mappedBy: Person
+      mappedBy: person

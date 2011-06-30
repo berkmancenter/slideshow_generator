@@ -16,8 +16,8 @@ Berkman\SlideshowBundle\Entity\Slideshow:
   manyToOne:
     person:
       targetEntity: Person
-      inversedBy: Slideshow
+      inversedBy: slideshow
   oneToMany:
     slides:
       targetEntity: Slide
-      mappedBy: Slideshow
+      mappedBy: slideshow
