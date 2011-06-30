@@ -125,12 +125,13 @@ class Image
         return $this->from_repo;
     }
 
-	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null)
+	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null, $id4 = null)
 	{
 		$this->setFromRepo($fromRepo);
 		$this->setId1($id1);
 		$this->setId2($id2);
 		$this->setId3($id3);
+		$this->setId4($id4);
 	}
 
 	public function getImageUrl()
@@ -140,6 +141,48 @@ class Image
 
 	private function fillUrl($url)
 	{
-		return str_replace(array('{id-1}', '{id-2}', '{id-3}'), array($this->getId1(), $this->getId2(), $this->getId3()), $url);
+		return str_replace(array('{id-1}', '{id-2}', '{id-3}', '{id-4}'), array($this->getId1(), $this->getId2(), $this->getId3()), $url);
+	}
+    /**
+     * @var string $id_4
+     */
+    private $id_4;
+
+
+    /**
+     * Set id_4
+     *
+     * @param string $id4
+     */
+    public function setId4($id4)
+    {
+        $this->id_4 = $id4;
+    }
+
+    /**
+     * Get id_4
+     *
+     * @return string $id4
+     */
+    public function getId4()
+    {
+        return $this->id_4;
+    }
+
+	/**
+	 * Convert the image to a string to be moved around
+	 *
+	 * @return string $image
+	 */
+	public function __toString() 
+	{
+		return base64_encode(serialize(array(
+			'id' => $this->getId(),
+			'id1' => $this->getId1(),
+			'id2' => $this->getId2(),
+			'id3' => $this->getId3(),
+			'id4' => $this->getId4(),
+			'fromRepo' => $this->getFromRepo()->getId()
+		)));
 	}
 }

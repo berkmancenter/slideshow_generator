@@ -1,7 +1,7 @@
 {% form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
 <h1>Images ({{ numResults }})</h1>
 
-<form action="{{ path('slideshow_new') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('slideshow_add_images') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <p>
         <button type="submit">Finish</button>

@@ -28,3 +28,8 @@ slideshow_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:delete" }
     requirements: { _method: post }
+
+slideshow_add_images:
+    pattern: /addImage
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:addImage" }
+    requirements: { _method: post }

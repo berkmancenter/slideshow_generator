@@ -5,7 +5,10 @@ namespace Berkman\SlideshowBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berkman\SlideshowBundle\Entity\Slideshow;
+use Berkman\SlideshowBundle\Entity\Image;
+use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Form\SlideshowType;
+use Berkman\SlideshowBundle\Form\FindShow;
 
 /**
  * Slideshow controller.
@@ -183,6 +186,46 @@ class SlideshowController extends Controller
 
         return $this->redirect($this->generateUrl('slideshow'));
     }
+
+	/**
+	 * Add Images to a Slideshow
+	 *
+	 */
+	public function addImageAction()
+	{
+		$request = $this->getRequest();
+		$images = array();
+
+		if ('POST' == $request->getMethod()) {
+			$images = $request->get('findshow');
+			$images = $images['images'];
+			$imageObjects = array();
+			$em = $this->getDoctrine()->getEntityManager();
+
+			foreach ($images as $image) {
+				$image = unserialize(base64_decode($image));
+				$fromRepo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
+				$image = new Image($fromRepo, $image['id1'], $image['id2'], $image['id3'], $image['id4']);
+				$em->persist($image);
+				$imageObjects[] = $image;
+			}
+			$em->flush();
+
+			$slideshow = new Slideshow();
+			foreach ($imageObjects as $image) {
+				$slide = new Slide();
+				$slide->setImage($image);
+				$slide->setSlideshow($slideshow);
+				$slideshow->addSlides($slide);
+				$em->persist($slide);
+			}
+			$em->persist($slideshow);
+			$em->flush();
+
+		}
+
+		return print_r($images, TRUE);
+	}
 
     private function createDeleteForm($id)
     {

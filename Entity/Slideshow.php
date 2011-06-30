@@ -131,6 +131,8 @@ class Slideshow
 
     public function __construct()
     {
+		$this->slide_delay = 5;
+		$this->display_info = false;
         $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -141,7 +143,12 @@ class Slideshow
      */
     public function addSlides(\Berkman\SlideshowBundle\Entity\Slide $slides)
     {
-        $this->slides[] = $slides;
+		if (is_array($slides)) {
+			$this->slides += $slides;
+		}
+		elseif ($slides instanceof \Berkman\SlideshowBundle\Entity\Slide) {
+			$this->slides[] = $slides;
+		}
     }
 
     /**

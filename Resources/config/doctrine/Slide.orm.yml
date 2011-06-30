@@ -15,3 +15,6 @@ Berkman\SlideshowBundle\Entity\Slide:
     slideshow:
       targetEntity: Slideshow
       inversedBy: Slide
+  uniqueConstraints:
+    slideshow_position:
+      columns: ["slideshow_id", "position"]

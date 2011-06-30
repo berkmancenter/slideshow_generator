@@ -88,6 +88,7 @@ class Slide
     public function setSlideshow(\Berkman\SlideshowBundle\Entity\Slideshow $slideshow)
     {
         $this->slideshow = $slideshow;
+		$this->position = count($this->getSlideshow()->getSlides()) + 1;
     }
 
     /**

@@ -8,6 +8,7 @@ Berkman\SlideshowBundle\Entity\Slideshow:
   fields:
     name:
       type: string
+      nullable: true
     slide_delay:
       type: smallint
     display_info:

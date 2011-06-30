@@ -10,8 +10,13 @@ Berkman\SlideshowBundle\Entity\Image:
       type: string
     id_2:
       type: string
+      nullable: TRUE
     id_3:
       type: string
-  oneToOne:
+      nullable: TRUE
+    id_4:
+      type: string
+      nullable: TRUE
+  manyToOne:
     from_repo:
       targetEntity: Repo

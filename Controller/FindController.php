@@ -66,16 +66,14 @@ class FindController extends Controller
 
 		$finder = new Find($keyword, $repos);
 		$images = $finder->getResults(null, $page);
-		$numResults = $finder->getNumResults();
 
 		foreach ($images as $image) {
-			$key = base64_encode($image->getId1().'|'.$image->getId2().'|'.$image->getId3().'|'.$image->getFromRepo()->getId());
-			$choices[$key] = $image->getImageUrl();
+			$choices[strval($image)] = $image->getImageUrl();
 		}
 
 		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
 			'images' => $imagesForView,
-			'numResults' => $numResults,
+			'numResults' => $finder->getNumResults(),
 			'form' => $this->createForm(new FindShow(), array('choices' => $choices))->createView()
 		));
     }
