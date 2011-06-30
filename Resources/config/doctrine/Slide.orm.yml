@@ -11,5 +11,7 @@ Berkman\SlideshowBundle\Entity\Slide:
   oneToOne:
     image:
       targetEntity: Image
+  manyToOne:
     slideshow:
       targetEntity: Slideshow
+      inversedBy: Slide

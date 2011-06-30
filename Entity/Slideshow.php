@@ -124,4 +124,33 @@ class Slideshow
     {
         return $this->person;
     }
+    /**
+     * @var Berkman\SlideshowBundle\Entity\Slide
+     */
+    private $slides;
+
+    public function __construct()
+    {
+        $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add slides
+     *
+     * @param Berkman\SlideshowBundle\Entity\Slide $slides
+     */
+    public function addSlides(\Berkman\SlideshowBundle\Entity\Slide $slides)
+    {
+        $this->slides[] = $slides;
+    }
+
+    /**
+     * Get slides
+     *
+     * @return Doctrine\Common\Collections\Collection $slides
+     */
+    public function getSlides()
+    {
+        return $this->slides;
+    }
 }

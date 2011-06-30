@@ -16,3 +16,7 @@ Berkman\SlideshowBundle\Entity\Slideshow:
     person:
       targetEntity: Person
       inversedBy: Slideshow
+  oneToMany:
+    slides:
+      targetEntity: Slide
+      mappedBy: Slideshow
