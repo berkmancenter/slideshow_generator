@@ -146,7 +146,7 @@ class Image
 
 	private function fillUrl($url)
 	{
-		return str_replace(array('{id-1}', '{id-2}', '{id-3}', '{id-4}'), array($this->getId1(), $this->getId2(), $this->getId3()), $url);
+		return str_replace(array('{id-1}', '{id-2}', '{id-3}', '{id-4}'), array($this->getId1(), $this->getId2(), $this->getId3(), $this->getId4()), $url);
 	}
     /**
      * @var string $id_4

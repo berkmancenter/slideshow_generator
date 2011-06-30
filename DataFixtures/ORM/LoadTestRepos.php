@@ -16,6 +16,7 @@ class LoadTestRepos implements FixtureInterface
 		$viaRepo->setRecordUrlPattern('http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-2}&componentId={id-3}'); 
 		$viaRepo->setImageUrlPattern('http://nrs.harvard.edu/urn-3:{id-3}');
 		$viaRepo->setMetadataUrlPattern('http://webservices.lib.harvard.edu/rest/marc/hollis/{id-2}');
+		$viaRepo->setThumbnailUrlPattern('http://nrs.harvard.edu/urn-3:{id-4}');
 
 		$manager->persist($viaRepo);
 		$manager->flush();

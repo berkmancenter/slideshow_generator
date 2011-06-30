@@ -56,11 +56,16 @@ class VIAParser implements RepoParserInterface {
 		foreach ($nodeList as $image) {
 			$id1 = $image->getAttribute('id');
 			$id2 = $image->getAttribute('hollisid');
+			$thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
+			if ($thumbnail) {
+				$thumbnailUrl = $thumbnail->textContent;
+				$id4 = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
+			}
 			$fullImage = $image->getElementsByTagName('fullimage')->item(0);
 			if ($fullImage) {
 				$fullImageUrl = $fullImage->textContent;
 				$id3 = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
-				$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3);
+				$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4);
 			}
 		}
 

@@ -1,3 +1,7 @@
+BerkmanSlideshowBundle_repo:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
+    prefix:   /repo
+
 BerkmanSlideshowBundle_slideshow:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/slideshow.yml"
     prefix:   /slideshow

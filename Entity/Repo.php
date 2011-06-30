@@ -186,4 +186,29 @@ class Repo
 		}
 		return $parser;
 	}
+    /**
+     * @var string $thumbnail_url_pattern
+     */
+    private $thumbnail_url_pattern;
+
+
+    /**
+     * Set thumbnail_url_pattern
+     *
+     * @param string $thumbnailUrlPattern
+     */
+    public function setThumbnailUrlPattern($thumbnailUrlPattern)
+    {
+        $this->thumbnail_url_pattern = $thumbnailUrlPattern;
+    }
+
+    /**
+     * Get thumbnail_url_pattern
+     *
+     * @return string $thumbnailUrlPattern
+     */
+    public function getThumbnailUrlPattern()
+    {
+        return $this->thumbnail_url_pattern;
+    }
 }

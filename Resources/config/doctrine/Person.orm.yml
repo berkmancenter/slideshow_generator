@@ -1,5 +1,6 @@
 Berkman\SlideshowBundle\Entity\Person:
   type: entity
+  name: person
   id:
     id:
       type: integer

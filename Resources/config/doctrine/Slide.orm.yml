@@ -1,5 +1,6 @@
 Berkman\SlideshowBundle\Entity\Slide:
   type: entity
+  table: slide
   id:
     id:
       type: integer
@@ -17,4 +18,4 @@ Berkman\SlideshowBundle\Entity\Slide:
       inversedBy: slide
   uniqueConstraints:
     slideshow_position:
-      columns: ["slideshow_id", "position"]
+      columns: [slideshow_id, position]

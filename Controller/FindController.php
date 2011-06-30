@@ -68,7 +68,7 @@ class FindController extends Controller
 		$images = $finder->getResults(null, $page);
 
 		foreach ($images as $image) {
-			$choices[strval($image)] = $image->getImageUrl();
+			$choices[strval($image)] = $image->getThumbnailUrl();
 		}
 
 		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
