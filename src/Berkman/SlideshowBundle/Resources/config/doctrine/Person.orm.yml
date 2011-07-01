@@ -9,3 +9,4 @@ Berkman\SlideshowBundle\Entity\Person:
     slideshows:
       targetEntity: Slideshow
       mappedBy: person
+

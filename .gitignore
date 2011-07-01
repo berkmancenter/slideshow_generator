@@ -1,0 +1,5 @@
+*.swp
+*.php~
+*.orig
+vendor/
+bin/
