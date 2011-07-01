@@ -5,6 +5,7 @@ namespace Berkman\SlideshowBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Berkman\SlideshowBundle\Form\FindType;
 use Berkman\SlideshowBundle\Form\FindShow;
+use Berkman\SlideshowBundle\Form\SlideshowList;
 use Berkman\SlideshowBundle\Entity\Find;
 
 /**
@@ -58,6 +59,7 @@ class FindController extends Controller
 
 		$images = array();
 		$imagesForView = array();
+		$slideshows = array();
 		$choices = array();
 
 		if (!$repos) {
@@ -71,10 +73,17 @@ class FindController extends Controller
 			$choices[strval($image)] = $image->getThumbnailUrl();
 		}
 
-		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', array(
+		$viewParams = array(
 			'images' => $imagesForView,
 			'numResults' => $finder->getNumResults(),
-			'form' => $this->createForm(new FindShow(), array('choices' => $choices))->createView()
-		));
+			'imageForm' => $this->createForm(new FindShow(), array('choices' => $choices))->createView()
+		);
+
+		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+			$personId = $this->get('security.context')->getToken()->getUser()->getId();
+			$viewParams['slideshowsForm'] = $this->createForm(new SlideshowList(), array('personId' => $personId))->createView();
+		}
+
+		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', $viewParams);
     }
 }

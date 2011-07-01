@@ -83,11 +83,24 @@ class SlideshowController extends Controller
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
+				$user = $this->get('security.context')->getToken()->getUser();
+				$entity->setPerson($user);
                 $em->persist($entity);
                 $em->flush();
 
+				 // creating the ACL
+				$aclProvider = $this->get('security.acl.provider');
+				$objectIdentity = ObjectIdentity::fromDomainObject($entity);
+				$acl = $aclProvider->createAcl($objectIdentity);
+
+				// retrieving the security identity of the currently logged-in user
+				$securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+				// grant owner access
+				$acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+				$aclProvider->updateAcl($acl);
+
                 return $this->redirect($this->generateUrl('slideshow_show', array('id' => $entity->getId())));
-                
             }
         }
 

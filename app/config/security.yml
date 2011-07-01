@@ -29,8 +29,6 @@ security:
         - { path: ^/slideshow/(new|create|edit|update|delete|addImage), role: IS_AUTHENTICATED_REMEMBERED }
         # Repo permission stuff
         - { path: ^/repo, role: ROLE_ADMIN }
-        # Secured part of the site
-        # Change these rules to adapt them to your needs
-        #- { path: ^/admin/, role: ROLE_ADMIN }
-        #- { path: ^/.*, role: ROLE_USER }
-        #- { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+
+    acl:
+        connection: default
