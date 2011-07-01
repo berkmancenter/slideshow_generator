@@ -1,0 +1,22 @@
+Berkman\SlideshowBundle\Entity\Image:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    id_1:
+      type: string
+    id_2:
+      type: string
+      nullable: TRUE
+    id_3:
+      type: string
+      nullable: TRUE
+    id_4:
+      type: string
+      nullable: TRUE
+  manyToOne:
+    from_repo:
+      targetEntity: Repo

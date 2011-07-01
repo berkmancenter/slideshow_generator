@@ -1,0 +1,5 @@
+{% block field_label %}
+{% spaceless %}
+    <label for="{{ id }}"{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}><img src="{{ label|trans }}" alt=""/></label>
+{% endspaceless %}
+{% endblock field_label %}

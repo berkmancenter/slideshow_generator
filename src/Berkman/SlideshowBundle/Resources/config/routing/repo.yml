@@ -1,0 +1,30 @@
+repo:
+    pattern:  /
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:index" }
+
+repo_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:show" }
+
+repo_new:
+    pattern:  /new
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:new" }
+
+repo_create:
+    pattern:  /create
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:create" }
+    requirements: { _method: post }
+
+repo_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:edit" }
+
+repo_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:update" }
+    requirements: { _method: post }
+
+repo_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:delete" }
+    requirements: { _method: post }

@@ -1,0 +1,35 @@
+slideshow:
+    pattern:  /
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:index" }
+
+slideshow_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:show" }
+
+slideshow_new:
+    pattern:  /new
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:new" }
+
+slideshow_create:
+    pattern:  /create
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:create" }
+    requirements: { _method: post }
+
+slideshow_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:edit" }
+
+slideshow_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:update" }
+    requirements: { _method: post }
+
+slideshow_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:delete" }
+    requirements: { _method: post }
+
+slideshow_add_images:
+    pattern: /addImage
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:addImage" }
+    requirements: { _method: post }

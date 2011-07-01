@@ -1,0 +1,11 @@
+Berkman\SlideshowBundle\Entity\Person:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  oneToMany:
+    slideshows:
+      targetEntity: Slideshow
+      mappedBy: person

@@ -1,0 +1,51 @@
+{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+
+{% block body %}
+<h1>Repo list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Search_url_pattern</th>
+            <th>Record_url_pattern</th>
+            <th>Image_url_pattern</th>
+            <th>Metadata_url_pattern</th>
+            <th>Thumbnail_url_pattern</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('repo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.name }}</td>
+            <td>{{ entity.searchurlpattern }}</td>
+            <td>{{ entity.recordurlpattern }}</td>
+            <td>{{ entity.imageurlpattern }}</td>
+            <td>{{ entity.metadataurlpattern }}</td>
+            <td>{{ entity.thumbnailurlpattern }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('repo_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('repo_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('repo_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>
+{% endblock %}

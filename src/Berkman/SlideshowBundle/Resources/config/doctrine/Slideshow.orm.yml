@@ -1,0 +1,23 @@
+Berkman\SlideshowBundle\Entity\Slideshow:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      nullable: true
+    slide_delay:
+      type: smallint
+    display_info:
+      type: boolean
+  manyToOne:
+    person:
+      targetEntity: Person
+      inversedBy: slideshow
+  oneToMany:
+    slides:
+      targetEntity: Slide
+      mappedBy: slideshow

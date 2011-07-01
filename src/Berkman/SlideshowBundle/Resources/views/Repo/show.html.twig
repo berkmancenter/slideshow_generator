@@ -1,0 +1,43 @@
+{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+
+{% block body %}
+<h1>Repo</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>                <td>{{ entity.id }}</td>        </tr>
+        <tr>
+            <th>Name</th>                <td>{{ entity.name }}</td>        </tr>
+        <tr>
+            <th>Search_url_pattern</th>                <td>{{ entity.searchurlpattern }}</td>        </tr>
+        <tr>
+            <th>Record_url_pattern</th>                <td>{{ entity.recordurlpattern }}</td>        </tr>
+        <tr>
+            <th>Image_url_pattern</th>                <td>{{ entity.imageurlpattern }}</td>        </tr>
+        <tr>
+            <th>Metadata_url_pattern</th>                <td>{{ entity.metadataurlpattern }}</td>        </tr>
+        <tr>
+            <th>Thumbnail_url_pattern</th>                <td>{{ entity.thumbnailurlpattern }}</td>        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('repo') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('repo_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('repo_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

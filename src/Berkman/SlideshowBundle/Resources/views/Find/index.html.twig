@@ -1,0 +1,20 @@
+{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+
+{% block body %}
+<h1>Search</h1>
+
+<form action="{{ path('find') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Search</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('find') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

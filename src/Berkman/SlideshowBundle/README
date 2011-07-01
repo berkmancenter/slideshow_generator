@@ -1,0 +1,36 @@
+I suck and deleted my original notes file.
+
+Models:
+See config/doctrine
+
+Flow:
+Search for a keyword in certain repos (checkboxes under keyword input)
+Fill the keyword into each repo search_url_pattern and fetch results
+	$response = Repo->search($keyword)
+	$parser = Repo->getParser()
+	$images = $parser->getImages($response);
+Send results through native result_format parser (xml or json) to get PHP object (or array)
+Send object through repo-specific parser to pull out relevant info for each image (id_1, id_2, id_3)
+Don't store in database.  Each image in collection will have associated checkbox with concatenated value of from_repo|id_1|id_2|id_3
+On form submit, read all the submitted image data and connect to either new or current slideshow, and dump to database
+Show the current slideshow with numbers beneath for ordering and submit button
+Override that stuff with javascript to allow drag-drop reordering of slides
+Show button to view slideshow and direct slideshow link
+
+Have panel throughout to manage particular slideshow
+
+Questions:
+Are we connecting this to PIN system, or how else are we allowing access to particular old slideshows? - We're setting up our own user database
+
+Notes:
+http://webservices.lib.harvard.edu/rest/hollis/search/dc/?q=material-id:matPhoto+{keyword}
+Parser classes will have to parse every url in the repo class and return standardized PHP objects
+Turns out you can't call something Search as it's special in Symfony
+
+TODO:
+A search object that maintains page info for each repo and maintains a total number of results and pages
+
+Requirements:
+PHP curl lib
+PHP DOM lib
+libxml
