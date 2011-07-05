@@ -9,6 +9,10 @@ use Berkman\SlideshowBundle\Entity\Image;
 use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Form\SlideshowType;
 use Berkman\SlideshowBundle\Form\FindShow;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * Slideshow controller.
@@ -124,6 +128,12 @@ class SlideshowController extends Controller
             throw $this->createNotFoundException('Unable to find Slideshow entity.');
         }
 
+		// check for edit access
+		if (false === $this->get('security.context')->isGranted('EDIT', $entity))
+		{
+			throw new AccessDeniedException();
+		}
+
         $editForm = $this->createForm(new SlideshowType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -216,8 +226,8 @@ class SlideshowController extends Controller
 		$images = array();
 
 		if ('POST' == $request->getMethod()) {
-			$images = $request->get('findshow');
-			$images = $images['images'];
+			$images = $request->get('findresults');
+			$images = $images['find']['images'];
 			$imageObjects = array();
 			$em = $this->getDoctrine()->getEntityManager();
 

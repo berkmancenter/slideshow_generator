@@ -5,8 +5,7 @@
 <h1>Images ({{ numResults }})</h1>
 
 <form action="{{ path('slideshow_add_images') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(imageForm) }}
-    {{ form_widget(slideshowsForm) }}
+    {{ form_widget(form) }}
     <p>
         <button type="submit">Finish</button>
     </p>
@@ -14,9 +13,7 @@
 
 <ul class="record_actions">
     <li>
-        <a href="{{ path('find') }}">
-            Back to the list
-        </a>
+        <a href="{{ path('find') }}">Back to the list</a>
     </li>
 </ul>
 {% endblock %}
