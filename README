@@ -28,6 +28,8 @@ Parser classes will have to parse every url in the repo class and return standar
 Turns out you can't call something Search as it's special in Symfony
 
 TODO:
+Refactor searching to use the form builder properly
+Figure out proper form type extensions
 A search object that maintains page info for each repo and maintains a total number of results and pages
 
 Requirements:
