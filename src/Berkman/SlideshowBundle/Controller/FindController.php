@@ -3,7 +3,7 @@
 namespace Berkman\SlideshowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Berkman\SlideshowBundle\Entity\Find;
+use Berkman\SlideshowBundle\Entity as Entity;
 use Berkman\SlideshowBundle\Form\FindType;
 use Berkman\SlideshowBundle\Form\FindResultsType;
 
@@ -19,21 +19,22 @@ class FindController extends Controller
      */
     public function indexAction()
     {
+		$finder = new Entity\Find();
+        $form = $this->createForm(new FindType(), $finder);
         $request = $this->get('request');
-        $form = $this->createForm(new FindType());
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
 
             if ($form->isValid()) {
-				$formData = $form->getData();
-				$repos = array();
-				foreach ($formData['repos'] as $repo) {
-					$repos[] = $repo->getId();
+				$repos = $finder->getRepos();
+				$repoIds = array();
+				foreach ($repos as $repo) {
+					$repoIds[] = $repo->getId();
 				}
 				return $this->redirect($this->generateUrl('find_show', array(
-					'repos' => implode('+', $repos),
-					'keyword' => $formData['keyword'],
+					'repos' => implode('+', $repoIds),
+					'keyword' => $finder->getKeyword(),
 					'page' => 1
 				)));
             }
@@ -51,21 +52,20 @@ class FindController extends Controller
      */
     public function showAction($repos, $keyword, $page = 1)
     {
+		$images = array();
+		$imageChoices = array();
+		$findResults = new FindResultsType();
+
 		$em = $this->getDoctrine()->getEntityManager();
 		$repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findBy(array(
 			'id' => explode('+', $repos)
 		));
 
-		$images = array();
-		$imageChoices = array();
-		$slideshowChoices = array();
-		$choices = array();
-
 		if (!$repos) {
-			throw $this->createNotFoundException('Unable to find Repo entity.');
+			throw $this->createNotFoundException('Unable to find Repos.');
 		}
 
-		$finder = new Find($keyword, $repos);
+		$finder = new Entity\Find($keyword, $repos);
 		$images = $finder->getResults(null, $page);
 
 		foreach ($images as $image) {
@@ -74,19 +74,64 @@ class FindController extends Controller
 
 		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
 			$personId = $this->get('security.context')->getToken()->getUser()->getId();
-			$slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findBy(array(
-				'person' => $personId
-			));
-			foreach ($slideshows as $slideshow) {
-				$slideshowChoices[] = $slideshow->getId();
-			}
+			$findResults->setPersonId($personId);
 		}
+
+		$findResults->setImageChoices($imageChoices);
 
 		$viewParams = array(
 			'numResults' => $finder->getNumResults(),
-			'form' => $this->createForm(new FindResultsType(), array('imageChoices' => $imageChoices, 'slideshowChoices' => $slideshowChoices))->createView()
+			'form' => $this->createForm($findResults)->createView()
 		);
 
 		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', $viewParams);
     }
+
+	public function resultsToSlideshowAction()
+	{
+		$em = $this->getDoctrine()->getEntityManager();
+		$request = $this->getRequest();
+
+		if ('POST' === $request->getMethod()) {
+			$findResults = $request->request->get('findresults');
+			$images = $findResults['find']['images'];
+			$slideshowId = $findResults['slideshows']['slideshows'];
+			if (empty($slideshowId)) {
+				$slides = array();	
+				foreach ($images as $image) {
+					$image = unserialize(base64_decode($image));
+					$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
+					$image = new Entity\Image($repo, $image['id1'], $image['id2'], $image['id3'], $image['id4']);
+					$em->persist($image);
+					$slide = new Entity\Slide();
+					$slide->setImage($image);
+					$em->persist($slide);
+					$slides[] = $slide;
+				}
+				$em->flush();
+
+				$response = $this->forward('BerkmanSlideshowBundle:Slideshow:create', array('slides' => $slides));
+			}
+			else {
+				$slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshowId);
+
+				foreach ($images as $image) {
+					$image = unserialize(base64_decode($image));
+					$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
+					$image = new Entity\Image($repo, $image['id1'], $image['id2'], $image['id3'], $image['id4']);
+					$em->persist($image);
+					$slide = new Entity\Slide();
+					$slide->setImage($image);
+					$slideshow->addSlide($slide);
+				}
+				$em->persist($slideshow);
+				$em->flush();
+
+				$response = $this->forward('BerkmanSlideshowBundle:Slideshow:show', array('id' => $slideshowId));
+
+			}
+		}
+
+		return $response;
+	}
 }

@@ -1,7 +1,11 @@
-find:
-    pattern:  /
+find_index:
+    pattern: /
     defaults: { _controller: "BerkmanSlideshowBundle:Find:index" }
 
 find_show:
     pattern:  /{repos}/{keyword}/{page}
     defaults: { _controller: "BerkmanSlideshowBundle:Find:show", page: 1 }
+
+find_results_to_slideshow:
+    pattern: /resultsToSlideshow
+    defaults: { _controller: "BerkmanSlideshowBundle:Find:resultsToSlideshow" }

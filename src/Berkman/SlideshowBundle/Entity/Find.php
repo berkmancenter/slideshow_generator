@@ -3,6 +3,7 @@
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Berkman\SlideshowBundle\Entity\Find
@@ -15,12 +16,17 @@ class Find
     private $keyword;
 
     /**
-	 * This is an array of format:
-	 * array('repo' => Repo, 'currentPage' => int, 'numResults' => int)
-	 *
      * @var array $repos
      */
     private $repos;
+
+	/**
+	 * This is an array of format:
+	 * array(repoId => array('currentPage' => int, 'numResults' => int), repoId => ...)
+	 *
+	 * @var array $reposInfo
+	 */
+	private $reposInfo;
 
     /**
      * @var array $results
@@ -58,6 +64,26 @@ class Find
     }
 
     /**
+     * Set info about the repos
+     *
+     * @param array $reposInfo
+     */
+    public function setReposInfo($reposInfo)
+    {
+        $this->reposInfo = $reposInfo;
+    }
+
+    /**
+     * Get info about the repos
+     *
+     * @return array $reposInfo
+     */
+    public function getReposInfo()
+    {
+        return $this->reposInfo;
+    }
+
+    /**
      * Get total number of results
      *
      * @return int $numResults
@@ -74,12 +100,7 @@ class Find
      */
     public function setRepos($repos)
     {
-		$findRepos = array();
-		foreach ($repos as $repo) {
-			$findRepos[] = array('repo' => $repo, 'currentPage' => 1, 'numResults' => 0);
-		}
-
-        $this->repos = $findRepos;
+		$this->repos = $repos;
     }
 
     /**
@@ -124,8 +145,7 @@ class Find
 			$images = $this->results;
 		}
 		else {
-			foreach ($this->repos as $repoInfo) {
-				$repo = $repoInfo['repo'];
+			foreach ($this->repos as $repo) {
 				//TODO: Setup some kind of real pagination
 				//$repoPage = ($page == $this->currentPage) ? $repoInfo['currentPage'] : $repoInfo['currentPage'] + 1;
 				$searchUrl = str_replace(
@@ -134,6 +154,7 @@ class Find
 				);
 				$curl = curl_init($searchUrl);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
+				curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
 				#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
 				$response = curl_exec($curl);
 				$parser = $repo->getParser();

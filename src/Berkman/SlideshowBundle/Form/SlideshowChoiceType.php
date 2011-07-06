@@ -8,13 +8,25 @@ use Doctrine\ORM\EntityRepository;
 
 class SlideshowChoiceType extends AbstractType
 {
+
+	private $personId;
+
+	public function setPersonId($personId)
+	{
+		$this->personId = $personId;
+	}
+
 	public function buildForm(FormBuilder $builder, array $options)
 	{
+		$personId = $this->personId;
 		$builder->add('slideshows', 'entity', array(
 			'class' => 'Berkman\\SlideshowBundle\\Entity\\Slideshow',
 			'property' => 'name',
-			'choices' => $options['data']['slideshowChoices'],
-			'required' => false
+			'required' => false,
+			'query_builder' => function(EntityRepository $er) use ($personId) {
+				$qb = $er->createQueryBuilder('s');
+				return $qb->where('s.person = ?1')->setParameter(1, $personId);
+			}
 		));
 	}
 }

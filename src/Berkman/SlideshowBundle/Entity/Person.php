@@ -45,4 +45,14 @@ class Person extends BaseUser
     {
         return $this->slideshows;
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

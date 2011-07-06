@@ -141,14 +141,11 @@ class Slideshow
      *
      * @param Berkman\SlideshowBundle\Entity\Slide $slides
      */
-    public function addSlides(\Berkman\SlideshowBundle\Entity\Slide $slides)
+    public function addSlide(\Berkman\SlideshowBundle\Entity\Slide $slide)
     {
-		if (is_array($slides)) {
-			$this->slides += $slides;
-		}
-		elseif ($slides instanceof \Berkman\SlideshowBundle\Entity\Slide) {
-			$this->slides[] = $slides;
-		}
+		if (!$slide->getPosition())
+			$slide->setPosition(count($this->slides) + 1);
+		$this->slides[] = $slide;
     }
 
     /**
@@ -159,5 +156,15 @@ class Slideshow
     public function getSlides()
     {
         return $this->slides;
+    }
+
+    /**
+     * Add slides
+     *
+     * @param Berkman\SlideshowBundle\Entity\Slide $slides
+     */
+    public function addSlides(\Berkman\SlideshowBundle\Entity\Slide $slides)
+    {
+        $this->slides[] = $slides;
     }
 }

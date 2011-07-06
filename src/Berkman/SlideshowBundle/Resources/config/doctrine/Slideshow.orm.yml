@@ -21,3 +21,4 @@ Berkman\SlideshowBundle\Entity\Slideshow:
     slides:
       targetEntity: Slide
       mappedBy: slideshow
+      cascade: ["persist", "remove"]

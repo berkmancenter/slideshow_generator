@@ -76,11 +76,11 @@ class SlideshowController extends Controller
      * Creates a new Slideshow entity.
      *
      */
-    public function createAction()
+    public function createAction($slides = array())
     {
-        $entity  = new Slideshow();
+        $slideshow  = new Slideshow();
         $request = $this->getRequest();
-        $form    = $this->createForm(new SlideshowType(), $entity);
+        $form    = $this->createForm(new SlideshowType(), $slideshow);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
@@ -88,13 +88,16 @@ class SlideshowController extends Controller
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
 				$user = $this->get('security.context')->getToken()->getUser();
-				$entity->setPerson($user);
-                $em->persist($entity);
+				$slideshow->setPerson($user);
+				foreach ($slides as $slide) {
+					$slideshow->addSlide($slide);
+				}
+                $em->persist($slideshow);
                 $em->flush();
 
 				 // creating the ACL
 				$aclProvider = $this->get('security.acl.provider');
-				$objectIdentity = ObjectIdentity::fromDomainObject($entity);
+				$objectIdentity = ObjectIdentity::fromDomainObject($slideshow);
 				$acl = $aclProvider->createAcl($objectIdentity);
 
 				// retrieving the security identity of the currently logged-in user
@@ -104,12 +107,12 @@ class SlideshowController extends Controller
 				$acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
 				$aclProvider->updateAcl($acl);
 
-                return $this->redirect($this->generateUrl('slideshow_show', array('id' => $entity->getId())));
+                return $this->redirect($this->generateUrl('slideshow_show', array('id' => $slideshow->getId())));
             }
         }
 
         return $this->render('BerkmanSlideshowBundle:Slideshow:new.html.twig', array(
-            'entity' => $entity,
+            'entity' => $slideshow,
             'form'   => $form->createView()
         ));
     }

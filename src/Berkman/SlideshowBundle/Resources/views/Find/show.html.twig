@@ -4,7 +4,7 @@
 {% form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
 <h1>Images ({{ numResults }})</h1>
 
-<form action="{{ path('slideshow_add_images') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('find_results_to_slideshow') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <p>
         <button type="submit">Finish</button>
@@ -13,7 +13,7 @@
 
 <ul class="record_actions">
     <li>
-        <a href="{{ path('find') }}">Back to the list</a>
+        <a href="{{ path('find_index') }}">Back to the list</a>
     </li>
 </ul>
 {% endblock %}

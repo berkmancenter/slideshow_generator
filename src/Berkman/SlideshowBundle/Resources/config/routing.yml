@@ -12,4 +12,4 @@ BerkmanSlideshowBundle_find:
 
 BerkmanSlideshowBundle_homepage:
     pattern:  /
-    defaults: { _controller: BerkmanSlideshowBundle:Default:index }
+    defaults: { _controller: BerkmanSlideshowBundle:Slideshow:index }

@@ -15,4 +15,9 @@ class SlideshowType extends AbstractType
             ->add('display_info', 'checkbox', array('required' => false))
         ;
     }
+
+	public function getDefaultOptions(array $options)
+	{
+		return array('csrf_protection' => false);
+	}
 }
