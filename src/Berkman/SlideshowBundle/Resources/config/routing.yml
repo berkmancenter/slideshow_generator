@@ -6,18 +6,6 @@ BerkmanSlideshowBundle_slideshow:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/slideshow.yml"
     prefix:   /slideshow
 
-BerkmanSlideshowBundle_slideshow:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/slideshow.yml"
-    prefix:   /slideshow
-
-BerkmanSlideshowBundle_repo:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
-    prefix:   /repo
-
-BerkmanSlideshowBundle_repo:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/repo.yml"
-    prefix:   /repo
-
 BerkmanSlideshowBundle_find:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/find.yml"
     prefix:   /find
