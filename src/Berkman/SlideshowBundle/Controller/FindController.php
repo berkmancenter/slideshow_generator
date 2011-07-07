@@ -127,7 +127,7 @@ class FindController extends Controller
 				$em->persist($slideshow);
 				$em->flush();
 
-				$response = $this->forward('BerkmanSlideshowBundle:Slideshow:show', array('id' => $slideshowId));
+				$response = $this->redirect($this->generateUrl('slideshow_show', array('id' => $slideshowId)));
 
 			}
 		}

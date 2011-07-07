@@ -145,6 +145,8 @@ class Slideshow
     {
 		if (!$slide->getPosition())
 			$slide->setPosition(count($this->slides) + 1);
+		if (!$slide->getSlideshow())
+			$slide->setSlideshow($this);
 		$this->slides[] = $slide;
     }
 
