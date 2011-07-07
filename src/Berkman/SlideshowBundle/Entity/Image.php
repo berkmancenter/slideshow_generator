@@ -144,6 +144,11 @@ class Image
 		return $this->fillUrl($this->getFromRepo()->getThumbnailUrlPattern());
 	}
 
+	public function getMetadata()
+	{
+		return $this->getFromRepo()->getParser()->getMetadata($this);
+	}
+
 	private function fillUrl($url)
 	{
 		return str_replace(array('{id-1}', '{id-2}', '{id-3}', '{id-4}'), array($this->getId1(), $this->getId2(), $this->getId3(), $this->getId4()), $url);

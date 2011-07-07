@@ -7,11 +7,6 @@ use Berkman\SlideshowBundle\Entity;
 class VIAParser implements RepoParserInterface {
 
 	/**
-	 * @var string $input
-	 */
-	private $input;
-
-	/**
 	 * @var Berkman\SlideshowBundle\Entity\Repo $repo
 	 */
 	private $repo;
@@ -21,31 +16,16 @@ class VIAParser implements RepoParserInterface {
 		return $this->repo;
 	}
 
-	public function getInput()
-	{
-		return $this->input;
-	}
-
-	public function setInput($input)
-	{
-		$this->input = $input;
-	}
-
 	/**
 	 * Get image objects from XML input
 	 *
 	 * @param string $input
 	 * @return array @images
 	 */
-	public function getImages()
+	public function getImages($input)
 	{
-		$input = '';
-
-		if ($this->input == '') {
+		if ($input == '') {
 			#throw some Symfony exception
-		}
-		else {
-			$input = $this->input;
 		}
 
 		$images = array();
@@ -72,8 +52,9 @@ class VIAParser implements RepoParserInterface {
 		return $images;
 	}
 
-	public function getMetadata()
+	public function getMetadata(Entity\Image $image)
 	{
+
 	}
 
 	public function __construct(Entity\Repo $repo)
@@ -81,9 +62,8 @@ class VIAParser implements RepoParserInterface {
 		$this->repo = $repo;
 	}
 
-	public function getNumResults()
+	public function getNumResults($input)
 	{
-		$input = $this->getInput();
 		$doc = new \DOMDocument();
 		$doc->loadXML($input);
 		return (int) $doc->getElementsByTagName('totalResults')->item(0)->textContent;

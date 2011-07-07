@@ -2,13 +2,12 @@
 
 namespace Berkman\SlideshowBundle\Parser;
 
-use Berkman\SlideshowBundle\Entity\Repo as Repo;
+use Berkman\SlideshowBundle\Entity;
 
 interface RepoParserInterface {
-	public function __construct(Repo $repo);
-	public function setInput($input);
+	public function __construct(Entity\Repo $repo);
 	public function getRepo();
-	public function getImages();
-	public function getMetadata();
-	public function getNumResults();
+	public function getImages($input);
+	public function getMetadata(Entity\Image $image);
+	public function getNumResults($input);
 }

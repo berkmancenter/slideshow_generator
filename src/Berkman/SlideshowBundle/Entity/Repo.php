@@ -211,4 +211,22 @@ class Repo
     {
         return $this->thumbnail_url_pattern;
     }
+
+	public function getSearchResults($keyword, $page = 1)
+	{
+		$searchUrl = str_replace(
+			array('{keyword}', '{page}'),
+			array($keyword, $page), 
+			$this->getSearchUrlPattern()
+		);
+		$curl = curl_init($searchUrl);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
+		$response = curl_exec($curl);
+		$parser = $this->getParser();
+		$images = $parser->getImages($response);
+		$numResults = $parser->getNumResults($response);
+		return array('images' => $images, 'numResults' => $numResults);
+	}
 }

@@ -147,20 +147,9 @@ class Find
 		else {
 			foreach ($this->repos as $repo) {
 				//TODO: Setup some kind of real pagination
-				//$repoPage = ($page == $this->currentPage) ? $repoInfo['currentPage'] : $repoInfo['currentPage'] + 1;
-				$searchUrl = str_replace(
-					array('{keyword}', '{page}'),
-					array($keyword, $page), $repo->getSearchUrlPattern()
-				);
-				$curl = curl_init($searchUrl);
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
-				curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-				#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-				$response = curl_exec($curl);
-				$parser = $repo->getParser();
-				$parser->setInput($response);
-				$images += $parser->getImages();
-				$numResults += $parser->getNumResults();
+				$searchResults = $repo->getSearchResults($keyword, $page);
+				$images += $searchResults['images'];
+				$numResults += $searchResults['numResults'];
 			}
 		}
 
