@@ -18,7 +18,15 @@
 
 <ul>
 	{% for slide in entity.slides %}
-		<li><img src="{{ slide.image.imageUrl }}"/></li>
+		<li>
+			<img src="{{ slide.image.imageUrl }}"/>
+			<dl class="metadata">
+				{% for key,value in slide.image.metadata %}
+				<dt>{{ key }}</dt><dd>{{ value }}</dd>
+				{% endfor %}
+			</dl>
+			<a href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
+		</li>
 	{% endfor %}
 </ul>
 
