@@ -1,10 +1,10 @@
 <?php
 
-namespace Berkman\SlideshowBundle\Parser;
+namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-interface RepoParserInterface {
+interface RepoFetcherInterface {
 	public function __construct(Entity\Repo $repo);
 	public function getRepo();
 	public function getImages($input);

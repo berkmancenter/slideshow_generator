@@ -3,7 +3,7 @@
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Berkman\SlideshowBundle\Parser as Parser;
+use Berkman\SlideshowBundle\Fetcher as Fetcher;
 
 /**
  * Berkman\SlideshowBundle\Entity\Repo
@@ -41,9 +41,9 @@ class Repo
     private $metadata_url_pattern;
 
 	/**
-	 * @var Berkman\SlideshowBundle\Parser $parser
+	 * @var Berkman\SlideshowBundle\Fetcher $fetcher
 	 */
-	public $parser;
+	public $fetcher;
 
     /**
      * Set id
@@ -53,7 +53,7 @@ class Repo
     public function setId($id)
     {
         $this->id = $id;
-		$this->parser = $this->getParser(); 
+		$this->fetcher = $this->getFetcher(); 
     }
 
     /**
@@ -167,24 +167,24 @@ class Repo
     }
 
 
-	public function getParser()
+	public function getFetcher()
 	{
-		$parser = null;
+		$fetcher = null;
 
-		if ($this->parser) {
-			$parser = $this->parser;
+		if ($this->fetcher) {
+			$fetcher = $this->fetcher;
 		}
 		else {
 			//TODO: figure out a better way to do this stuff
-			$className = '\\Berkman\\SlideshowBundle\\Parser\\'.$this->getId().'Parser';
+			$className = '\\Berkman\\SlideshowBundle\\Fetcher\\'.$this->getId().'Fetcher';
 			if (class_exists($className)) {
-				$parser = new $className($this);
+				$fetcher = new $className($this);
 			}
 			else {
 				#throw some exception
 			}
 		}
-		return $parser;
+		return $fetcher;
 	}
     /**
      * @var string $thumbnail_url_pattern
@@ -224,9 +224,9 @@ class Repo
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
 		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
 		$response = curl_exec($curl);
-		$parser = $this->getParser();
-		$images = $parser->getImages($response);
-		$numResults = $parser->getNumResults($response);
+		$fetcher = $this->getFetcher();
+		$images = $fetcher->getImages($response);
+		$numResults = $fetcher->getNumResults($response);
 		return array('images' => $images, 'numResults' => $numResults);
 	}
 }

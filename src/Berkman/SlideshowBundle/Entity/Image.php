@@ -146,7 +146,7 @@ class Image
 
 	public function getMetadata()
 	{
-		return $this->getFromRepo()->getParser()->getMetadata($this->fillUrl($this->getFromRepo()->getMetadataUrlPattern()));
+		return $this->getFromRepo()->getFetcher()->getMetadata($this->fillUrl($this->getFromRepo()->getMetadataUrlPattern()));
 	}
 
 	public function getRecordUrl()

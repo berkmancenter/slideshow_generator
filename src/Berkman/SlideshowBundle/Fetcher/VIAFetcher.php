@@ -1,10 +1,10 @@
 <?php
 
-namespace Berkman\SlideshowBundle\Parser;
+namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class VIAParser implements RepoParserInterface {
+class VIAFetcher implements RepoFetcherInterface {
 
 	/**
 	 * @var Berkman\SlideshowBundle\Entity\Repo $repo
