@@ -30,8 +30,7 @@ Turns out you can't call something Search as it's special in Symfony
 TODO:
 Figure out proper form type extensions
 Figure out what the page flow should be
-Refactor into a sensible architecture once all the parts and pieces are in place
-A search object that maintains page info for each repo and maintains a total number of results and pages
+Figure out proper pagination (currently has repeats)
 
 Requirements:
 PHP curl lib
