@@ -51,7 +51,7 @@ class VIAFetcher implements FetcherInterface {
 	{
 		$images = array();
 		$totalResults = 0;
-		$numResults = $endIndex - $startIndex;
+		$numResults = $endIndex - $startIndex + 1;
 		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
 		while (count($images) < $numResults) {
@@ -69,6 +69,9 @@ class VIAFetcher implements FetcherInterface {
 			}
 			$nodeList = $doc->getElementsByTagName('item');
 			foreach ($nodeList as $image) {
+				if (count($images) == $numResults) {
+					break;
+				}
 				$id1 = $image->getAttribute('id');
 				$id2 = $image->getAttribute('hollisid');
 				$thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
@@ -80,9 +83,33 @@ class VIAFetcher implements FetcherInterface {
 				if ($fullImage) {
 					$fullImageUrl = $fullImage->textContent;
 					$id3 = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
-					$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4);
+					$imageObject = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4);
+					$images[] = $imageObject;
+				}
+
+				$numberOfImages = $image->getElementsByTagName('numberofimages')->item(0);
+				if ($numberOfImages) {
+					$numberOfImages = $numberOfImages->textContent;
+					if ($numberOfImages > 1 && $imageObject) {
+						$xml = $this->fetchXml($this->fillUrl('http://webservices.lib.harvard.edu/rest/mods/via/{id-2}', $imageObject));
+						$metadataDoc = new \DOMDocument();
+						$metadataDoc->loadXML($xml);
+						$nodeList = $metadataDoc->getElementsByTagName('url');
+						foreach ($nodeList as $node) {
+							if (count($images) == $numResults) {
+								break;
+							}
+							if ($node->getAttribute('displayLabel') == 'Full Image' && $node->getAttribute('note') == 'unrestricted') {
+								$id3 = substr($node->textContent, strpos($node->textContent, ':', 5) + 1);
+								$id4 = $id3.'?height=150&width=150';
+								$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4);
+							}
+						}
+					}
 				}
 			}
+
+			$page++;
 		}
 
 		return array('images' => $images, 'totalResults' => $totalResults);
