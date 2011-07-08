@@ -118,7 +118,7 @@ class FindController extends Controller
 				foreach ($images as $image) {
 					$image = unserialize(base64_decode($image));
 					$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
-					$image = new Entity\Image($repo, $image['id1'], $image['id2'], $image['id3'], $image['id4']);
+					$image = new Entity\Image($repo, $image['id1'], $image['id2'], $image['id3'], $image['id4'], $image['id5'], $image['id6']);
 					$em->persist($image);
 					$slide = new Entity\Slide();
 					$slide->setImage($image);

@@ -31,6 +31,7 @@ TODO:
 Figure out proper form type extensions
 Figure out what the page flow should be
 Figure out proper pagination (currently has repeats)
+Add fetcher ability to get metadata for constituent 
 
 Requirements:
 PHP curl lib

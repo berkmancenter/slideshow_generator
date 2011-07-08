@@ -57,6 +57,25 @@ class SlideshowController extends Controller
         ));
     }
 
+	/**
+	 * Displays a slideshow
+	 *
+	 */
+	public function slideshowAction($id)
+	{
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
+
+        if (!$slideshow) {
+            throw $this->createNotFoundException('Unable to find Slideshow.');
+        }
+
+        return $this->render('BerkmanSlideshowBundle:Slideshow:slideshow.html.twig', array(
+            'slideshow'      => $slideshow,
+        ));
+	}
+
     /**
      * Displays a form to create a new Slideshow entity.
      *

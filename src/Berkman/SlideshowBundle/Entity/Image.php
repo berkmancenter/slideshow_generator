@@ -35,6 +35,16 @@ class Image
     private $id_4;
 
     /**
+     * @var string $id_5
+     */
+    private $id_5;
+
+    /**
+     * @var string $id_6
+     */
+    private $id_6;
+
+    /**
      * @var Berkman\SlideshowBundle\Entity\Repo
      */
     private $from_repo;
@@ -48,13 +58,15 @@ class Image
 	 * @param string $id3
 	 * @param string $id4
 	 */
-	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null, $id4 = null)
+	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
 	{
 		$this->setFromRepo($fromRepo);
 		$this->setId1($id1);
 		$this->setId2($id2);
 		$this->setId3($id3);
 		$this->setId4($id4);
+		$this->setId5($id5);
+		$this->setId6($id6);
 	}
 
     /**
@@ -148,6 +160,46 @@ class Image
     }
 
     /**
+     * Set id_5
+     *
+     * @param string $id5
+     */
+    public function setId5($id5)
+    {
+        $this->id_5 = $id5;
+    }
+
+    /**
+     * Get id_5
+     *
+     * @return string 
+     */
+    public function getId5()
+    {
+        return $this->id_5;
+    }
+
+    /**
+     * Set id_6
+     *
+     * @param string $id6
+     */
+    public function setId6($id6)
+    {
+        $this->id_6 = $id6;
+    }
+
+    /**
+     * Get id_6
+     *
+     * @return string 
+     */
+    public function getId6()
+    {
+        return $this->id_6;
+    }
+
+    /**
      * Set from_repo
      *
      * @param Berkman\SlideshowBundle\Entity\Repo $fromRepo
@@ -221,6 +273,8 @@ class Image
 			'id2' => $this->getId2(),
 			'id3' => $this->getId3(),
 			'id4' => $this->getId4(),
+			'id5' => $this->getId5(),
+			'id6' => $this->getId6(),
 			'fromRepo' => $this->getFromRepo()->getId()
 		)));
 	}

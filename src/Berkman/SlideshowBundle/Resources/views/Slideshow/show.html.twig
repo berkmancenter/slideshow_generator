@@ -41,6 +41,10 @@
             Edit
         </a>
     </li>
+	<li>
+		<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
+			Start Slideshow
+		</a>
     <li>
         <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
             {{ form_widget(delete_form) }}

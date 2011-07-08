@@ -6,18 +6,27 @@ use Berkman\SlideshowBundle\Entity;
 
 class VIAFetcher implements FetcherInterface {
 
+	/*
+	 * id_1 = recordId
+	 * id_2 = componentId
+	 * id_3 = metadataId
+	 * id_4 = metadataSubId
+	 * id_5 = imageId
+	 * id_6 = thumbnailId
+	 */
+
+	const SEARCH_URL_PATTERN    = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=material-id:matPhoto+{keyword}';
+	const RECORD_URL_PATTERN    = 'http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-1}&componentId={id-2}';
+	const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/dc/via/{id-3}';
+	const IMAGE_URL_PATTERN     = 'http://nrs.harvard.edu/urn-3:{id-5}';
+	const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-6}';
+
+	const RESULTS_PER_PAGE      = 25;
+
 	/**
 	 * @var Berkman\SlideshowBundle\Entity\Repo $repo
 	 */
 	private $repo;
-
-	const SEARCH_URL_PATTERN = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=material-id:matPhoto+{keyword}';
-	const RECORD_URL_PATTERN = 'http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-2}&componentId={id-3}';
-	const IMAGE_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-3}';
-	const METADATA_URL_PATTERN = 'http://webservices.lib.harvard.edu/rest/dc/via/{id-2}';
-	const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-4}';
-
-	const RESULTS_PER_PAGE = 25;
 
 	/**
 	 * Construct the fetcher and associate with repo
@@ -72,18 +81,20 @@ class VIAFetcher implements FetcherInterface {
 				if (count($images) == $numResults) {
 					break;
 				}
-				$id1 = $image->getAttribute('id');
-				$id2 = $image->getAttribute('hollisid');
+				$id1 = $image->getAttribute('hollisid');
+				$id3 = $id1;
 				$thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
 				if ($thumbnail) {
 					$thumbnailUrl = $thumbnail->textContent;
-					$id4 = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
+					$id6 = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
 				}
 				$fullImage = $image->getElementsByTagName('fullimage')->item(0);
 				if ($fullImage) {
 					$fullImageUrl = $fullImage->textContent;
-					$id3 = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
-					$imageObject = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4);
+					$id2 = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
+					$id5 = $id2;
+					$id4 = null;
+					$imageObject = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4, $id5, $id6);
 					$images[] = $imageObject;
 				}
 
@@ -91,18 +102,24 @@ class VIAFetcher implements FetcherInterface {
 				if ($numberOfImages) {
 					$numberOfImages = $numberOfImages->textContent;
 					if ($numberOfImages > 1 && $imageObject) {
-						$xml = $this->fetchXml($this->fillUrl('http://webservices.lib.harvard.edu/rest/mods/via/{id-2}', $imageObject));
+						$xml = $this->fetchXml($this->fillUrl('http://webservices.lib.harvard.edu/rest/mods/via/{id-1}', $imageObject));
 						$metadataDoc = new \DOMDocument();
 						$metadataDoc->loadXML($xml);
 						$nodeList = $metadataDoc->getElementsByTagName('url');
 						foreach ($nodeList as $node) {
+							$id2 = null;
 							if (count($images) == $numResults) {
 								break;
 							}
 							if ($node->getAttribute('displayLabel') == 'Full Image' && $node->getAttribute('note') == 'unrestricted') {
-								$id3 = substr($node->textContent, strpos($node->textContent, ':', 5) + 1);
-								$id4 = $id3.'?height=150&width=150';
-								$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4);
+								$id2 = substr($node->textContent, strpos($node->textContent, ':', 5) + 1);
+								$id5 = $id2;
+							}
+							if ($node->getAttribute('displayLabel') == 'Thumbnail') {
+								$id6 = substr($node->textContent, strpos($node->textContent, ':', 5) + 1).'?height=150&width=150';
+							}
+							if ($id2) { 
+								$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4, $id5, $id6);
 							}
 						}
 					}
@@ -133,9 +150,9 @@ class VIAFetcher implements FetcherInterface {
 		$fields = array(
 			'title' => 'Title',
 			'creator' => 'Creator',
-			'description' => 'Description',
 			'date' => 'Date',
-			'rights' => 'Copyright'
+			'rights' => 'Copyright',
+			'description' => 'Description'
 		);
 
 		foreach ($fields as $field => $name) {
@@ -207,8 +224,8 @@ class VIAFetcher implements FetcherInterface {
 	private function fillUrl($urlPattern, Entity\Image $image)
 	{
 		return str_replace(
-			array('{id-1}', '{id-2}', '{id-3}', '{id-4}'),
-			array($image->getId1(), $image->getId2(), $image->getId3(), $image->getId4()),
+			array('{id-1}', '{id-2}', '{id-3}', '{id-4}', '{id-5}', '{id-6}'),
+			array($image->getId1(), $image->getId2(), $image->getId3(), $image->getId4(), $image->getId5(), $image->getId6()),
 			$urlPattern
 		);
 	}

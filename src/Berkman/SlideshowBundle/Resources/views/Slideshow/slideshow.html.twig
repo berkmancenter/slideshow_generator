@@ -1,52 +1,34 @@
-{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ slideshow.name }}</title>
+		{% stylesheets '@BerkmanSlideshowBundle/Resources/public/css/slideshow.css' %}
+		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+		{% endstylesheets %}
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,900&v2' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<ul id="slides">
+			{% for slide in slideshow.slides %}
+				<li class="slide">
+					<img src="{{ slide.image.imageUrl }}"/>
+					<div class="slideInfo">
+						<dl class="metadata">
+							{% for key,value in slide.image.metadata %}
+							<dt>{{ key }}:</dt><dd>{{ value }}</dd><br />
+							{% endfor %}
+						</dl>
+						<a class="record" href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
 
-{% block body %}
-<h1>Slideshow</h1>
-
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>                <td>{{ entity.id }}</td>        </tr>
-        <tr>
-            <th>Name</th>                <td>{{ entity.name }}</td>        </tr>
-        <tr>
-            <th>Slide_delay</th>                <td>{{ entity.slidedelay }}</td>        </tr>
-        <tr>
-            <th>Display_info</th>                <td>{{ entity.displayinfo }}</td>        </tr>
-    </tbody>
-</table>
-
-<ul>
-	{% for slide in entity.slides %}
-		<li>
-			<img src="{{ slide.image.imageUrl }}"/>
-			<dl class="metadata">
-				{% for key,value in slide.image.metadata %}
-				<dt>{{ key }}</dt><dd>{{ value }}</dd>
-				{% endfor %}
-			</dl>
-			<a href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
-		</li>
-	{% endfor %}
-</ul>
-
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('slideshow') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('slideshow_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
-{% endblock %}
-
+	{% javascripts 'js/jquery-1.6.2.js'	
+					'@BerkmanSlideshowBundle/Resources/public/js/jquery.cycle.all.js'
+					'@BerkmanSlideshowBundle/Resources/public/js/slideshow.js'
+	%}
+	<script src="{{ asset_url }}" type="text/javascript"></script>
+	{% endjavascripts %}
+	</body>
+</html>

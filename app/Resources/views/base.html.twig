@@ -18,6 +18,9 @@
 			<a href="{{ path('find_index') }}">Search</a>
 		</div>
         {% block body %}{% endblock %}
+		{% javascripts 'js/*' %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
