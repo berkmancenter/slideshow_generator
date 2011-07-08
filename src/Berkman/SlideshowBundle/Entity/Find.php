@@ -10,6 +10,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Find
 {
+
+	define('RESULTS_PER_PAGE', 25);
+
     /**
      * @var string $keyword
      */
@@ -21,17 +24,14 @@ class Find
     private $repos;
 
 	/**
-	 * This is an array of format:
-	 * array(repoId => array('currentPage' => int, 'numResults' => int), repoId => ...)
-	 *
-	 * @var array $reposInfo
+	 * @var array An array that keeps track of various repo positions
 	 */
-	private $reposInfo;
+	private $repoPositions;
 
     /**
-     * @var array $results
+     * @var array $images
      */
-    private $results;
+    private $images;
 
 	/**
 	 * @var int $currentPage
@@ -41,7 +41,7 @@ class Find
 	/**
 	 * @var int $numResults
 	 */
-	private $numResults;
+	private $totalResults;
 
     /**
      * Set keyword
@@ -64,43 +64,13 @@ class Find
     }
 
     /**
-     * Set info about the repos
-     *
-     * @param array $reposInfo
-     */
-    public function setReposInfo($reposInfo)
-    {
-        $this->reposInfo = $reposInfo;
-    }
-
-    /**
-     * Get info about the repos
-     *
-     * @return array $reposInfo
-     */
-    public function getReposInfo()
-    {
-        return $this->reposInfo;
-    }
-
-    /**
      * Get total number of results
      *
      * @return int $numResults
      */
-    public function getNumResults()
+    public function getTotalResults()
     {
-        return $this->numResults;
-    }
-
-    /**
-     * Set repos
-     *
-     * @param array $repos
-     */
-    public function setRepos($repos)
-    {
-		$this->repos = $repos;
+        return $this->totalResults;
     }
 
     /**
@@ -114,59 +84,50 @@ class Find
     }
 
     /**
-     * Set results
-     *
-     * @param array $results
-     */
-    public function setResults($results)
-    {
-        $this->results = $results;
-    }
-
-    /**
-     * Get results as an array of images
+     * Get images given a keyword and page
      *
      * @return array $results
      */
-	public function getResults($keyword = null, $page = null)
+	public function getImages($keyword = null, $page = null)
 	{
-		$images = array();
-		$numResults = 0;
-
-		if ($page == null) {
-			$page = $this->currentPage;
+		if (($keyword == null || $keyword == $this->keyword) && $page == $this->currentPage) {
+			return = $this->images;
 		}
-
-		if ($keyword == null) {
-			$keyword = $this->getKeyword();
+		if (empty($keyword) && !empty($this->keyword)) {
+			$keyword = $this->keyword;
 		}
-
-		if ($keyword == null && $page == $this->currentPage) {
-			$images = $this->results;
+		elseif (empty($this-keyword) && !empty($keyword)) {
+			$this-keyword = $keyword;
 		}
 		else {
-			foreach ($this->repos as $repo) {
-				//TODO: Setup some kind of real pagination
-				$searchResults = $repo->getSearchResults($keyword, $page);
-				$images += $searchResults['images'];
-				$numResults += $searchResults['numResults'];
+			#throw exception
+		}
+		$images = array();
+		$totalResults = 0;
+		$resultsPerRepo = floor(RESULTS_PER_PAGE / count($this->repos));
+		$reposFirstIndex = $page * $resultsPerRepo - $resultsPerRepo;
+		$reposLastIndex = $reposFirstIndex + $resultsPerRepo - 1;
+		$lastRepoLastIndex = $reposFirstIndex + RESULTS_PER_PAGE % ($resultsPerRepo * count($this->repos)) - 1;
+
+		foreach ($this->repos as $repo) {
+			if ($repo == end($this->repos)) {
+				$searchResults = $repo->getSearchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
+			else {
+				$searchResults = $repo->getSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
 			}
+			$images += $searchResults['images'];
+			$totalResults += $searchResults['totalResults'];
 		}
 
-		$this->numResults = $numResults;
-		$this->results = $images;
+		$this->totalResults = $totalResults;
+		$this->images = $images;
 
 		return $images;
 	}
 
-	public function __construct($keyword = null, $repos = null)
+	public function __construct($repos)
 	{
-		if ($keyword) {
-			$this->keyword = $keyword;
-		}
-		if ($repos) {
-			$this->setRepos($repos);
-		}
+		$this->setRepos($repos);
 		$this->currentPage = 1;
 	}
 }

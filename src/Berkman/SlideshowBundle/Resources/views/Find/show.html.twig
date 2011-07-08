@@ -2,7 +2,7 @@
 
 {% block body %}
 {% form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
-<h1>Images ({{ numResults }})</h1>
+<h1>Images ({{ totalResults }})</h1>
 
 <form action="{{ path('find_results_to_slideshow') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}

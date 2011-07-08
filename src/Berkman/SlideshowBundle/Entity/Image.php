@@ -30,10 +30,32 @@ class Image
     private $id_3;
 
     /**
+     * @var string $id_4
+     */
+    private $id_4;
+
+    /**
      * @var Berkman\SlideshowBundle\Entity\Repo
      */
     private $from_repo;
 
+	/**
+	 * Construct an image from its parts
+	 *
+	 * @param Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @param string $id1
+	 * @param string $id2
+	 * @param string $id3
+	 * @param string $id4
+	 */
+	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null, $id4 = null)
+	{
+		$this->setFromRepo($fromRepo);
+		$this->setId1($id1);
+		$this->setId2($id2);
+		$this->setId3($id3);
+		$this->setId4($id4);
+	}
 
     /**
      * Get id
@@ -106,6 +128,26 @@ class Image
     }
 
     /**
+     * Set id_4
+     *
+     * @param string $id4
+     */
+    public function setId4($id4)
+    {
+        $this->id_4 = $id4;
+    }
+
+    /**
+     * Get id_4
+     *
+     * @return string $id4
+     */
+    public function getId4()
+    {
+        return $this->id_4;
+    }
+
+    /**
      * Set from_repo
      *
      * @param Berkman\SlideshowBundle\Entity\Repo $fromRepo
@@ -125,64 +167,46 @@ class Image
         return $this->from_repo;
     }
 
-	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null, $id4 = null)
-	{
-		$this->setFromRepo($fromRepo);
-		$this->setId1($id1);
-		$this->setId2($id2);
-		$this->setId3($id3);
-		$this->setId4($id4);
-	}
-
-	public function getImageUrl()
-	{
-		return $this->fillUrl($this->getFromRepo()->getImageUrlPattern());
-	}
-
-	public function getThumbnailUrl()
-	{
-		return $this->fillUrl($this->getFromRepo()->getThumbnailUrlPattern());
-	}
+	/**
+	 * Get the metadata for this image
+	 *
+	 * @return array An associative array where the key is the metadata field name and value is the value
+	 */
 
 	public function getMetadata()
 	{
-		return $this->getFromRepo()->getFetcher()->getMetadata($this->fillUrl($this->getFromRepo()->getMetadataUrlPattern()));
+		return $this->getRepo()->getFetcher()->getMetadata($this);
 	}
 
+	/**
+	 * Get the full image url
+	 *
+	 * @return string $imageUrl
+	 */
+	public function getImageUrl()
+	{
+		return $this->getRepo()->getFetcher()->getImageUrl($this);
+	}
+
+	/**
+	 * Get the thumbnail url 
+	 *
+	 * @return string $thumbnailUrl
+	 */
+	public function getThumbnailUrl()
+	{
+		return $this->getRepo()->getFetcher()->getThumbnailUrl($this);
+	}
+
+	/**
+	 * Get the authoritative record url
+	 *
+	 * @return string $recordUrl
+	 */
 	public function getRecordUrl()
 	{
-		return $this->fillUrl($this->getFromRepo()->getRecordUrlPattern());
-	}
-
-	private function fillUrl($url)
-	{
-		return str_replace(array('{id-1}', '{id-2}', '{id-3}', '{id-4}'), array($this->getId1(), $this->getId2(), $this->getId3(), $this->getId4()), $url);
-	}
-    /**
-     * @var string $id_4
-     */
-    private $id_4;
-
-
-    /**
-     * Set id_4
-     *
-     * @param string $id4
-     */
-    public function setId4($id4)
-    {
-        $this->id_4 = $id4;
-    }
-
-    /**
-     * Get id_4
-     *
-     * @return string $id4
-     */
-    public function getId4()
-    {
-        return $this->id_4;
-    }
+		return $this->getRepo()->getParser()->getRecordUrl($this);
+	}	
 
 	/**
 	 * Convert the image to a string to be moved around

@@ -65,8 +65,8 @@ class FindController extends Controller
 			throw $this->createNotFoundException('Unable to find Repos.');
 		}
 
-		$finder = new Entity\Find($keyword, $repos);
-		$images = $finder->getResults(null, $page);
+		$finder = new Entity\Find($repos);
+		$images = $finder->getImages($keyword, $page);
 
 		foreach ($images as $image) {
 			$imageChoices[strval($image)] = $image->getThumbnailUrl();
@@ -80,7 +80,7 @@ class FindController extends Controller
 		$findResults->setImageChoices($imageChoices);
 
 		$viewParams = array(
-			'numResults' => $finder->getNumResults(),
+			'totalResults' => $finder->getTotalResults(),
 			'form' => $this->createForm($findResults)->createView()
 		);
 

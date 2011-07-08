@@ -7,14 +7,3 @@ Berkman\SlideshowBundle\Entity\Repo:
   fields:
     name:
       type: string
-    search_url_pattern:
-      type: string
-    record_url_pattern:
-      type: string
-    image_url_pattern:
-      type: string
-    metadata_url_pattern:
-      type: string
-    thumbnail_url_pattern:
-      type: string
-      nullable: true
