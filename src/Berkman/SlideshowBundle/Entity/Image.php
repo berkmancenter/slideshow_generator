@@ -205,7 +205,7 @@ class Image
 	 */
 	public function getRecordUrl()
 	{
-		return $this->getFromRepo()->getParser()->getRecordUrl($this);
+		return $this->getFromRepo()->getFetcher()->getRecordUrl($this);
 	}	
 
 	/**
