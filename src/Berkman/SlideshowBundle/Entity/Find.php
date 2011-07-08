@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Find
 {
 
-	define('RESULTS_PER_PAGE', 25);
+	const RESULTS_PER_PAGE = 25;
 
     /**
      * @var string $keyword
@@ -74,6 +74,16 @@ class Find
     }
 
     /**
+     * Set repos
+     *
+     * @param array $repos
+     */
+    public function setRepos($repos)
+    {
+        $this->repos = $repos;
+    }
+
+    /**
      * Get repos
      *
      * @return array $repos
@@ -91,27 +101,28 @@ class Find
 	public function getImages($keyword = null, $page = null)
 	{
 		if (($keyword == null || $keyword == $this->keyword) && $page == $this->currentPage) {
-			return = $this->images;
+			return $this->images;
 		}
 		if (empty($keyword) && !empty($this->keyword)) {
 			$keyword = $this->keyword;
 		}
-		elseif (empty($this-keyword) && !empty($keyword)) {
-			$this-keyword = $keyword;
+		elseif (empty($this->keyword) && !empty($keyword)) {
+			$this->keyword = $keyword;
 		}
 		else {
 			#throw exception
 		}
 		$images = array();
 		$totalResults = 0;
-		$resultsPerRepo = floor(RESULTS_PER_PAGE / count($this->repos));
+		$resultsPerRepo = floor(self::RESULTS_PER_PAGE / count($this->repos));
 		$reposFirstIndex = $page * $resultsPerRepo - $resultsPerRepo;
 		$reposLastIndex = $reposFirstIndex + $resultsPerRepo - 1;
-		$lastRepoLastIndex = $reposFirstIndex + RESULTS_PER_PAGE % ($resultsPerRepo * count($this->repos)) - 1;
+		$lastRepoLastIndex = $reposLastIndex + self::RESULTS_PER_PAGE % ($resultsPerRepo * count($this->repos));
 
 		foreach ($this->repos as $repo) {
 			if ($repo == end($this->repos)) {
 				$searchResults = $repo->getSearchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
+			}
 			else {
 				$searchResults = $repo->getSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
 			}
@@ -125,9 +136,11 @@ class Find
 		return $images;
 	}
 
-	public function __construct($repos)
+	public function __construct($repos = null)
 	{
-		$this->setRepos($repos);
+		if ($repos) {
+			$this->setRepos($repos);
+		}
 		$this->currentPage = 1;
 	}
 }

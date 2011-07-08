@@ -11,13 +11,13 @@ class VIAFetcher implements FetcherInterface {
 	 */
 	private $repo;
 
-	define('SEARCH_URL_PATTERN', 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=material-id:matPhoto+{keyword}');
-	define('RECORD_URL_PATTERN', 'http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-2}&componentId={id-3}');
-	define('IMAGE_URL_PATTERN', 'http://nrs.harvard.edu/urn-3:{id-3}');
-	define('METADATA_URL_PATTERN', 'http://webservices.lib.harvard.edu/rest/dc/via/{id-2}');
-	define('THUMBNAIL_URL_PATTERN', 'http://nrs.harvard.edu/urn-3:{id-4}');
+	const SEARCH_URL_PATTERN = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=material-id:matPhoto+{keyword}';
+	const RECORD_URL_PATTERN = 'http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-2}&componentId={id-3}';
+	const IMAGE_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-3}';
+	const METADATA_URL_PATTERN = 'http://webservices.lib.harvard.edu/rest/dc/via/{id-2}';
+	const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-4}';
 
-	define('RESULTS_PER_PAGE', 25);
+	const RESULTS_PER_PAGE = 25;
 
 	/**
 	 * Construct the fetcher and associate with repo
@@ -47,21 +47,22 @@ class VIAFetcher implements FetcherInterface {
 	 * @param int $endIndex
 	 * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
 	 */
-	public function getSearchResults(string $keyword, int $startIndex, int $endIndex)
+	public function getSearchResults($keyword, $startIndex, $endIndex)
 	{
 		$images = array();
+		$totalResults = 0;
 		$numResults = $endIndex - $startIndex;
-		$page = floor($startIndex / RESULTS_PER_PAGE);
+		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
 		while (count($images) < $numResults) {
 			$searchUrl = str_replace(
 				array('{keyword}', '{page}'),
 				array($keyword, $page), 
-				SEARCH_URL_PATTERN
+				self::SEARCH_URL_PATTERN
 			);
 
 			$doc = new \DOMDocument();
-			$doc->loadXML($this->getXML($searchUrl));
+			$doc->loadXML($this->fetchXml($searchUrl));
 			$totalResults = (int) $doc->getElementsByTagName('totalResults')->item(0)->textContent;
 			if ($totalResults < $numResults) {
 				#throw some Exception
@@ -97,8 +98,8 @@ class VIAFetcher implements FetcherInterface {
 	public function getMetadata(Entity\Image $image)
 	{
 		$metadata = array();
-		$metadataUrl = $this->fillUrl(METADATA_URL_PATTERN, $image);
-		$response = $this->fetchXML($metadataUrl);
+		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
+		$response = $this->fetchXml($metadataUrl);
 		$doc = new \DOMDocument();
 		$doc->loadXML($response);
 
@@ -129,7 +130,7 @@ class VIAFetcher implements FetcherInterface {
 	 */
 	public function getImageUrl(Entity\Image $image)
 	{
-		return $this->fillUrl(IMAGE_URL_PATTERN, $image);
+		return $this->fillUrl(self::IMAGE_URL_PATTERN, $image);
 	}
 
 	/**
@@ -140,7 +141,7 @@ class VIAFetcher implements FetcherInterface {
 	 */
 	public function getThumbnailUrl(Entity\Image $image)
 	{
-		return $this->fillUrl(THUMBNAIL_URL_PATTERN, $image);
+		return $this->fillUrl(self::THUMBNAIL_URL_PATTERN, $image);
 	}
 
 	/**
@@ -151,7 +152,7 @@ class VIAFetcher implements FetcherInterface {
 	 */
 	public function getRecordUrl(Entity\Image $image)
 	{
-		return $this->fillUrl(RECORD_URL_PATTERN, $image);
+		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
 
 	/**
@@ -160,7 +161,7 @@ class VIAFetcher implements FetcherInterface {
 	 * @param string $url
 	 * @return string @xml
 	 */
-	private function fetchXML($url)
+	private function fetchXml($url)
 	{
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 

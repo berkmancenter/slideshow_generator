@@ -95,7 +95,7 @@ class Repo
 	 *
 	 * @param string $keyword
 	 * @param int $startIndex
-	 * @param int @endIndex
+	 * @param int $endIndex
 	 */
 	public function getSearchResults($keyword, $startIndex, $endIndex)
 	{

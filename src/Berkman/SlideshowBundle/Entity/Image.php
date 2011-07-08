@@ -175,7 +175,7 @@ class Image
 
 	public function getMetadata()
 	{
-		return $this->getRepo()->getFetcher()->getMetadata($this);
+		return $this->getFromRepo()->getFetcher()->getMetadata($this);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class Image
 	 */
 	public function getImageUrl()
 	{
-		return $this->getRepo()->getFetcher()->getImageUrl($this);
+		return $this->getFromRepo()->getFetcher()->getImageUrl($this);
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Image
 	 */
 	public function getThumbnailUrl()
 	{
-		return $this->getRepo()->getFetcher()->getThumbnailUrl($this);
+		return $this->getFromRepo()->getFetcher()->getThumbnailUrl($this);
 	}
 
 	/**
@@ -205,7 +205,7 @@ class Image
 	 */
 	public function getRecordUrl()
 	{
-		return $this->getRepo()->getParser()->getRecordUrl($this);
+		return $this->getFromRepo()->getParser()->getRecordUrl($this);
 	}	
 
 	/**
