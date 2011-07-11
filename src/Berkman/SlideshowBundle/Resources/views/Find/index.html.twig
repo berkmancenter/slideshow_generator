@@ -2,13 +2,7 @@
 
 {% block body %}
 <h1>Search</h1>
-
-<form action="{{ path('find_index') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <p>
-        <button type="submit">Search</button>
-    </p>
-</form>
+{% include 'BerkmanSlideshowBundle:Find:find.html.twig' %}
 
 <ul class="record_actions">
     <li>

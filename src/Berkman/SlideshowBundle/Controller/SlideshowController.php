@@ -36,6 +36,21 @@ class SlideshowController extends Controller
     }
 
     /**
+     * Lists all Slideshow entities in a nicer layout
+     *
+     */
+    public function browseAction()
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $entities = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
+
+        return $this->render('BerkmanSlideshowBundle:Slideshow:browse.html.twig', array(
+            'entities' => $entities
+        ));
+    }
+
+    /**
      * Finds and displays a Slideshow entity.
      *
      */

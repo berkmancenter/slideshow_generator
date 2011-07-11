@@ -41,7 +41,7 @@ class FindController extends Controller
         }
 		else {
 			return $this->render('BerkmanSlideshowBundle:Find:index.html.twig', array(
-				'form'   => $form->createView()
+				'findForm'   => $form->createView()
 			));
 		}
     }

@@ -1,1 +1,13 @@
-Hello {{ name }}!
+{% extends 'BerkmanSlideshoBundle::layout.html.twig' %}
+
+{% block body %}
+<div id="find">
+<h2>Step 1: Find images.</h2>
+{% include 'BerkmanSlideshowBundle:Find:find.html.twig' %}
+</div>
+
+<div id="slideshows">
+<h2>Or, browse slideshows</h2>
+{% include 'BerkmanSlideshowBundle:Slideshow:browse.html.twig' %}
+</div>
+{% endblock %}

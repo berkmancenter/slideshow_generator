@@ -1,0 +1,6 @@
+<form action="{{ path('find_index') }}" method="post" {{ form_enctype(findForm) }}>
+    {{ form_widget(findForm) }}
+    <p>
+        <button type="submit">Search</button>
+    </p>
+</form>
