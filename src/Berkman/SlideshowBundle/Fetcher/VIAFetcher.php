@@ -81,47 +81,53 @@ class VIAFetcher implements FetcherInterface {
 				if (count($images) == $numResults) {
 					break;
 				}
-				$id1 = $image->getAttribute('hollisid');
-				$id3 = $id1;
-				$thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
-				if ($thumbnail) {
-					$thumbnailUrl = $thumbnail->textContent;
-					$id6 = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
-				}
-				$fullImage = $image->getElementsByTagName('fullimage')->item(0);
-				if ($fullImage) {
-					$fullImageUrl = $fullImage->textContent;
-					$id2 = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
-					$id5 = $id2;
-					$id4 = null;
-					$imageObject = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4, $id5, $id6);
-					$images[] = $imageObject;
-				}
+				$recordId = $image->getAttribute('hollisid');
+				$metadataId = $recordId;
+				$componentId = null;
+				$metadataSubId = null;
+				$imageId = null;
+				$thumbnailId = null;
 
+				// Search for sub-images (wtf).
 				$numberOfImages = $image->getElementsByTagName('numberofimages')->item(0);
-				if ($numberOfImages) {
-					$numberOfImages = $numberOfImages->textContent;
-					if ($numberOfImages > 1 && $imageObject) {
-						$xml = $this->fetchXml($this->fillUrl('http://webservices.lib.harvard.edu/rest/mods/via/{id-1}', $imageObject));
-						$metadataDoc = new \DOMDocument();
-						$metadataDoc->loadXML($xml);
-						$nodeList = $metadataDoc->getElementsByTagName('url');
-						foreach ($nodeList as $node) {
-							$id2 = null;
-							if (count($images) == $numResults) {
-								break;
-							}
-							if ($node->getAttribute('displayLabel') == 'Full Image' && $node->getAttribute('note') == 'unrestricted') {
-								$id2 = substr($node->textContent, strpos($node->textContent, ':', 5) + 1);
-								$id5 = $id2;
-							}
-							if ($node->getAttribute('displayLabel') == 'Thumbnail') {
-								$id6 = substr($node->textContent, strpos($node->textContent, ':', 5) + 1).'?height=150&width=150';
-							}
-							if ($id2) { 
-								$images[] = new Entity\Image($this->getRepo(), $id1, $id2, $id3, $id4, $id5, $id6);
-							}
+				if ($numberOfImages && $numberOfImages->textContent > 1) {
+					$xml = $this->fetchXml('http://webservices.lib.harvard.edu/rest/mods/via/'.$recordId);
+					$metadataDoc = new \DOMDocument();
+					$metadataDoc->loadXML($xml);
+					$xpath = new \DOMXPath($metadataDoc);
+					$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+					$constituents = $xpath->query("//mods:relatedItem[@type='constituent']");
+					foreach ($constituents as $constituent) {
+						if (count($images) == $numResults) {
+							break;
 						}
+						$fullImage = $xpath->query(".//mods:location/mods:url[@displayLabel='Full Image'][@note='unrestricted']", $constituent)->item(0);
+						if ($fullImage) {
+							$componentId = substr($fullImage->textContent, strpos($fullImage->textContent, ':', 5) + 1);
+							$imageId = $componentId;
+							$thumbnail = $xpath->query(".//mods:location/mods:url[@displayLabel='Thumbnail']", $constituent)->item(0);
+							if ($thumbnail) {
+								$thumbnailId = substr($thumbnail->textContent, strpos($thumbnail->textContent, ':', 5) + 1).'?height=150&width=150';
+							}
+							$recordIdentifier = $xpath->query('.//mods:recordIdentifier', $constituent)->item(0);
+							$metadataSubId = $recordIdentifier->textContent;
+							$images[] = new Entity\Image($this->getRepo(), $recordId, $componentId, $metadataId, $metadataSubId, $imageId, $thumbnailId);
+						}
+					}
+				} 
+				// Add images without sub-images
+				elseif ($numberOfImages && $numberOfImages->textContent == 1) {
+					$thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
+					if ($thumbnail) {
+						$thumbnailUrl = $thumbnail->textContent;
+						$thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
+					}
+					$fullImage = $image->getElementsByTagName('fullimage')->item(0);
+					if ($fullImage) {
+						$fullImageUrl = $fullImage->textContent;
+						$componentId = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
+						$imageId = $componentId;
+						$images[] = new Entity\Image($this->getRepo(), $recordId, $componentId, $metadataId, $metadataSubId, $imageId, $thumbnailId);
 					}
 				}
 			}
@@ -138,7 +144,6 @@ class VIAFetcher implements FetcherInterface {
 	 * @param Berkman\SlideshowBundle\Entity\Image $image
 	 * @return array An associative array where the key is the metadata field name and value is the value
 	 */
-
 	public function getMetadata(Entity\Image $image)
 	{
 		$metadata = array();
