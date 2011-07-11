@@ -17,7 +17,7 @@ class VIAFetcher implements FetcherInterface {
 
 	const SEARCH_URL_PATTERN    = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=material-id:matPhoto+{keyword}';
 	const RECORD_URL_PATTERN    = 'http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-1}&componentId={id-2}';
-	const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/dc/via/{id-3}';
+	const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/mods/via/{id-3}';
 	const IMAGE_URL_PATTERN     = 'http://nrs.harvard.edu/urn-3:{id-5}';
 	const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-6}';
 
@@ -147,24 +147,32 @@ class VIAFetcher implements FetcherInterface {
 	public function getMetadata(Entity\Image $image)
 	{
 		$metadata = array();
+		$fields = array(
+			'Title' => './/mods:title',
+			'Creator' => './/mods:namePart[1]',
+			'Date' => './/mods:dateCreated[last()]',
+			'Usage Restrictions' => './/mods:accessCondition',
+			'Notes' => './mods:note'
+		);
+		$metadataId = $image->getId3();
+		if ($image->getId4()) {
+			$metadataId = $image->getId4();
+		}
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
 		$response = $this->fetchXml($metadataUrl);
 		$doc = new \DOMDocument();
 		$doc->loadXML($response);
-
-		$fields = array(
-			'title' => 'Title',
-			'creator' => 'Creator',
-			'date' => 'Date',
-			'rights' => 'Copyright',
-			'description' => 'Description'
-		);
-
-		foreach ($fields as $field => $name) {
-			$nodeList = $doc->getElementsByTagNameNS('http://purl.org/dc/elements/1.1/', $field);
-			if ($nodeList->length > 0) {
-				$item = $nodeList->item(0);
-				$metadata[$name] = $item->textContent;
+		$xpath = new \DOMXPath($doc);
+		$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+		$recordIdent = $xpath->query("//mods:recordIdentifier[.='".$metadataId."']")->item(0);
+		if ($recordIdent) {
+			$recordContainer = $recordIdent->parentNode->parentNode;
+			
+			foreach ($fields as $name => $query) {
+				$node = $xpath->query($query, $recordContainer)->item(0);
+				if ($node) {
+					$metadata[$name] = $node->textContent;
+				}
 			}
 		}
 
