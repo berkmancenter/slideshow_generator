@@ -8,11 +8,6 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Search_url_pattern</th>
-            <th>Record_url_pattern</th>
-            <th>Image_url_pattern</th>
-            <th>Metadata_url_pattern</th>
-            <th>Thumbnail_url_pattern</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -21,11 +16,6 @@
         <tr>
             <td><a href="{{ path('repo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{{ entity.name }}</td>
-            <td>{{ entity.searchurlpattern }}</td>
-            <td>{{ entity.recordurlpattern }}</td>
-            <td>{{ entity.imageurlpattern }}</td>
-            <td>{{ entity.metadataurlpattern }}</td>
-            <td>{{ entity.thumbnailurlpattern }}</td>
             <td>
                 <ul>
                     <li>
