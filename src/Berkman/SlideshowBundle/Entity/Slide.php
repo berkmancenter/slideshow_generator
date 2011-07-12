@@ -100,4 +100,14 @@ class Slide
     {
         return $this->slideshow;
     }
+
+	/**
+	 * Create a slide from an Image
+	 *
+	 * @param Berkman\SlideshowBundle\Entity\Image $image
+	 */
+	public function __construct(Image $image)
+	{
+		$this->setImage($image);
+	}
 }

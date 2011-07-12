@@ -10,5 +10,7 @@ $(document).ready(function() {
 		if (e.which == 32) {
 			$('#slides').cycle('toggle');
 		}
+	}).click(function() {
+		$('#slides').cycle('next');
 	});
 });

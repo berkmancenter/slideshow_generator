@@ -1,0 +1,27 @@
+{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+
+{% block body %}
+{% if images %}
+<div>
+	<h2>Your images</h2>
+	{% for image in images %}
+	<a href="{{ image.recordUrl }}" target="_blank"><img src="{{ image.thumbnailUrl }}" alt="{{ image.id }}" /></a>
+	{% endfor %}
+</div>
+<div>
+	<h2>Add images to existing slideshow</h2>
+	<form method="post" action="{{ path('slideshow_add_images') }}" {{ form_enctype(addImagesForm) }}>
+		{{ form_widget(addImagesForm) }}
+		<p>
+			<button type="submit">Add</button>
+		</p>
+	</form>
+</div>
+<div>
+	<h2>Or, create a new slideshow</h2>
+	{% include 'BerkmanSlideshowBundle:Slideshow:newForm.html.twig' %}
+</div>
+{% else %}
+<h2>You have no selected images</h2>
+{% endif %}
+{% endblock %}

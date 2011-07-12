@@ -1,14 +1,8 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h1>Slideshow creation</h1>
-
-<form action="{{ path('slideshow_create') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <p>
-        <button type="submit">Create</button>
-    </p>
-</form>
+<h2>Slideshow creation</h2>
+{% include 'BerkmanSlideshowBundle:Slideshow:newForm.html.twig' %}
 
 <ul class="record_actions">
     <li>

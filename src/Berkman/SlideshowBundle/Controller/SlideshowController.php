@@ -8,6 +8,7 @@ use Berkman\SlideshowBundle\Entity\Slideshow;
 use Berkman\SlideshowBundle\Entity\Image;
 use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Form\SlideshowType;
+use Berkman\SlideshowBundle\Form\SlideshowChoiceType;
 use Berkman\SlideshowBundle\Form\FindShow;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -35,20 +36,6 @@ class SlideshowController extends Controller
         ));
     }
 
-    /**
-     * Lists all Slideshow entities in a nicer layout
-     *
-     */
-    public function browseAction()
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $entities = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
-
-        return $this->render('BerkmanSlideshowBundle:Slideshow:browse.html.twig', array(
-            'entities' => $entities
-        ));
-    }
 
     /**
      * Finds and displays a Slideshow entity.
@@ -110,7 +97,7 @@ class SlideshowController extends Controller
      * Creates a new Slideshow entity.
      *
      */
-    public function createAction($slides = array())
+    public function createAction()
     {
         $slideshow  = new Slideshow();
         $request = $this->getRequest();
@@ -123,8 +110,14 @@ class SlideshowController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
 				$user = $this->get('security.context')->getToken()->getUser();
 				$slideshow->setPerson($user);
-				foreach ($slides as $slide) {
-					$slideshow->addSlide($slide);
+				if ($this->get('session')->get('images')) {
+					$images = $this->getSessionImages();
+					foreach ($images as $image) {
+						$em->persist($image);
+						$slide = new Slide($image);
+						$slideshow->addSlide($slide);
+					}
+					$this->get('session')->remove('images');
 				}
                 $em->persist($slideshow);
                 $em->flush();
@@ -257,39 +250,59 @@ class SlideshowController extends Controller
 	 * Add Images to a Slideshow
 	 *
 	 */
-	public function addImageAction()
+	public function addImagesAction()
 	{
-		$request = $this->getRequest();
-		$images = array();
+		$images    = array();
+		$request   = $this->getRequest();
+		$em        = $this->getDoctrine()->getEntityManager();
+		$slideshow = new Slideshow();
 
-		if ('POST' == $request->getMethod()) {
-			$images = $request->get('findresults');
-			$images = $images['find']['images'];
-			$imageObjects = array();
-			$em = $this->getDoctrine()->getEntityManager();
+		$slideshowChoiceType = new SlideshowChoiceType();
+		$slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
+		$addImagesForm = $this->createForm($slideshowChoiceType);
+        $newSlideshowForm = $this->createForm(new SlideshowType(), $slideshow);
 
-			foreach ($images as $image) {
-				$image = unserialize(base64_decode($image));
-				$fromRepo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
-				$image = new Image($fromRepo, $image['id1'], $image['id2'], $image['id3'], $image['id4']);
-				$em->persist($image);
-				$imageObjects[] = $image;
+
+		if ('POST' == $request->getMethod() && $this->getRequest()->getSession()->get('images')) {
+			$images = $this->getSessionImages();
+			$addImagesForm->bindRequest($this->getRequest());
+			$submittedData = $addImagesForm->getData();
+
+			if (!empty($submittedData['slideshows'])) {
+				foreach ($images as $image) {
+					$em->persist($image);
+					foreach ($submittedData['slideshows'] as $slideshow) {
+						$slide = new Slide($image);
+						$slideshow->addSlide($slide);
+
+						$em->persist($slideshow);
+						$flashMessage = count($images) . ' slides added to ' . $slideshow->getName();
+						$this->get('session')->setFlash('notice', $flashMessage);
+					}
+				}
+				$this->get('session')->remove('images');
+				$em->flush();
+				$response = $this->redirect($this->generateUrl('slideshow_index'));
 			}
-			$em->flush();
+		}
+		else {
+			if ('POST' == $request->getMethod()) {
+				$images = $request->get('findresults');
+				$images = $images['find']['images'];
 
-			$slideshow = new Slideshow();
-			foreach ($imageObjects as $image) {
-				$slide = new Slide();
-				$slide->setImage($image);
-				$slide->setSlideshow($slideshow);
-				$slideshow->addSlides($slide);
-				$em->persist($slide);
+				if ($images) {
+					$this->getRequest()->getSession()->set('images', $images);
+					$images = $this->getSessionImages();
+				}
 			}
-			$em->persist($slideshow);
-			$em->flush();
+			$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
+				'addImagesForm' => $addImagesForm->createView(),
+				'form'          => $newSlideshowForm->createView(),
+				'images'        => $images
+			));
 		}
 
-		return $this->redirect($this->generateUrl('slideshow'));
+        return $response;
 	}
 
     private function createDeleteForm($id)
@@ -299,4 +312,27 @@ class SlideshowController extends Controller
             ->getForm()
         ;
     }
+
+	private function getSessionImages() {
+		$em           = $this->getDoctrine()->getEntityManager();
+		$images       = $this->getRequest()->getSession()->get('images');
+		$imageObjects = array();
+
+		foreach ($images as $image) {
+			$image = unserialize(base64_decode($image));
+			$fromRepo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
+			$image = new Image(
+				$fromRepo,
+				$image['id1'],
+				$image['id2'],
+				$image['id3'],
+				$image['id4'],
+				$image['id5'],
+				$image['id6']
+			);
+			$imageObjects[] = $image;
+		}
+
+		return $imageObjects;
+	}
 }

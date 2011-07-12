@@ -22,7 +22,8 @@ class SlideshowChoiceType extends AbstractType
 		$builder->add('slideshows', 'entity', array(
 			'class' => 'Berkman\\SlideshowBundle\\Entity\\Slideshow',
 			'property' => 'name',
-			'required' => false,
+			'multiple' => true,
+			'expanded' => true,
 			'query_builder' => function(EntityRepository $er) use ($personId) {
 				$qb = $er->createQueryBuilder('s');
 				return $qb->where('s.person = ?1')->setParameter(1, $personId);

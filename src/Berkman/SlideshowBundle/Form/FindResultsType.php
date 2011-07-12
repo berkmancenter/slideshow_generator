@@ -30,6 +30,5 @@ class FindResultsType extends AbstractType
 		$slideshowType->setPersonId($this->personId);
 
         $builder->add('find', $imageType);
-		$builder->add('slideshows', $slideshowType);
     }
 }

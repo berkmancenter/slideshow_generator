@@ -79,7 +79,7 @@ class VIAFetcher implements FetcherInterface {
 			$nodeList = $doc->getElementsByTagName('item');
 			foreach ($nodeList as $image) {
 				if (count($images) == $numResults) {
-					break;
+					//break;
 				}
 				$recordId = $image->getAttribute('hollisid');
 				$metadataId = $recordId;
@@ -99,7 +99,7 @@ class VIAFetcher implements FetcherInterface {
 					$constituents = $xpath->query("//mods:relatedItem[@type='constituent']");
 					foreach ($constituents as $constituent) {
 						if (count($images) == $numResults) {
-							break;
+							//break;
 						}
 						$fullImage = $xpath->query(".//mods:location/mods:url[@displayLabel='Full Image'][@note='unrestricted']", $constituent)->item(0);
 						if ($fullImage) {
