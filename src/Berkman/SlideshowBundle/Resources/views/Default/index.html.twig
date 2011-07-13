@@ -1,22 +1,26 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<div id="find">
-<h2>Find images</h2>
-{% include 'BerkmanSlideshowBundle:Find:find.html.twig' %}
+<div>
+	<h2>Find Images</h2>
+	<div id="finder" class="centered lightWrap">
+	{% include 'BerkmanSlideshowBundle:Find:find.html.twig' %}
+	</div>
 </div>
 
-<div id="slideshows">
-	<h2>Or, browse slideshows</h2>
-	{% for slideshow in slideshows %}
-	<div class="slideshow">
-		<a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
-			{% if slideshow.slides[0] is defined %}
-			<img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" />
-			<span class="slideshowInfo">{{ slideshow.name }} by {{ slideshow.person.username }}</span>
-			{% endif %}
-		</a>
+<div>
+	<h2>Browse Slideshows</h2>
+	<div id="slideshows" class="centered lightWrap">
+		{% for slideshow in slideshows %}
+		<div class="slideshow">
+			<a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
+				{% if slideshow.slides[0] is defined %}
+				<img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" /><br />
+				<span class="slideshowInfo">{{ slideshow.name }} by {{ slideshow.person.username }}</span>
+				{% endif %}
+			</a>
+		</div>
+		{% endfor %}
 	</div>
-	{% endfor %}
 </div>
 {% endblock %}

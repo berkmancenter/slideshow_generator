@@ -1,7 +1,7 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h1>Repo creation</h1>
+<h2>Repo creation</h2>
 
 <form action="{{ path('repo_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}

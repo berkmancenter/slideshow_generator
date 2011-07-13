@@ -2,14 +2,16 @@
 
 {% block body %}
 {% form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
-<h1>Images ({{ totalResults }})</h1>
+<h2>Images ({{ totalResults }} for &quot;{{ keyword }}&quot;)</h2>
 
+<div class="lightWrap">
 <form action="{{ path('slideshow_add_images') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <p>
         <button type="submit">Next</button>
     </p>
 </form> 
+</div>
 
 <ul class="record_actions">
     <li>

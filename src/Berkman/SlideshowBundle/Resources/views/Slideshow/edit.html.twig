@@ -1,15 +1,44 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<style>
+	#slides li:hover {
+		cursor: move;
+	}
+	.placeholder {
+		background-color: #8C4A4A;
+		height: 140px;
+		width: 140px;
+	}
+</style>
+{% endblock %}
 
 {% block body %}
-<h1>Slideshow edit</h1>
+<h2>Edit Slideshow</h2>
 
-<form action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+<div class="centered lightWrap">
+<form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_widget(edit_form) }}
+
+	<ol id="slides">
+		{% for slide in entity.slides %}
+			<li id="slide_{{ slide.id }}">
+				<img src="{{ slide.image.thumbnailUrl }}"/>
+				<dl class="metadata">
+					{% for key,value in slide.image.metadata %}
+					<dt>{{ key }}</dt><dd>{{ value }}</dd>
+					{% endfor %}
+				</dl>
+				<a href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
+			</li>
+		{% endfor %}
+	</ol>
+
     <p>
-        <button type="submit">Edit</button>
+        <button type="submit">Update</button>
     </p>
 </form>
-
+</div>
 <ul class="record_actions">
     <li>
         <a href="{{ path('slideshow') }}">
@@ -25,3 +54,21 @@
 </ul>
 {% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+{% javascripts 'js/jquery.isotope.min.js'
+				'js/jquery-ui-1.8.14.custom.min.js'%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script type="text/javascript">
+$(function() {
+	$( "#slides" ).sortable({
+		placeholder: 'placeholder'
+	});
+	$( "#slides" ).disableSelection();
+	$('#edit').submit(function() {
+		alert($('#slides').sortable('serialize'));
+	});
+});
+</script>
+{% endblock %}

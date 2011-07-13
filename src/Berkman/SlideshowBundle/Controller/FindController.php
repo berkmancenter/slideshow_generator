@@ -81,7 +81,8 @@ class FindController extends Controller
 
 		$viewParams = array(
 			'totalResults' => $finder->getTotalResults(),
-			'form' => $this->createForm($findResults)->createView()
+			'form' => $this->createForm($findResults)->createView(),
+			'keyword' => $keyword
 		);
 
 		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', $viewParams);

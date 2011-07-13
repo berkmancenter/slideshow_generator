@@ -3,23 +3,38 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+		<link href='http://fonts.googleapis.com/css?family=Cardo&v2' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,900&v2' rel='stylesheet' type='text/css'>
+		{% block stylesheets %}
+		{% stylesheets  'css/reset.css'
+						'css/style.css' %}
+		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+		{% endstylesheets %}
+		{% endblock %}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-		<div id="header">
-			<h1>Slideshow Generator</h1>
-			<div id="utility">
-				{% block utility %}
-				{% include 'FOSUserBundle::layout.html.twig' %}
-				{% endblock %}
+		<div id="wrapper">
+			<div id="header">
+				<h1>Slideshow Generator</h1>
+				<div id="utility">
+					{% block utility %}
+					{% include 'FOSUserBundle::layout.html.twig' %}
+					{% endblock %}
+				</div>
 			</div>
+			{% block body %}{% endblock %}
 			<a href="{{ path('BerkmanSlideshowBundle_homepage') }}">Home</a>
+			{% block footer %}
+			<div id="footer">
+				Copyright 2011 - Blah blah
+			</div>
+			{% endblock %}
 		</div>
-        {% block body %}{% endblock %}
-		{% javascripts 'js/*' %}
+		{% block javascripts %}
+		{% javascripts 'js/jquery-1.6.2.js' %}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
-        {% block javascripts %}{% endblock %}
+		{% endblock %}
     </body>
 </html>
