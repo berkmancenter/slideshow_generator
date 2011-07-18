@@ -252,26 +252,59 @@ class SlideshowController extends Controller
 	 */
 	public function addImagesAction()
 	{
+		/*
+		 * Ok, so what is this doing?
+		 *
+		 * 1. It's getting images from either POST data or the session
+		 * 2. It's taking those images and either creating a new slideshow
+		 * 3. Or adding those images to an existing slideshow
+		 * 4. If it gets a slideshow from POST data too, it add those images to that slideshow
+		 */
+
 		$images    = array();
 		$request   = $this->getRequest();
 		$em        = $this->getDoctrine()->getEntityManager();
 		$slideshow = new Slideshow();
+		$response = $this->redirect($this->generateUrl('slideshow'));
+
+		$logger = $this->container->get('logger');
 
 		$slideshowChoiceType = new SlideshowChoiceType();
 		$slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
 		$addImagesForm = $this->createForm($slideshowChoiceType);
         $newSlideshowForm = $this->createForm(new SlideshowType(), $slideshow);
 
-
-		if ('POST' == $request->getMethod() && $this->getRequest()->getSession()->get('images')) {
+		if ($this->get('session')->get('images')) {
+			$logger->debug('session had images');
 			$images = $this->getSessionImages();
-			$addImagesForm->bindRequest($this->getRequest());
-			$submittedData = $addImagesForm->getData();
+		}
 
-			if (!empty($submittedData['slideshows'])) {
+		if ('POST' == $request->getMethod()) {
+			$logger->debug(print_r($request, TRUE));
+
+			if (empty($images)) {
+				$findResults = $request->get('findresults');
+				if (isset($findResults['find']['images'])) {
+					$images = $findResults['find']['images'];
+					$logger->debug('post data had images');
+				}
+
+				if (!empty($images)) {
+					$this->get('session')->set('images', $images);
+					$images = $this->getSessionImages();
+				}
+				else {
+					#throw some symfony exception
+				}
+			}
+
+			$slideshowChoice = $request->get('slideshowchoice');
+
+			if (isset($slideshowChoice['slideshows']) && !empty($images)) {
 				foreach ($images as $image) {
 					$em->persist($image);
-					foreach ($submittedData['slideshows'] as $slideshow) {
+					foreach ($slideshowChoice['slideshows'] as $slideshow) {
+						$slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshow);
 						$slide = new Slide($image);
 						$slideshow->addSlide($slide);
 
@@ -282,19 +315,17 @@ class SlideshowController extends Controller
 				}
 				$this->get('session')->remove('images');
 				$em->flush();
-				$response = $this->redirect($this->generateUrl('slideshow_index'));
+				$response = $this->redirect($this->generateUrl('slideshow'));
+			}
+			else {
+				$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
+					'addImagesForm' => $addImagesForm->createView(),
+					'form'          => $newSlideshowForm->createView(),
+					'images'        => $images
+				));
 			}
 		}
 		else {
-			if ('POST' == $request->getMethod()) {
-				$images = $request->get('findresults');
-				$images = $images['find']['images'];
-
-				if ($images) {
-					$this->getRequest()->getSession()->set('images', $images);
-					$images = $this->getSessionImages();
-				}
-			}
 			$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
 				'addImagesForm' => $addImagesForm->createView(),
 				'form'          => $newSlideshowForm->createView(),

@@ -23,6 +23,11 @@
 					{% endblock %}
 				</div>
 			</div>
+			{% for flashType, flash in app.session.getFlashes() %}
+			<div class="flash {{ flashType }}">
+				{{ flash }}
+			</div>
+			{% endfor %}
 			{% block body %}{% endblock %}
 			<a href="{{ path('BerkmanSlideshowBundle_homepage') }}">Home</a>
 			{% block footer %}

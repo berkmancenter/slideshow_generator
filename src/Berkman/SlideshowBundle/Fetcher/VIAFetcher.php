@@ -71,7 +71,11 @@ class VIAFetcher implements FetcherInterface {
 			);
 
 			$doc = new \DOMDocument();
-			$doc->loadXML($this->fetchXml($searchUrl));
+			$xml = $this->fetchXml($searchUrl);
+			if (!$xml) {
+				return array('images' => $images, 'totalResults' => 0);
+			}
+			$doc->loadXML($xml);
 			$totalResults = (int) $doc->getElementsByTagName('totalResults')->item(0)->textContent;
 			if ($totalResults < $numResults) {
 				#throw some Exception
@@ -223,6 +227,7 @@ class VIAFetcher implements FetcherInterface {
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
 		return curl_exec($curl);
 	}

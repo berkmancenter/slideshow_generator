@@ -1,0 +1,5 @@
+services:
+    slideshow_twig_extension:
+        class: Berkman\SlideshowBundle\Twig\Extension\SlideshowExtension
+        tags: 
+            - { name: twig.extension }

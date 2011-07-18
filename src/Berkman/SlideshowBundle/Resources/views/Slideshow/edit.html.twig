@@ -1,18 +1,6 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
-{% block stylesheets %}
-{{ parent() }}
-<style>
-	#slides li:hover {
-		cursor: move;
-	}
-	.placeholder {
-		background-color: #8C4A4A;
-		height: 140px;
-		width: 140px;
-	}
-</style>
-{% endblock %}
 
+{% form_theme edit_form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
 {% block body %}
 <h2>Edit Slideshow</h2>
 
@@ -20,7 +8,7 @@
 <form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_widget(edit_form) }}
 
-	<ol id="slides">
+	<!-- <ol id="slides">
 		{% for slide in entity.slides %}
 			<li id="slide_{{ slide.id }}">
 				<img src="{{ slide.image.thumbnailUrl }}"/>
@@ -32,7 +20,7 @@
 				<a href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
 			</li>
 		{% endfor %}
-	</ol>
+	</ol> -->
 
     <p>
         <button type="submit">Update</button>

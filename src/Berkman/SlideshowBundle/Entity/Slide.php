@@ -110,4 +110,14 @@ class Slide
 	{
 		$this->setImage($image);
 	}
+
+	/**
+	 * Use a thumnail URL as the __toString return
+	 *
+	 * @return string $thumbnailUrl
+	 */
+	public function __toString()
+	{
+		return $this->getImage()->getThumbnailUrl();
+	}
 }

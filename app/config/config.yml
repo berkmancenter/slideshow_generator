@@ -1,6 +1,8 @@
 imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
+    slideshow_bundle:
+         resource: @BerkmanSlideshowBundle/Resources/config/services.yml
 
 framework:
     secret:          %secret%
