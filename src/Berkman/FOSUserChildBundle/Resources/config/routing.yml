@@ -1,0 +1,3 @@
+BerkmanFOSUserChildBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: BerkmanFOSUserChildBundle:Default:index }

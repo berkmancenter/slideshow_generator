@@ -1,0 +1,3 @@
+[submodule "src/Elao/WebProfilerExtraBundle"]
+	path = src/Elao/WebProfilerExtraBundle
+	url = git://github.com/Elao/WebProfilerExtraBundle.git
