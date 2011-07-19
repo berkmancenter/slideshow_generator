@@ -2,33 +2,112 @@
 <html>
 	<head>
 		<title>{{ slideshow.name }}</title>
-		{% stylesheets '@BerkmanSlideshowBundle/Resources/public/css/slideshow.css' %}
+		{% stylesheets 'css/supersized.css'
+	   				   'css/supersized.shutter.css'
+	   %}
 		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 		{% endstylesheets %}
 		<link href='http://fonts.googleapis.com/css?family=Lato:400,900&v2' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-		<ul id="slides">
-			{% for slide in slideshow.slides %}
-				<li class="slide">
-					<img src="{{ slide.image.imageUrl }}"/>
-					<div class="slideInfo">
-						<dl class="metadata">
-							{% for key,value in slide.image.metadata %}
-							<dt>{{ key }}:</dt><dd>{{ value }}</dd><br />
-							{% endfor %}
-						</dl>
-						<a class="record" href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
-					</div>
-				</li>
-			{% endfor %}
-		</ul>
+		<!--Thumbnail Navigation-->
+		<div id="prevthumb"></div>
+		<div id="nextthumb"></div>
+		
+		<!--Arrow Navigation-->
+		<a id="prevslide" class="load-item"></a>
+		<a id="nextslide" class="load-item"></a>
+		
+		<div id="thumb-tray" class="load-item">
+			<div id="thumb-back"></div>
+			<div id="thumb-forward"></div>
+		</div>
+		
+		<!--Time Bar-->
+		<div id="progress-back" class="load-item">
+			<div id="progress-bar"></div>
+		</div>
+		
+		<!--Control Bar-->
+		<div id="controls-wrapper" class="load-item">
+			<div id="controls">
+				
+				<a id="play-button"><img id="pauseplay" src="../../../images/pause.png"/></a>
+			
+				<!--Slide counter-->
+				<div id="slidecounter">
+					<span class="slidenumber"></span> / <span class="totalslides"></span>
+				</div>
+				
+				<!--Slide captions displayed here-->
+				<div id="slidecaption"></div>
+				
+				<!--Thumb Tray button-->
+				<a id="tray-button"><img id="tray-arrow" src="../../../images/button-tray-up.png"/></a>
+				
+				<!--Navigation-->
+				<ul id="slide-list"></ul>
+				
+			</div>
+		</div>
 
-	{% javascripts 'js/jquery-1.6.2.js'	
-					'@BerkmanSlideshowBundle/Resources/public/js/jquery.cycle.all.js'
-					'@BerkmanSlideshowBundle/Resources/public/js/slideshow.js'
-	%}
-	<script src="{{ asset_url }}" type="text/javascript"></script>
-	{% endjavascripts %}
+		{% javascripts 'js/jquery-1.6.2.js'	
+						'js/jquery.easing.min.js'
+						'js/supersized.3.2.4.js'
+						'js/supersized.shutter.js'
+		%}
+		<script src="{{ asset_url }}" type="text/javascript"></script>
+		{% endjavascripts %}
+		<script type="text/javascript">
+			var slideshow_slides = [
+				{% for slide in slideshow.slides %}
+					{
+						image: '{{ slide.image.imageUrl }}',
+						title: '{{ slide.image.metadata["Title"] }}',
+						thumb: '{{ slide.image.thumbnailUrl }}',
+						url: '{{ slide.image.recordUrl }}' 
+					},
+				{% endfor %}
+			];
+
+			jQuery(function($){
+				$.supersized({
+				
+					// Functionality
+					slideshow               :   1,			// Slideshow on/off
+					autoplay				:	1,			// Slideshow starts playing automatically
+					start_slide             :   1,			// Start slide (0 is random)
+					stop_loop				:	0,			// Pauses slideshow on last slide
+					random					: 	0,			// Randomize slide order (Ignores start slide)
+					slide_interval          :   4000,		// Length between transitions
+					transition              :   1, 			// 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
+					transition_speed		:	1000,		// Speed of transition
+					new_window				:	1,			// Image links open in new window/tab
+					pause_hover             :   0,			// Pause slideshow on hover
+					keyboard_nav            :   1,			// Keyboard navigation on/off
+					performance				:	1,			// 0-Normal, 1-Hybrid speed/quality, 2-Optimizes image quality, 3-Optimizes transition speed // (Only works for Firefox/IE, not Webkit)
+					image_protect			:	1,			// Disables image dragging and right click with Javascript
+															   
+					// Size & Position						   
+					min_width		        :   0,			// Min width allowed (in pixels)
+					min_height		        :   0,			// Min height allowed (in pixels)
+					vertical_center         :   1,			// Vertically center background
+					horizontal_center       :   1,			// Horizontally center background
+					fit_always				:	1,			// Image will never exceed browser width or height (Ignores min. dimensions)
+					fit_portrait         	:   1,			// Portrait images will not exceed browser height
+					fit_landscape			:   0,			// Landscape images will not exceed browser width
+															   
+					// Components							
+					slide_links				:	'blank',	// Individual links for each slide (Options: false, 'number', 'name', 'blank')
+					thumb_links				:	1,			// Individual thumb links for each slide
+					thumbnail_navigation    :   0,			// Thumbnail navigation
+					slides 					:  	slideshow_slides,
+												
+					// Theme Options			   
+					progress_bar			:	1,			// Timer for each slide							
+					mouse_scrub				:	0
+				});
+			});
+		</script>
 	</body>
 </html>
