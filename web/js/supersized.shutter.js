@@ -190,7 +190,19 @@
 				}
 			});	
 			
-								
+			/* Hide controls
+			--------------------------*/
+			vars.control_hide_timer	= setTimeout('theme.hideControls()', api.options.control_hide_delay);
+
+			$(vars.hide_cursor).mousemove(function(event) {
+				$(vars.hideable_button).show();
+				$(vars.controls_wrapper).show();
+				$(vars.progress_wrapper).css('bottom', '42px');
+				$(vars.hide_cursor).removeClass('hidden-cursor');
+				clearTimeout(vars.control_hide_timer);
+				vars.control_hide_timer = setTimeout('theme.hideControls()', api.options.control_hide_delay);
+			});
+
 	 	},
 	 	
 	 	
@@ -234,6 +246,19 @@
 		    // Update slide number
 			if (vars.slide_current.length){
 			    $(vars.slide_current).html(vars.current_slide + 1);
+			}
+
+			if ($(vars.slide_metadata).length){
+				if (api.getField('metadata')) {
+					$(vars.slide_metadata).html(function() {
+						var html = '<dl>';
+						for (key in api.getField('metadata')) {
+							html += '<dt>' + key + ':</dt><dd>' + api.getField('metadata')[key] + '</dd><br />';
+						}
+						html += '</dl>';
+						return html;
+					});
+				}
 			}
 		    
 		    
@@ -285,8 +310,16 @@
 		----------------------------*/
 		progressBar : function(){
     		$(vars.progress_bar).stop().animate({left : -$(window).width()}, 0 ).animate({ left:0 }, api.options.slide_interval);
-    	}
+    	},
 	 	
+		/* Hide the controls
+		----------------------------*/
+		hideControls : function(){
+			$(vars.hideable_button).fadeOut(api.options.control_hide_speed);
+			$(vars.controls_wrapper).slideUp(api.options.control_hide_speed);
+			$(vars.progress_wrapper).animate({ bottom: 0 }, api.options.control_hide_speed);
+			$(vars.hide_cursor).addClass('hidden-cursor');
+	   }
 	 
 	 };
 	 
@@ -307,11 +340,17 @@
 		prev_slide			:	'#prevslide',		// Prev slide button
 		next_thumb			:	'#nextthumb',		// Next slide thumb button
 		prev_thumb			:	'#prevthumb',		// Prev slide thumb button
+
+		hideable_button		:	'.hideable-button',
+		controls_wrapper	:	'#controls-wrapper',
+		progress_wrapper	:	'#progress-back',
+		hide_cursor			:	'#supersized',
 		
 		slide_caption		:	'#slidecaption',	// Slide caption
 		slide_current		:	'.slidenumber',		// Current slide number
 		slide_total			:	'.totalslides',		// Total Slides
 		slide_list			:	'#slide-list',		// Slide jump list							
+		slide_metadata		:	'#metadata',
 		
 		thumb_tray			:	'#thumb-tray',		// Thumbnail tray
 		thumb_list			:	'#thumb-list',		// Thumbnail list
@@ -320,7 +359,8 @@
 		tray_arrow			:	'#tray-arrow',		// Thumbnail tray button arrow
 		tray_button			:	'#tray-button',		// Thumbnail tray button
 		
-		progress_bar		:	'#progress-bar'		// Progress bar
+		progress_bar		:	'#progress-bar',	// Progress bar
+
 	 												
 	 };												
 	
@@ -329,7 +369,9 @@
 	 $.supersized.themeOptions = {					
 	 						   
 		progress_bar		:	1,		// Timer for each slide											
-		mouse_scrub			:	0		// Thumbnails move with mouse
+		mouse_scrub			:	0,		// Thumbnails move with mouse
+		control_hide_delay	:	4000,
+		control_hide_speed	:	1000
 		
 	 };
 	

@@ -34,6 +34,10 @@ class Slideshow
      */
     private $person;
 
+    /**
+     * @var Berkman\SlideshowBundle\Entity\Slide
+     */
+    private $slides;
 
     /**
      * Get id
@@ -124,10 +128,6 @@ class Slideshow
     {
         return $this->person;
     }
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Slide
-     */
-    private $slides;
 
     public function __construct()
     {
@@ -169,4 +169,9 @@ class Slideshow
     {
         $this->slides[] = $slides;
     }
+
+	public function removeSlides($slides)
+	{
+		$this->slides = new \Doctrine\Common\Collections\ArrayCollection(array_diff($this->slides->toArray(), $slides->toArray()));
+	}
 }

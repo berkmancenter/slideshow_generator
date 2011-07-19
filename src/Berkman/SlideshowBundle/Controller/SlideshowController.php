@@ -282,20 +282,18 @@ class SlideshowController extends Controller
 		if ('POST' == $request->getMethod()) {
 			$logger->debug(print_r($request, TRUE));
 
-			if (empty($images)) {
-				$findResults = $request->get('findresults');
-				if (isset($findResults['find']['images'])) {
-					$images = $findResults['find']['images'];
-					$logger->debug('post data had images');
-				}
+			$findResults = $request->get('findresults');
+			if (isset($findResults['find']['images'])) {
+				$images = $findResults['find']['images'];
+				$logger->debug('post data had images');
+			}
 
-				if (!empty($images)) {
-					$this->get('session')->set('images', $images);
-					$images = $this->getSessionImages();
-				}
-				else {
-					#throw some symfony exception
-				}
+			if (!empty($images)) {
+				$this->get('session')->set('images', $images);
+				$images = $this->getSessionImages();
+			}
+			else {
+				#throw some symfony exception
 			}
 
 			$slideshowChoice = $request->get('slideshowchoice');

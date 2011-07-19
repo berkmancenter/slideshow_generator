@@ -16,3 +16,16 @@
         </ol>
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
+
+{% block _findresults_find_images_row %}
+{% spaceless %}
+        <ol {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+			<li class="image">
+            {{ form_widget(child) }}
+            {{ image_label(child) }}
+			</li>
+        {% endfor %}
+        </ol>
+{% endspaceless %}
+{% endblock _findresults_find_images_row %}

@@ -32,16 +32,6 @@ html, body {
 	height: 100%;
 	margin: 0 auto;
 }
-.slideInfo dt, .slideInfo dd {
-	display: inline-block;
-}
-.slideInfo dt {
-	color: #DE1B1B;
-	font-weight: 900;
-}
-.slideInfo dd {
-	margin-left: 20px;
-}
 a {
 	color: #EEE;
 }

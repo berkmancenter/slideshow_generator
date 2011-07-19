@@ -6,7 +6,7 @@
 
 <div class="lightWrap">
 <form action="{{ path('slideshow_add_images') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+    {{ form_widget(form, { 'id': 'slideshow_slides' }) }}
     <p>
         <button type="submit">Next</button>
     </p>

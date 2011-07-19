@@ -3,20 +3,23 @@
 	<head>
 		<title>{{ slideshow.name }}</title>
 		{% stylesheets 'css/supersized.css'
-	   				   'css/supersized.shutter.css'
+					   'css/supersized.shutter.css'
 	   %}
 		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 		{% endstylesheets %}
 		<link href='http://fonts.googleapis.com/css?family=Lato:400,900&v2' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
+
+		<div id="metadata"></div>
+
 		<!--Thumbnail Navigation-->
 		<div id="prevthumb"></div>
 		<div id="nextthumb"></div>
 		
 		<!--Arrow Navigation-->
-		<a id="prevslide" class="load-item"></a>
-		<a id="nextslide" class="load-item"></a>
+		<a id="prevslide" class="load-item hideable-button"></a>
+		<a id="nextslide" class="load-item hideable-button"></a>
 		
 		<div id="thumb-tray" class="load-item">
 			<div id="thumb-back"></div>
@@ -63,9 +66,13 @@
 				{% for slide in slideshow.slides %}
 					{
 						image: '{{ slide.image.imageUrl }}',
-						title: '{{ slide.image.metadata["Title"] }}',
 						thumb: '{{ slide.image.thumbnailUrl }}',
-						url: '{{ slide.image.recordUrl }}' 
+						url: '{{ slide.image.recordUrl }}',
+						metadata: {
+							{% for key, value in slide.image.metadata %}
+							'{{ key }}': '{{ value }}',
+							{% endfor %}
+						}
 					},
 				{% endfor %}
 			];
