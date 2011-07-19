@@ -4,18 +4,8 @@
 {% endspaceless %}
 {% endblock field_label %} #}
 
-{% block choice_label %}
-{% spaceless %}
-    {% if required %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' required'}) %}
-    {% endif %}
-    <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}><img src="{{ label|trans }}" alt="" /></label>
-{% endspaceless %}
-{% endblock %}
-
 {% block _slideshow_slides_row %}
 {% spaceless %}
-    {% if expanded %}
         <ol {{ block('widget_container_attributes') }}>
         {% for child in form %}
 			<li class="image">
@@ -24,19 +14,5 @@
 			</li>
         {% endfor %}
         </ol>
-    {% else %}
-    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-        {% if empty_value is not none %}
-            <option value="">{{ empty_value|trans }}</option>
-        {% endif %}
-        {% if preferred_choices|length > 0 %}
-            {% set options = preferred_choices %}
-            {{ block('widget_choice_options') }}
-            <option disabled="disabled">{{ separator }}</option>
-        {% endif %}
-        {% set options = choices %}
-        {{ block('widget_choice_options') }}
-    </select>
-    {% endif %}
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}

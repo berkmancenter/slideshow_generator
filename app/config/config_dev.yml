@@ -9,12 +9,6 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
-web_profiler_extra:
-    routing: true
-    container: true
-    assetic: true
-    twig: true
-
 monolog:
     handlers:
         main:

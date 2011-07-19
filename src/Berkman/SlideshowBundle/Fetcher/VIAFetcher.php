@@ -164,6 +164,9 @@ class VIAFetcher implements FetcherInterface {
 		}
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
 		$response = $this->fetchXml($metadataUrl);
+		if (!$response) {
+			return array();
+		}
 		$doc = new \DOMDocument();
 		$doc->loadXML($response);
 		$xpath = new \DOMXPath($doc);

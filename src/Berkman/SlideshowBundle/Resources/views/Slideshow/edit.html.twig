@@ -7,21 +7,6 @@
 <div class="centered lightWrap">
 <form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_widget(edit_form) }}
-
-	<!-- <ol id="slides">
-		{% for slide in entity.slides %}
-			<li id="slide_{{ slide.id }}">
-				<img src="{{ slide.image.thumbnailUrl }}"/>
-				<dl class="metadata">
-					{% for key,value in slide.image.metadata %}
-					<dt>{{ key }}</dt><dd>{{ value }}</dd>
-					{% endfor %}
-				</dl>
-				<a href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
-			</li>
-		{% endfor %}
-	</ol> -->
-
     <p>
         <button type="submit">Update</button>
     </p>
@@ -50,10 +35,16 @@
 {% endjavascripts %}
 <script type="text/javascript">
 $(function() {
-	$( "#slides" ).sortable({
-		placeholder: 'placeholder'
+	$( "#slideshow_slides" ).sortable({
+		placeholder: 'placeholder',
+		start: function(event, ui) {
+			ui.placeholder.css({
+				height: ui.item.outerHeight(),
+				width: ui.item.outerWidth()
+			});
+		}
 	});
-	$( "#slides" ).disableSelection();
+	$( "#slideshow_slides" ).disableSelection();
 	$('#edit').submit(function() {
 		alert($('#slides').sortable('serialize'));
 	});

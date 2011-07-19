@@ -11,12 +11,10 @@ class SlideshowExtension extends \Twig_Extension
 
 	public function getFunctions()
     {
-        return array('image_label' => new \Twig_Function_Method($this, 'imageLabel'));
+        return array('image_label' => new \Twig_Function_Method($this, 'imageLabel', array('is_safe' => array('html'))));
     }
 
 	public function imageLabel($child) {
-		//return print_r($child, true);
-		return $child->get('attr');
-
+		return '<label for="'.$child->get('id').'"><img src="'.$child->get('label').'" /></label>';
 	}
 }
