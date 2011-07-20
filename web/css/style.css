@@ -129,7 +129,7 @@ a:visited, a:active {
 	left: 7px;
 	margin: 0;
 }
-#slideshow_slides li {
+#slideshow_slides li, #findresults_images li {
 	position: relative;
 	max-width: 170px;
 	overflow: hidden;
@@ -137,11 +137,11 @@ a:visited, a:active {
 	vertical-align: top;
 	margin: 10px;
 }
-#slideshow_slides {
+#slideshow_slides, #findresults_images {
 	font-size: 14px;
 	font-family: 'Cardo', serif;
 }
-#slideshow_slides label {
+#slideshow_slides label, #findresults_images label {
 	margin: 0;
 }
 #find > div:first-child {

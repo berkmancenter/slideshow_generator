@@ -269,56 +269,23 @@ class SlideshowController extends Controller
 	 */
 	public function addImagesAction()
 	{
-		/*
-		 * Ok, so what is this doing?
-		 *
-		 * 1. It's getting images from either POST data or the session
-		 * 2. It's taking those images and either creating a new slideshow
-		 * 3. Or adding those images to an existing slideshow
-		 * 4. If it gets a slideshow from POST data too, it add those images to that slideshow
-		 */
-
-		$images    = array();
+		$images = $this->getCookieImages();
 		$request   = $this->getRequest();
 		$em        = $this->getDoctrine()->getEntityManager();
 		$slideshow = new Slideshow();
-		$response = $this->redirect($this->generateUrl('slideshow'));
 
 		$slideshowChoiceType = new SlideshowChoiceType();
 		$slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
 		$addImagesForm = $this->createForm($slideshowChoiceType);
         $newSlideshowForm = $this->createForm(new SlideshowType(), $slideshow);
 
-		if ($this->get('session')->get('images')) {
-			$images = $this->getSessionImages();
-		}
+		$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
+			'addImagesForm' => $addImagesForm->createView(),
+			'form'          => $newSlideshowForm->createView(),
+			'images'        => $images
+		));
 
 		if ('POST' == $request->getMethod()) {
-			$findResults = $request->get('findresults');
-			if (isset($findResults['find']['images'])) {
-				$images = ($this->get('session')->get('images')) ? 
-					$this->get('session')->get('images') + $findResults['find']['images'] : 
-					$findResults['find']['images'];
-			}
-
-			if (!empty($images)) {
-				$this->get('session')->set('images', $images);
-				$images = $this->getSessionImages();
-			}
-			else {
-				#throw some symfony exception
-			}
-
-			if (in_array($request->get('action'), array('next', 'previous'))) {
-				$page = ($request->get('action') == 'next') ? $request->get('page') + 1 : $request->get('page') - 1;
-				return $this->redirect($this->generateUrl('find_show', array(
-					'repos' => $request->get('repos'),
-					'keyword' => $request->get('keyword'),
-					'page' => $page
-				)));
-			}
-
-
 			$slideshowChoice = $request->get('slideshowchoice');
 
 			if (isset($slideshowChoice['slideshows']) && !empty($images)) {
@@ -334,24 +301,10 @@ class SlideshowController extends Controller
 						$this->get('session')->setFlash('notice', $flashMessage);
 					}
 				}
-				$this->get('session')->remove('images');
 				$em->flush();
 				$response = $this->redirect($this->generateUrl('slideshow'));
+				$response->headers->clearCookie('images');
 			}
-			else {
-				$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
-					'addImagesForm' => $addImagesForm->createView(),
-					'form'          => $newSlideshowForm->createView(),
-					'images'        => $images
-				));
-			}
-		}
-		else {
-			$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
-				'addImagesForm' => $addImagesForm->createView(),
-				'form'          => $newSlideshowForm->createView(),
-				'images'        => $images
-			));
 		}
 
         return $response;
@@ -365,9 +318,9 @@ class SlideshowController extends Controller
         ;
     }
 
-	private function getSessionImages() {
+	private function getCookieImages() {
 		$em           = $this->getDoctrine()->getEntityManager();
-		$images       = $this->getRequest()->getSession()->get('images');
+		$images       = unserialize(base64_decode($this->getRequest()->cookies->get('images')));
 		$imageObjects = array();
 
 		foreach ($images as $image) {

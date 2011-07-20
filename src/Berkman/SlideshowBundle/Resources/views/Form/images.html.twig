@@ -10,3 +10,9 @@
         </ol>
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
+
+{% block _findresults_images_row %}
+{% spaceless %}
+	{{ block('_slideshow_slides_row') }}
+{% endspaceless %}
+{% endblock _findresults_images_row %}

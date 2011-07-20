@@ -3,6 +3,7 @@
 namespace Berkman\SlideshowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Cookie;
 use Berkman\SlideshowBundle\Entity as Entity;
 use Berkman\SlideshowBundle\Form\FindType;
 use Berkman\SlideshowBundle\Form\FindResultsType;
@@ -74,11 +75,6 @@ class FindController extends Controller
 			$imageChoices[strval($image)] = $image->getThumbnailUrl();
 		}
 
-		if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-			$personId = $this->get('security.context')->getToken()->getUser()->getId();
-			$findResults->setPersonId($personId);
-		}
-
 		$findResults->setImageChoices($imageChoices);
 
 		$viewParams = array(
@@ -92,51 +88,28 @@ class FindController extends Controller
 		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', $viewParams);
     }
 
-	public function resultsToSlideshowAction()
+	public function submitAction()
 	{
-		$em = $this->getDoctrine()->getEntityManager();
-		$request = $this->getRequest();
+		$request   = $this->getRequest();
+		$images    = unserialize(base64_decode($request->cookies->get('images')));
+		$response = $this->redirect($this->generateUrl('slideshow_add_images'));
 
-		if ('POST' === $request->getMethod()) {
-			$findResults = $request->request->get('findresults');
-			$images = $findResults['find']['images'];
-			$slideshowId = $findResults['slideshows']['slideshows'];
-			if (empty($slideshowId)) {
-				$slides = array();	
-				foreach ($images as $image) {
-					$image = unserialize(base64_decode($image));
-					$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
-					$image = new Entity\Image($repo, $image['id1'], $image['id2'], $image['id3'], $image['id4']);
-					$em->persist($image);
-					$slide = new Entity\Slide();
-					$slide->setImage($image);
-					$em->persist($slide);
-					$slides[] = $slide;
-				}
-				$em->flush();
-
-				$response = $this->forward('BerkmanSlideshowBundle:Slideshow:create', array('slides' => $slides));
-			}
-			else {
-				$slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshowId);
-
-				foreach ($images as $image) {
-					$image = unserialize(base64_decode($image));
-					$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
-					$image = new Entity\Image($repo, $image['id1'], $image['id2'], $image['id3'], $image['id4'], $image['id5'], $image['id6']);
-					$em->persist($image);
-					$slide = new Entity\Slide();
-					$slide->setImage($image);
-					$slideshow->addSlide($slide);
-				}
-				$em->persist($slideshow);
-				$em->flush();
-
-				$response = $this->redirect($this->generateUrl('slideshow_show', array('id' => $slideshowId)));
-
-			}
+		$findResults = $request->get('findresults');
+		if (!empty($findResults['images'])) {
+			$images += $findResults['images'];
 		}
 
+		if (in_array($request->get('action'), array('next', 'previous'))) {
+			$page = ($request->get('action') == 'next') ? $request->get('page') + 1 : $request->get('page') - 1;
+			$response = $this->redirect($this->generateUrl('find_show', array(
+				'repos' => $request->get('repos'),
+				'keyword' => $request->get('keyword'),
+				'page' => $page
+			)));
+		}
+			$this->get('logger')->info(count($images));
+
+		$response->headers->setCookie(new Cookie('images', base64_encode(serialize($images)), time() + (3600 * 48))); 
 		return $response;
 	}
 }
