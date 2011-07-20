@@ -63,7 +63,7 @@ class VIAFetcher implements FetcherInterface {
 		$numResults = $endIndex - $startIndex + 1;
 		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
-		while (count($images) < $numResults) {
+#		while (count($images) < $numResults) {
 			$searchUrl = str_replace(
 				array('{keyword}', '{page}'),
 				array($keyword, $page), 
@@ -137,7 +137,7 @@ class VIAFetcher implements FetcherInterface {
 			}
 
 			$page++;
-		}
+#		}
 
 		return array('images' => $images, 'totalResults' => $totalResults);
 	}
@@ -155,7 +155,7 @@ class VIAFetcher implements FetcherInterface {
 			'Title' => './/mods:title',
 			'Creator' => './/mods:namePart[1]',
 			'Date' => './/mods:dateCreated[last()]',
-			'Usage Restrictions' => './/mods:accessCondition',
+			//'Usage Restrictions' => './/mods:accessCondition',
 			'Notes' => './mods:note'
 		);
 		$metadataId = $image->getId3();
