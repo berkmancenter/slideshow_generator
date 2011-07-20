@@ -7,8 +7,15 @@
 <div class="lightWrap">
 <form action="{{ path('slideshow_add_images') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form, { 'id': 'slideshow_slides' }) }}
+	<input type="hidden" name="page" value="{{ page }}" />
+	<input type="hidden" name="keyword" value="{{ keyword }}" />
+	<input type="hidden" name="repos" value="{{ repos }}" />
     <p>
-        <button type="submit">Next</button>
+		{% if page > 1 %}
+		<button type="submit" name="action" value="previous">Previous Page</button>
+		{% endif %}
+		<button type="submit" name="action" value="next">Next Page</button>
+        <button type="submit" name="action" value="finish">Finish</button>
     </p>
 </form> 
 </div>

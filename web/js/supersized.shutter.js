@@ -194,7 +194,7 @@
 			--------------------------*/
 			vars.control_hide_timer	= setTimeout('theme.hideControls()', api.options.control_hide_delay);
 
-			$(vars.hide_cursor).mousemove(function(event) {
+			$(document).mousemove(function(event) {
 				$(vars.hideable_button).show();
 				$(vars.controls_wrapper).show();
 				$(vars.progress_wrapper).css('bottom', '42px');

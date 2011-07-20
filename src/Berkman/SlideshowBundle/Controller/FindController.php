@@ -57,6 +57,8 @@ class FindController extends Controller
 		$findResults = new FindResultsType();
 
 		$em = $this->getDoctrine()->getEntityManager();
+
+		$reposString = $repos;
 		$repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findBy(array(
 			'id' => explode('+', $repos)
 		));
@@ -82,7 +84,9 @@ class FindController extends Controller
 		$viewParams = array(
 			'totalResults' => $finder->getTotalResults(),
 			'form' => $this->createForm($findResults)->createView(),
-			'keyword' => $keyword
+			'keyword' => $keyword,
+			'repos' => $reposString,
+			'page' => $page
 		);
 
 		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', $viewParams);

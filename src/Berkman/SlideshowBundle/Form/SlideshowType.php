@@ -22,7 +22,7 @@ class SlideshowType extends AbstractType
 			$builder->add('slides', null, array(
 				'expanded' => true,
 				'query_builder' => function(EntityRepository $er) use ($slideshowId) {
-					return $er->createQueryBuilder('s')->where('s.slideshow = ?1')->setParameter(1, $slideshowId);
+					return $er->createQueryBuilder('s')->where('s.slideshow = ?1')->orderBy('s.position', 'ASC')->setParameter(1, $slideshowId);
 				}
 			));
 		}

@@ -157,21 +157,19 @@ class Slideshow
      */
     public function getSlides()
     {
+		$slideArray = $this->slides->toArray();
+		usort($slideArray, function ($a, $b) { return ($a->getPosition() > $b->getPosition()) ? 1 : -1; });
+		$this->slides = new \Doctrine\Common\Collections\ArrayCollection($slideArray);
         return $this->slides;
     }
 
     /**
-     * Add slides
+     * Get slides
      *
-     * @param Berkman\SlideshowBundle\Entity\Slide $slides
+     * @return Doctrine\Common\Collections\Collection $slides
      */
-    public function addSlides(\Berkman\SlideshowBundle\Entity\Slide $slides)
+    public function setSlides($slides)
     {
-        $this->slides[] = $slides;
+        $this->slides = $slides;
     }
-
-	public function removeSlides($slides)
-	{
-		$this->slides = new \Doctrine\Common\Collections\ArrayCollection(array_diff($this->slides->toArray(), $slides->toArray()));
-	}
 }

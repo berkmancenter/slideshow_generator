@@ -1,9 +1,3 @@
-{# {% block field_label %}
-{% spaceless %}
-    <label for="{{ id }}"{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}><img src="{{ label|trans }}" alt=""/></label>
-{% endspaceless %}
-{% endblock field_label %} #}
-
 {% block _slideshow_slides_row %}
 {% spaceless %}
         <ol {{ block('widget_container_attributes') }}>
@@ -16,16 +10,3 @@
         </ol>
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
-
-{% block _findresults_find_images_row %}
-{% spaceless %}
-        <ol {{ block('widget_container_attributes') }}>
-        {% for child in form %}
-			<li class="image">
-            {{ form_widget(child) }}
-            {{ image_label(child) }}
-			</li>
-        {% endfor %}
-        </ol>
-{% endspaceless %}
-{% endblock _findresults_find_images_row %}

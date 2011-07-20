@@ -181,8 +181,9 @@ class SlideshowController extends Controller
     public function updateAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
-
         $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
+
+		$oldSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Slideshow entity.');
@@ -197,7 +198,23 @@ class SlideshowController extends Controller
             $editForm->bindRequest($request);
 
             if ($editForm->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
+				$slideRepo = $em->getRepository('BerkmanSlideshowBundle:Slide');
+				$newSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
+				$slideIdsToRemove = array_diff($oldSlideIds, $newSlideIds);
+
+				if ($slideIdsToRemove) {
+					$slidesToRemove = $slideRepo->findById($slideIdsToRemove);
+					foreach ($slidesToRemove as $slide) {
+						$em->remove($slide);
+					}
+				}
+
+				foreach (explode(',', $request->get('slide_order')) as $position => $slideId) {
+					$slide = $slideRepo->find($slideId);
+					$slide->setPosition($position + 1);
+					$em->persist($slide);
+				}
+
                 $em->persist($entity);
                 $em->flush();
 
@@ -267,25 +284,21 @@ class SlideshowController extends Controller
 		$slideshow = new Slideshow();
 		$response = $this->redirect($this->generateUrl('slideshow'));
 
-		$logger = $this->container->get('logger');
-
 		$slideshowChoiceType = new SlideshowChoiceType();
 		$slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
 		$addImagesForm = $this->createForm($slideshowChoiceType);
         $newSlideshowForm = $this->createForm(new SlideshowType(), $slideshow);
 
 		if ($this->get('session')->get('images')) {
-			$logger->debug('session had images');
 			$images = $this->getSessionImages();
 		}
 
 		if ('POST' == $request->getMethod()) {
-			$logger->debug(print_r($request, TRUE));
-
 			$findResults = $request->get('findresults');
 			if (isset($findResults['find']['images'])) {
-				$images = $findResults['find']['images'];
-				$logger->debug('post data had images');
+				$images = ($this->get('session')->get('images')) ? 
+					$this->get('session')->get('images') + $findResults['find']['images'] : 
+					$findResults['find']['images'];
 			}
 
 			if (!empty($images)) {
@@ -295,6 +308,16 @@ class SlideshowController extends Controller
 			else {
 				#throw some symfony exception
 			}
+
+			if (in_array($request->get('action'), array('next', 'previous'))) {
+				$page = ($request->get('action') == 'next') ? $request->get('page') + 1 : $request->get('page') - 1;
+				return $this->redirect($this->generateUrl('find_show', array(
+					'repos' => $request->get('repos'),
+					'keyword' => $request->get('keyword'),
+					'page' => $page
+				)));
+			}
+
 
 			$slideshowChoice = $request->get('slideshowchoice');
 
