@@ -269,7 +269,7 @@ class SlideshowController extends Controller
 	 */
 	public function addImagesAction()
 	{
-		$images = $this->getCookieImages();
+		$images = $this->getSessionImages();
 		$request   = $this->getRequest();
 		$em        = $this->getDoctrine()->getEntityManager();
 		$slideshow = new Slideshow();
@@ -318,9 +318,9 @@ class SlideshowController extends Controller
         ;
     }
 
-	private function getCookieImages() {
+	private function getSessionImages() {
 		$em           = $this->getDoctrine()->getEntityManager();
-		$images       = unserialize(base64_decode($this->getRequest()->cookies->get('images')));
+		$images       = unserialize(base64_decode($this->getRequest()->getSession()->get('images')));
 		$imageObjects = array();
 
 		foreach ($images as $image) {

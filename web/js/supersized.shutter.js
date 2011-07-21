@@ -192,16 +192,18 @@
 			
 			/* Hide controls
 			--------------------------*/
-			vars.control_hide_timer	= setTimeout('theme.hideControls()', api.options.control_hide_delay);
+			if (!api.options.show_controls) {
+				vars.control_hide_timer	= setTimeout('theme.hideControls()', api.options.control_hide_delay);
 
-			$(document).mousemove(function(event) {
-				$(vars.hideable_button).show();
-				$(vars.controls_wrapper).show();
-				$(vars.progress_wrapper).css('bottom', '42px');
-				$(vars.hide_cursor).removeClass('hidden-cursor');
-				clearTimeout(vars.control_hide_timer);
-				vars.control_hide_timer = setTimeout('theme.hideControls()', api.options.control_hide_delay);
-			});
+				/*$(document).mousemove(function(event) {
+					$(vars.hideable_button).show();
+					$(vars.controls_wrapper).show();
+					$(vars.progress_wrapper).css('bottom', '42px');
+					$(vars.hide_cursor).removeClass('hidden-cursor');
+					clearTimeout(vars.control_hide_timer);
+					vars.control_hide_timer = setTimeout('theme.hideControls()', api.options.control_hide_delay);
+				});*/
+			}
 
 	 	},
 	 	
@@ -371,7 +373,8 @@
 		progress_bar		:	1,		// Timer for each slide											
 		mouse_scrub			:	0,		// Thumbnails move with mouse
 		control_hide_delay	:	4000,
-		control_hide_speed	:	1000
+		control_hide_speed	:	1000,
+		show_controls		:	1
 		
 	 };
 	

@@ -11,9 +11,10 @@ class SlideshowType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
 	{
         $builder
-            ->add('name')
-            ->add('slide_delay')
+            ->add('name', null, array('label' => 'Slideshow Name'))
+            ->add('slide_delay', null, array('label' => 'Slide Delay (seconds)'))
             ->add('display_info', 'checkbox', array('required' => false))
+			->add('display_controls', 'checkbox', array('required' => false))
 		;
 
 		if ($builder->getData()->getId()) {

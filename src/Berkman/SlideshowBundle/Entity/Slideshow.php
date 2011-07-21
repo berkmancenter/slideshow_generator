@@ -132,7 +132,8 @@ class Slideshow
     public function __construct()
     {
 		$this->slide_delay = 5;
-		$this->display_info = false;
+		$this->display_info = true;
+		$this->display_controls = false;
         $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -171,5 +172,40 @@ class Slideshow
     public function setSlides($slides)
     {
         $this->slides = $slides;
+    }
+    /**
+     * @var boolean $display_controls
+     */
+    private $display_controls;
+
+
+    /**
+     * Set display_controls
+     *
+     * @param boolean $displayControls
+     */
+    public function setDisplayControls($displayControls)
+    {
+        $this->display_controls = $displayControls;
+    }
+
+    /**
+     * Get display_controls
+     *
+     * @return boolean 
+     */
+    public function getDisplayControls()
+    {
+        return $this->display_controls;
+    }
+
+    /**
+     * Add slides
+     *
+     * @param Berkman\SlideshowBundle\Entity\Slide $slides
+     */
+    public function addSlides(\Berkman\SlideshowBundle\Entity\Slide $slides)
+    {
+        $this->slides[] = $slides;
     }
 }

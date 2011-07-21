@@ -110,9 +110,9 @@ class FindController extends Controller
 				'page' => $page
 			)));
 		}
-			$this->get('logger')->info(count($images));
 
-		$response->headers->setCookie(new Cookie('images', base64_encode(serialize($images)), time() + (3600 * 48))); 
+		$response->headers->setCookie(new Cookie('images', base64_encode(serialize($images)), time() + (3600 * 48))); 		 $request->getSession()->set('images', base64_encode(serialize($images)));
+
 		return $response;
 	}
 }

@@ -13,6 +13,8 @@ Berkman\SlideshowBundle\Entity\Slideshow:
       type: smallint
     display_info:
       type: boolean
+    display_controls:
+      type: boolean
   manyToOne:
     person:
       targetEntity: Person
