@@ -12,11 +12,9 @@
 			<button type="submit">Update</button>
 		</p>
 	</form>
-	<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
-		Start Slideshow
-	</a>
 	<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
 		{{ form_widget(delete_form) }}
+		<a class="buttoned" href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">Start Slideshow</a>
 		<button type="submit">Delete</button>
 	</form>
 </div>

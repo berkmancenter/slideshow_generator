@@ -13,6 +13,8 @@ html, body {
 	padding: 10px 30px;
 	max-height: 30%;
 	color: #EEE;
+	background-color: black;
+	filter: alpha(opacity = 90);
 	background-color: rgba(10, 10, 10, 0.9);
 	text-align: left;
 	position: absolute;

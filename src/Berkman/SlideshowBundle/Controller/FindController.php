@@ -91,7 +91,7 @@ class FindController extends Controller
 	public function submitAction()
 	{
 		$request   = $this->getRequest();
-		$images    = unserialize(base64_decode($request->cookies->get('images')));
+		$images    = unserialize(base64_decode($request->getSession()->get('images')));
 		$response = $this->redirect($this->generateUrl('slideshow_add_images'));
 
 		$findResults = $request->get('findresults');
@@ -111,7 +111,7 @@ class FindController extends Controller
 			)));
 		}
 
-		$response->headers->setCookie(new Cookie('images', base64_encode(serialize($images)), time() + (3600 * 48))); 		 $request->getSession()->set('images', base64_encode(serialize($images)));
+		$request->getSession()->set('images', base64_encode(serialize($images)));
 
 		return $response;
 	}

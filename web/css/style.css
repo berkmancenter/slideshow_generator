@@ -80,6 +80,9 @@ label {
 	text-align: center;
 	padding: 0 10px;
 }
+#slideshows {
+	line-height: normal;
+}
 .lightWrap {
 	color: #2A2829;
 	margin: 0 auto;
@@ -107,7 +110,7 @@ input[type=text], input[type=number], input[type=password] {
 	padding: 4px 10px;
 	box-shadow: 0px 0px 7px #F07830;
 }
-button, input[type=submit] {
+button, input[type=submit], .buttoned {
 	color: #FFFFF6;
 	font-size: 24px;
 	background-color: #781800;
@@ -118,6 +121,10 @@ button, input[type=submit] {
 	border-radius: 10px;
 	box-shadow: 0px 0px 7px #F07830;
 	margin-top: 20px;
+}
+a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
+	color: white;
+	text-decoration: none;
 }
 a:visited, a:active {
 	color: #2A2829;
@@ -153,13 +160,19 @@ a:visited, a:active {
 	cursor: move;
 }
 .placeholder {
-	background-color: #8C4A4A;
+	background-color: #781800;
 	height: 140px;
 	width: 140px;
 }
 .metadata {
 	font-size: 16px;
 	text-align: left;
+}
+.metadata dd {
+	font-size: 13px;
+}
+.metadata dt {
+	margin-bottom: 4px;
 }
 #show_slideshow_slides li {
 	width: 200px;
@@ -171,4 +184,15 @@ a:visited, a:active {
 	margin: 10px;
 	border-radius: 20px;
 }
-
+#home-link {
+   text-decoration: none;
+}
+#slideshow_tools {
+	margin-bottom: 20px;
+}
+#slideshow_tools form {
+	display: inline-block;
+}
+#slideshow_tools .buttoned, #slideshow_tools button {
+	margin: 0 10px 0 0;
+}

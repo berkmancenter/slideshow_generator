@@ -96,6 +96,9 @@ class VIAFetcher implements FetcherInterface {
 				$numberOfImages = $image->getElementsByTagName('numberofimages')->item(0);
 				if ($numberOfImages && $numberOfImages->textContent > 1) {
 					$xml = $this->fetchXml('http://webservices.lib.harvard.edu/rest/mods/via/'.$recordId);
+					if ($xml === FALSE) {
+						#throw some exception
+					}
 					$metadataDoc = new \DOMDocument();
 					$metadataDoc->loadXML($xml);
 					$xpath = new \DOMXPath($metadataDoc);

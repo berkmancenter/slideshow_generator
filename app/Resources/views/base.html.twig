@@ -16,7 +16,7 @@
     <body>
 		<div id="wrapper">
 			<div id="header">
-				<h1>Slideshow Generator</h1>
+				<a id="home-link" href="{{ path('BerkmanSlideshowBundle_homepage') }}"><h1>Slideshow Generator</h1></a>
 				<div id="utility">
 					{% block utility %}
 					<div>
@@ -48,7 +48,6 @@
 			{% endif %}
 
 			{% block body %}{% endblock %}
-			<a href="{{ path('BerkmanSlideshowBundle_homepage') }}">Home</a>
 			{% block footer %}
 			<div id="footer">
 				&copy; 2011 - Presidents and Fellows of Harvard College

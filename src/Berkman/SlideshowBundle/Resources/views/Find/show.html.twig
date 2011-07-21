@@ -2,7 +2,7 @@
 
 {% block body %}
 {% form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
-<h2>Images ({{ totalResults }} for &quot;{{ keyword }}&quot;)</h2>
+<h2>{{ totalResults }} images for &quot;{{ keyword }}&quot;</h2>
 
 <div class="lightWrap">
 <form action="{{ path('find_submit') }}" method="post" {{ form_enctype(form) }}>
@@ -19,11 +19,5 @@
     </p>
 </form> 
 </div>
-
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('find_index') }}">Back to the list</a>
-    </li>
-</ul>
 {% endblock %}
 

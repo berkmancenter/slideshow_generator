@@ -10,6 +10,7 @@
 	{% endfor %}
 	</div>
 </div>
+{% if app.user and app.user.slideshows|length > 0 %}
 <div>
 	<h2>Add images to existing slideshow</h2>
 	<div class="lightWrap">
@@ -21,8 +22,9 @@
 	</form>
 	</div>
 </div>
+{% endif %}
 <div>
-	<h2>Or, create a new slideshow</h2>
+	<h2>{{ app.user.slideshows|length > 0 ? 'Or, create' : 'Create'}} a new slideshow</h2>
 	<div class="lightWrap">
 	{% include 'BerkmanSlideshowBundle:Slideshow:newForm.html.twig' %}
 	</div>
