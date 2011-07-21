@@ -136,11 +136,8 @@ class Find
 		return $images;
 	}
 
-	public function __construct($repos = null)
+	public function __construct()
 	{
-		if ($repos) {
-			$this->setRepos($repos);
-		}
 		$this->currentPage = 1;
 	}
 }

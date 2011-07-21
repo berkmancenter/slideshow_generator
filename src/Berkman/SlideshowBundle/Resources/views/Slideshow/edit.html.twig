@@ -5,27 +5,21 @@
 <h2>Edit Slideshow</h2>
 
 <div class="centered lightWrap">
-<form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-    {{ form_widget(edit_form) }}
-	<input type="hidden" name="slide_order" value="" id="slide_order" />
-    <p>
-        <button type="submit">Update</button>
-    </p>
-</form>
+	<form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+		{{ form_widget(edit_form) }}
+		<input type="hidden" name="slide_order" value="" id="slide_order" />
+		<p>
+			<button type="submit">Update</button>
+		</p>
+	</form>
+	<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
+		Start Slideshow
+	</a>
+	<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
+		{{ form_widget(delete_form) }}
+		<button type="submit">Delete</button>
+	</form>
 </div>
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('slideshow') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
 {% endblock %}
 
 {% block javascripts %}

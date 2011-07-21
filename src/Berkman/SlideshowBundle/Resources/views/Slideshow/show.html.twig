@@ -2,6 +2,9 @@
 
 {% block body %}
 <h2>{{ entity.name }} by {{ entity.person.username }}</h2>
+<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
+	Start Slideshow
+</a>
 <div class="lightWrap">
 	<h3></h3>
 
@@ -20,25 +23,20 @@
 
 	<ul class="record_actions">
 		<li>
-			<a href="{{ path('slideshow') }}">
-				Back to the list
-			</a>
-		</li>
+		<li>
+		{% if app.user and app.user.id == entity.person.id %}
 		<li>
 			<a href="{{ path('slideshow_edit', { 'id': entity.id }) }}">
 				Edit
 			</a>
 		</li>
 		<li>
-			<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
-				Start Slideshow
-			</a>
-		<li>
 			<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
 				{{ form_widget(delete_form) }}
 				<button type="submit">Delete</button>
 			</form>
 		</li>
+		{% endif %}
 	</ul>
 </div>
 {% endblock %}

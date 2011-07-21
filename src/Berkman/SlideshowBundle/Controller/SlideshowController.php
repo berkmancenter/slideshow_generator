@@ -22,22 +22,6 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 class SlideshowController extends Controller
 {
     /**
-     * Lists all Slideshow entities.
-     *
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $entities = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
-
-        return $this->render('BerkmanSlideshowBundle:Slideshow:index.html.twig', array(
-            'entities' => $entities
-        ));
-    }
-
-
-    /**
      * Finds and displays a Slideshow entity.
      *
      */
@@ -223,6 +207,8 @@ class SlideshowController extends Controller
 
                 $em->persist($entity);
                 $em->flush();
+
+				$request->getSession()->setFlash('notice', 'Slideshow successfully updated');
 
                 return $this->redirect($this->generateUrl('slideshow_edit', array('id' => $id)));
             }
