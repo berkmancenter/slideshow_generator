@@ -96,7 +96,9 @@ class FindController extends Controller
 
 		$findResults = $request->get('findresults');
 		if (!empty($findResults['images'])) {
-			$images += $findResults['images'];
+			if (!$images)
+			    $images = array();
+			$images = $images + $findResults['images'];
 		}
 
 		if (in_array($request->get('action'), array('next', 'previous'))) {
