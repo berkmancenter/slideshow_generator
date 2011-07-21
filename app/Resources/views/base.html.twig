@@ -19,7 +19,22 @@
 				<h1>Slideshow Generator</h1>
 				<div id="utility">
 					{% block utility %}
-					{% include 'FOSUserBundle::layout.html.twig' %}
+					<div>
+						{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+							{% set username %}
+								<a href="{{ path('fos_user_profile_show') }}">
+									{{ app.user.username }}
+								</a>
+							{% endset %}
+							{{ 'layout.logged_in_as'|trans({'%username%': username}, 'FOSUserBundle')|raw }} |
+							<a href="{{ path('fos_user_security_logout') }}">
+								{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+							</a>
+						{% else %}
+							<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a> | 
+							<a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
+						{% endif %}
+					</div>
 					{% endblock %}
 				</div>
 			</div>
