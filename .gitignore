@@ -3,7 +3,6 @@
 *.orig
 .htaccess
 vendor/
-bin/
 app/cache/
 app/logs/
 parameters.ini

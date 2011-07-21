@@ -100,7 +100,7 @@ label {
 	font-size: 18px;
 	font-family: 'Cardo';
 }
-input[type=text], input[type=number] {
+input[type=text], input[type=number], input[type=password] {
 	font-size: 24px;
 	border: 3px solid #F07830;
 	border-radius: 10px;
@@ -108,7 +108,7 @@ input[type=text], input[type=number] {
 	padding: 4px 10px;
 	box-shadow: 0px 0px 7px #F07830;
 }
-button {
+button, input[type=submit] {
 	color: #FFFFF6;
 	font-size: 24px;
 	background-color: #781800;

@@ -1,0 +1,7 @@
+{% extends "BerkmanSlideshowBundle::layout.html.twig" %}
+
+{% block body %}
+
+    {{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}
+
+{% endblock body %}
