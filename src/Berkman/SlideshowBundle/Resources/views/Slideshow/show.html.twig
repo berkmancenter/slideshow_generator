@@ -1,56 +1,45 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>Slideshow</h2>
+<h2>{{ entity.name }} by {{ entity.person.username }}</h2>
+<div class="lightWrap">
+	<h3></h3>
 
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>                <td>{{ entity.id }}</td>        </tr>
-        <tr>
-            <th>Name</th>                <td>{{ entity.name }}</td>        </tr>
-        <tr>
-            <th>Slide_delay</th>                <td>{{ entity.slidedelay }}</td>        </tr>
-        <tr>
-            <th>Display_info</th>                <td>{{ entity.displayinfo }}</td>        </tr>
-    </tbody>
-</table>
+	<ol id="show_slideshow_slides" class="centered">
+		{% for slide in entity.slides %}
+			<li>
+				<a href="{{ slide.image.recordUrl }}" target="_blank"><img src="{{ slide.image.thumbnailUrl }}"/></a>
+				<dl class="metadata">
+					{% for key,value in slide.image.metadata %}
+					<dt>{{ key }}</dt><dd>{{ value }}</dd>
+					{% endfor %}
+				</dl>
+			</li>
+		{% endfor %}
+	</ol>
 
-<ol id="slides" class="centered lightWrap">
-	{% for slide in entity.slides %}
+	<ul class="record_actions">
 		<li>
-			<img src="{{ slide.image.thumbnailUrl }}"/>
-			<dl class="metadata">
-				{% for key,value in slide.image.metadata %}
-				<dt>{{ key }}</dt><dd>{{ value }}</dd>
-				{% endfor %}
-			</dl>
-			<a href="{{ slide.image.recordUrl }}" target="_blank">Go to this record</a>
+			<a href="{{ path('slideshow') }}">
+				Back to the list
+			</a>
 		</li>
-	{% endfor %}
-</ol>
-
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('slideshow') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('slideshow_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-	<li>
-		<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
-			Start Slideshow
-		</a>
-    <li>
-        <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+		<li>
+			<a href="{{ path('slideshow_edit', { 'id': entity.id }) }}">
+				Edit
+			</a>
+		</li>
+		<li>
+			<a href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">
+				Start Slideshow
+			</a>
+		<li>
+			<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
+				{{ form_widget(delete_form) }}
+				<button type="submit">Delete</button>
+			</form>
+		</li>
+	</ul>
+</div>
 {% endblock %}
 

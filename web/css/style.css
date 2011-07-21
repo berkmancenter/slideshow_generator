@@ -29,7 +29,6 @@ h1 {
 h2 {
 	font-size: 48px;
 	margin: 20px 10px;
-	text-decoration: underline;
 }
 dt {
 	font-weight: bold;
@@ -158,3 +157,18 @@ a:visited, a:active {
 	height: 140px;
 	width: 140px;
 }
+.metadata {
+	font-size: 16px;
+	text-align: left;
+}
+#show_slideshow_slides li {
+	width: 200px;
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+	padding: 20px 20px 30px;
+	background-color: #E6F7FF;
+	margin: 10px;
+	border-radius: 20px;
+}
+

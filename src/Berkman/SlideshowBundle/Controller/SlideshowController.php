@@ -189,6 +189,12 @@ class SlideshowController extends Controller
             throw $this->createNotFoundException('Unable to find Slideshow entity.');
         }
 
+		// check for update access
+		if (false === $this->get('security.context')->isGranted('EDIT', $entity))
+		{
+			throw new AccessDeniedException();
+		}
+
         $editForm   = $this->createForm(new SlideshowType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -252,6 +258,12 @@ class SlideshowController extends Controller
                     throw $this->createNotFoundException('Unable to find Slideshow entity.');
                 }
 
+				// check for update access
+				if (false === $this->get('security.context')->isGranted('DELETE', $entity))
+				{
+					throw new AccessDeniedException();
+				}
+
 				foreach ($slides as $slide) {
 					$em->remove($slide);
 				}
@@ -293,6 +305,11 @@ class SlideshowController extends Controller
 					$em->persist($image);
 					foreach ($slideshowChoice['slideshows'] as $slideshow) {
 						$slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshow);
+						// check for update access
+						if (false === $this->get('security.context')->isGranted('EDIT', $slideshow))
+						{
+							throw new AccessDeniedException();
+						}
 						$slide = new Slide($image);
 						$slideshow->addSlide($slide);
 

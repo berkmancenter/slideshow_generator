@@ -1,6 +1,6 @@
 slideshow:
     pattern:  /
-    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:index" }
+    defaults: { _controller: "BerkmanSlideshowBundle:Default:index" }
 
 slideshow_show:
     pattern:  /{id}/show
