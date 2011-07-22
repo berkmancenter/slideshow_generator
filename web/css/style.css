@@ -122,6 +122,9 @@ button, input[type=submit], .buttoned {
 	box-shadow: 0px 0px 7px #F07830;
 	margin-top: 20px;
 }
+button:hover, input[type=submit]:hover, .buttoned:hover {
+	background-color: #A60000;
+}
 a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 	color: white;
 	text-decoration: none;
