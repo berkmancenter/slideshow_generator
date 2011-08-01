@@ -159,7 +159,7 @@ class OASISFetcher implements FetcherInterface {
 			foreach ($fields as $name => $query) {
 				$node = $xpath->query($query, $recordContainer)->item(0);
 				if ($node) {
-					$metadata[$name] = $node->textContent;
+					$metadata[$name] = preg_replace('/\s+/', ' ', $node->textContent);
 				}
 			}
 		}
