@@ -4,7 +4,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class OASISFetcher implements FetcherInterface {
+class OASISFetcher extends Fetcher implements FetcherInterface {
 
 	/*
 	 * id_1 = recordId
@@ -70,18 +70,14 @@ class OASISFetcher implements FetcherInterface {
 			self::SEARCH_URL_PATTERN
 		);
 
-		$doc = new \DOMDocument();
-		$xml = $this->fetchXml($searchUrl);
-		if (!$xml) {
-			return array('images' => $images, 'totalResults' => 0);
-		}
-		$doc->loadXML($xml);
-		$totalResults = (int) $doc->getElementsByTagName('totalResults')->item(0)->textContent;
+		$xpath = $this->fetchXpath($searchUrl);
+		$totalResults = (int) $xpath->document->getElementsByTagName('totalResults')->item(0)->textContent;
 		if ($totalResults < $numResults) {
-			#throw some Exception
+			$numResults = $totalResults;
 		}
-		$xpath = new \DOMXPath($doc);
 		$noteNodes = $xpath->query('//note[@xlink:href]');
+		//$pagedObjectFetcher = new PagedObjectFetcher($this->getRepo());
+
 		foreach ($noteNodes as $noteNode) {
 			$findingAidId = substr($noteNode->getAttribute('xlink:href'), -8);
 			$findingAidUrl = str_replace(
@@ -89,18 +85,16 @@ class OASISFetcher implements FetcherInterface {
 				array($findingAidId),
 				self::FINDING_AID_XML_URL_PATTERN
 			);
-			$findingAidDoc = new \DOMDocument();
-			$findingAidXml = $this->fetchXml($findingAidUrl);
-			if (!$findingAidXml) {
-				return array('images' => $images, 'totalResults' => 0);
-			}
-			$findingAidDoc->loadXML($findingAidXml);
-			$hollisId = $findingAidDoc->getElementsByTagName('eadid')->item(0)->getAttribute('identifier');
-			$imageLinkNodes = $findingAidDoc->getElementsByTagName('dao');
+			$findingAidXpath = $this->fetchXpath($findingAidUrl);
+			$hollisId = $findingAidXpath->document->getElementsByTagName('eadid')->item(0)->getAttribute('identifier');
+			$imageLinkNodes = $findingAidXpath->document->getElementsByTagName('dao');
 			foreach ($imageLinkNodes as $imageLinkNode) {
-				$unitId = $imageLinkNode->parentNode->parentNode->parentNode->getElementsByTagName('unitid')->item(0)->textContent;
+				$unitId = $imageLinkNode->parentNode->parentNode->parentNode->getElementsByTagName('unitid')->item(0);
+				if ($unitId) {
+					$unitId = $unitId->textContent;
+				}
 				if (count($images) == $numResults) {
-					break 2;
+					#break 2;
 				}
 				$imageLink = $imageLinkNode->getAttribute('xlink:href');
 
@@ -116,8 +110,11 @@ class OASISFetcher implements FetcherInterface {
 						$images[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
 					}
 					if (strpos($response, 'Location: http://pds.') !== false) {
-						//preg_match('!Location: http://pds\.lib\.harvard\.edu/pds/view/(.*)\?.*\\r\\n!', $response, $resourceLink);
-						//$pdsIds[] = $resourceLink[1];
+						preg_match('!Location: http://pds\.lib\.harvard\.edu/pds/view/(.*)\?.*\\r\\n!', $response, $resourceLink);
+						if (isset($resourceLink[1])) {
+							//$results = $pagedObjectFetcher->getSearchResults($resourceLink[1], $startIndex, $endIndex);
+							//$images += $results['images'];
+						}
 					}
 				}
 			}
@@ -199,36 +196,4 @@ class OASISFetcher implements FetcherInterface {
 	{
 		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
-
-	/**
-	 * Fetch the XML from a given url
-	 *
-	 * @param string $url
-	 * @return string @xml
-	 */
-	private function fetchXml($url)
-	{
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-		return curl_exec($curl);
-	}
-
-	/**
-	 * Fill in the placeholders in a given URL pattern
-	 *
-	 * @param string $urlPattern
-	 * @param Berkman\SlideshowBundle\Entity\Image
-	 * @return string $url
-	 */
-	private function fillUrl($urlPattern, Entity\Image $image)
-	{
-		return str_replace(
-			array('{id-1}', '{id-2}', '{id-3}', '{id-4}', '{id-5}', '{id-6}'),
-			array($image->getId1(), $image->getId2(), $image->getId3(), $image->getId4(), $image->getId5(), $image->getId6()),
-			$urlPattern
-		);
-	}
 }

@@ -22,7 +22,7 @@ use Berkman\SlideshowBundle\Entity;
  * should be able to go back easily.
  */
 
-class PagedObjectFetcher implements FetcherInterface {
+class PagedObjectFetcher extends Fetcher implements FetcherInterface {
 
 	/*
 	 * id_1 = paged-object id plus page number
@@ -73,82 +73,8 @@ class PagedObjectFetcher implements FetcherInterface {
 	 * @param int $endIndex
 	 * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
 	 */
-	public function getSearchResults($keyword, $startIndex, $endIndex)
-	{
-		$pagedObjectId = $keyword;
-		$images = array();
-		$totalResults = 0;
-		$hollisId = '';
-		$numResults = $endIndex - $startIndex + 1;
-		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
+	public function getSearchResults($keyword, $startIndex, $endIndex) {}
 
-		$searchUrl = str_replace(
-			array('{paged-object-id}'),
-			array($pagedObjectId), 
-			self::PAGED_OBJECT_URL_PATTERN
-		);
-
-		$linksUrl = str_replace(
-			array('{paged-object-id}'),
-			array($pagedObjectId), 
-			self::PAGED_OBJECT_LINKS_URL_PATTERN
-		);
-
-		$xml = $this->fetchXml($searchUrl);
-		$linksXml = $this->fetchXml($linksUrl);
-
-		if (!$xml || !$linksXml) {
-			return array('images' => $images, 'totalResults' => 0);
-		}
-
-		libxml_use_internal_errors(true);
-
-		$linksDoc = new \DOMDocument();
-		$linksDoc->loadHTML($linksXml);
-		$linksXpath = new \DOMXPath($linksDoc);
-		$hollisLine = $linksXpath->query('//a[@class="citLinksLine"][contains(., "HOLLIS")]')->item(0);
-		if ($hollisLine) {
-			$hollisId = trim(substr($hollisLine->textContent, stripos('HOLLIS', $hollisLine->textContent) + 6));
-		}
-
-		$doc = new \DOMDocument();
-		$doc->loadHTML($xml);
-		$xpath = new \DOMXPath($doc);
-
-		$links = $xpath->query('//a[@class="stdLinks"]');
-		foreach ($links as $link) {
-			$pageId = array();
-			$imageId = array();
-
-			preg_match('!.*/pds/view/(\d+\?n=\d+)&.*!', $link->getAttribute('href'), $pageId);
-			if (isset($pageId[1])) {
-				$pageId = $pageId[1];
-			}
-			else {
-				error_log('link src: '.$link->getAttribute('href'));
-			}
-
-			$thumbnail = $xpath->query('../following-sibling::*[1]//img[@class="thumbLinks"]', $link)->item(0);
-			if ($thumbnail) {
-				preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\?.*!', $thumbnail->getAttribute('src'), $imageId);
-				if (isset($imageId[1])) {
-					$imageId = $imageId[1];
-				}
-				else {
-					error_log('image src: '.$thumbnail->getAttrbite('src'));
-				}
-			}
-			else {
-			}
-
-			if (!empty($hollisId) && !empty($pageId) && !empty($imageId)) {
-				error_log('hollis id: '.$hollisId.' - page id: '.$pageId.' - image id: '.$imageId);
-				$images[] = new Entity\Image($this->getRepo(), $hollisId, $pageId, $imageId);
-			}
-		}
-
-		return array('images' => $images, 'totalResults' => $totalResults);
-	}
 
 	/**
 	 * Get the metadata for a given image
@@ -169,13 +95,7 @@ class PagedObjectFetcher implements FetcherInterface {
 		$unitId = $image->getId4();
 
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
-		$response = $this->fetchXml($metadataUrl);
-		if (!$response) {
-			return array();
-		}
-		$doc = new \DOMDocument();
-		$doc->loadXML($response);
-		$xpath = new \DOMXPath($doc);
+		$xpath = $this->fetchXml($metadataUrl);
 		$xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
 		$recordContainer = $xpath->query('//ns:unitid[.="'.$unitId.'"]')->item(0);
 		if ($recordContainer) {
@@ -223,36 +143,4 @@ class PagedObjectFetcher implements FetcherInterface {
 	{
 		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
-
-	/**
-	 * Fetch the XML from a given url
-	 *
-	 * @param string $url
-	 * @return string @xml
-	 */
-	private function fetchXml($url)
-	{
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-		return curl_exec($curl);
-	}
-
-	/**
-	 * Fill in the placeholders in a given URL pattern
-	 *
-	 * @param string $urlPattern
-	 * @param Berkman\SlideshowBundle\Entity\Image
-	 * @return string $url
-	 */
-	private function fillUrl($urlPattern, Entity\Image $image)
-	{
-		return str_replace(
-			array('{id-1}', '{id-2}', '{id-3}', '{id-4}', '{id-5}', '{id-6}'),
-			array($image->getId1(), $image->getId2(), $image->getId3(), $image->getId4(), $image->getId5(), $image->getId6()),
-			$urlPattern
-		);
-	}
 }

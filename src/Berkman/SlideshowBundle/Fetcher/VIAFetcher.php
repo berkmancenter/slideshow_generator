@@ -4,7 +4,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class VIAFetcher implements FetcherInterface {
+class VIAFetcher extends Fetcher implements FetcherInterface {
 
 	/*
 	 * id_1 = recordId
@@ -70,17 +70,12 @@ class VIAFetcher implements FetcherInterface {
 				self::SEARCH_URL_PATTERN
 			);
 
-			$doc = new \DOMDocument();
-			$xml = $this->fetchXml($searchUrl);
-			if (!$xml) {
-				return array('images' => $images, 'totalResults' => 0);
-			}
-			$doc->loadXML($xml);
-			$totalResults = (int) $doc->getElementsByTagName('totalResults')->item(0)->textContent;
+			$xpath = $this->fetchXpath($searchUrl);
+			$totalResults = (int) $xpath->document->getElementsByTagName('totalResults')->item(0)->textContent;
 			if ($totalResults < $numResults) {
-				#throw some Exception
+				$numResults = $totalResults;
 			}
-			$nodeList = $doc->getElementsByTagName('item');
+			$nodeList = $xpath->document->getElementsByTagName('item');
 			foreach ($nodeList as $image) {
 				if (count($images) == $numResults) {
 					//break;
@@ -95,28 +90,22 @@ class VIAFetcher implements FetcherInterface {
 				// Search for sub-images (wtf).
 				$numberOfImages = $image->getElementsByTagName('numberofimages')->item(0);
 				if ($numberOfImages && $numberOfImages->textContent > 1) {
-					$xml = $this->fetchXml('http://webservices.lib.harvard.edu/rest/mods/via/'.$recordId);
-					if ($xml === FALSE) {
-						#throw some exception
-					}
-					$metadataDoc = new \DOMDocument();
-					$metadataDoc->loadXML($xml);
-					$xpath = new \DOMXPath($metadataDoc);
-					$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
-					$constituents = $xpath->query("//mods:relatedItem[@type='constituent']");
+					$imageXpath = $this->fetchXpath('http://webservices.lib.harvard.edu/rest/mods/via/'.$recordId);
+					$imageXpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+					$constituents = $imageXpath->query("//mods:relatedItem[@type='constituent']");
 					foreach ($constituents as $constituent) {
 						if (count($images) == $numResults) {
 							//break;
 						}
-						$fullImage = $xpath->query(".//mods:location/mods:url[@displayLabel='Full Image'][@note='unrestricted']", $constituent)->item(0);
+						$fullImage = $imageXpath->query(".//mods:location/mods:url[@displayLabel='Full Image'][@note='unrestricted']", $constituent)->item(0);
 						if ($fullImage) {
 							$componentId = substr($fullImage->textContent, strpos($fullImage->textContent, ':', 5) + 1);
 							$imageId = $componentId;
-							$thumbnail = $xpath->query(".//mods:location/mods:url[@displayLabel='Thumbnail']", $constituent)->item(0);
+							$thumbnail = $imageXpath->query(".//mods:location/mods:url[@displayLabel='Thumbnail']", $constituent)->item(0);
 							if ($thumbnail) {
 								$thumbnailId = substr($thumbnail->textContent, strpos($thumbnail->textContent, ':', 5) + 1).'?height=150&width=150';
 							}
-							$recordIdentifier = $xpath->query('.//mods:recordIdentifier', $constituent)->item(0);
+							$recordIdentifier = $imageXpath->query('.//mods:recordIdentifier', $constituent)->item(0);
 							$metadataSubId = $recordIdentifier->textContent;
 							$images[] = new Entity\Image($this->getRepo(), $recordId, $componentId, $metadataId, $metadataSubId, $imageId, $thumbnailId);
 						}
@@ -166,13 +155,7 @@ class VIAFetcher implements FetcherInterface {
 			$metadataId = $image->getId4();
 		}
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
-		$response = $this->fetchXml($metadataUrl);
-		if (!$response) {
-			return array();
-		}
-		$doc = new \DOMDocument();
-		$doc->loadXML($response);
-		$xpath = new \DOMXPath($doc);
+		$xpath = $this->fetchXpath($metadataUrl);
 		$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
 		$recordIdent = $xpath->query("//mods:recordIdentifier[.='".$metadataId."']")->item(0);
 		if ($recordIdent) {
@@ -221,36 +204,4 @@ class VIAFetcher implements FetcherInterface {
 	{
 		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
-
-	/**
-	 * Fetch the XML from a given url
-	 *
-	 * @param string $url
-	 * @return string @xml
-	 */
-	private function fetchXml($url)
-	{
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-		#curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-		return curl_exec($curl);
-	}
-
-	/**
-	 * Fill in the placeholders in a given URL pattern
-	 *
-	 * @param string $urlPattern
-	 * @param Berkman\SlideshowBundle\Entity\Image
-	 * @return string $url
-	 */
-	private function fillUrl($urlPattern, Entity\Image $image)
-	{
-		return str_replace(
-			array('{id-1}', '{id-2}', '{id-3}', '{id-4}', '{id-5}', '{id-6}'),
-			array($image->getId1(), $image->getId2(), $image->getId3(), $image->getId4(), $image->getId5(), $image->getId6()),
-			$urlPattern
-		);
-	}
 }
