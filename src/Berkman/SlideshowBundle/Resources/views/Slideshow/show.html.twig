@@ -12,6 +12,12 @@
 			<button type="submit">Delete</button>
 		</form>
 		{% endif %}
+		<div>
+			<span>Copy this code to embed this slideshow:</span>
+			<textarea id="embed_code" readonly="readonly">
+	{{- '<iframe src="' ~ url('slideshow_slideshow', { 'id' : entity.id }) ~ '" width="400" height="300" frameborder="0"></iframe>' -}} 
+			</textarea>
+		</div>
 	</div>
 	<ol id="show_slideshow_slides" class="centered">
 		{% for slide in entity.slides %}
