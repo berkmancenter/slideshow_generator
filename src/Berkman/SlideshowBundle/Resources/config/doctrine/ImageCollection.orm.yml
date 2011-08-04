@@ -1,0 +1,11 @@
+Berkman\SlideshowBundle\Entity\ImageCollection:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  manyToMany:
+    images:
+      targetEntity: Image
+      mappedBy: collections
