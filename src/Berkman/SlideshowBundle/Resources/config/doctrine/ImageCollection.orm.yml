@@ -5,6 +5,15 @@ Berkman\SlideshowBundle\Entity\ImageCollection:
       type: integer
       generator:
         strategy: AUTO
+  fields:
+    id_1:
+      type: string
+    id_2:
+      type: string
+      nullable: TRUE
+  manyToOne:
+    from_repo:
+      targetEntity: Repo
   manyToMany:
     images:
       targetEntity: Image

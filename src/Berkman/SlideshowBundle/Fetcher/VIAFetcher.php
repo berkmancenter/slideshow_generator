@@ -204,4 +204,26 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 	{
 		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
+
+	/**
+	 * Get the name of an image collection
+	 *
+	 * @param Berkman\SlideshowBundle\Entity\ImageCollection $collection
+	 * @return string $name
+	 */
+	public function getImageCollectionName(Entity\ImageCollection $collection)
+	{
+
+	}
+
+	/**
+	 * Get the cover image of an image collection
+	 *
+	 * @param Berkman\SlideshowBundle\Entity\ImageCollection $collection
+	 * @return Berkman\SlideshowBundle\Entity\Image $image
+	 */
+	public function getImageCollectionCover(Entity\ImageCollection $collection)
+	{
+
+	}
 }

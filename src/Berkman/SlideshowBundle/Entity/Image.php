@@ -278,4 +278,29 @@ class Image
 			'fromRepo' => $this->getFromRepo()->getId()
 		)));
 	}
+    /**
+     * @var Berkman\SlideshowBundle\Entity\ImageCollection
+     */
+    private $collections;
+
+
+    /**
+     * Add collections
+     *
+     * @param Berkman\SlideshowBundle\Entity\ImageCollection $collections
+     */
+    public function addCollections(\Berkman\SlideshowBundle\Entity\ImageCollection $collections)
+    {
+        $this->collections[] = $collections;
+    }
+
+    /**
+     * Get collections
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getCollections()
+    {
+        return $this->collections;
+    }
 }
