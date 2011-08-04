@@ -14,4 +14,9 @@ class RepoType extends AbstractType
             ->add('name')
         ;
     }
+
+	public function getName()
+	{
+		return 'repo';
+	}
 }

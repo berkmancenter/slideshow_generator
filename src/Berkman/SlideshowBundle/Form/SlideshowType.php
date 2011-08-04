@@ -28,4 +28,9 @@ class SlideshowType extends AbstractType
 			));
 		}
     }
+
+	public function getName()
+	{
+		return 'slideshow';
+	}
 }

@@ -30,4 +30,9 @@ class SlideshowChoiceType extends AbstractType
 			}
 		));
 	}
+
+	public function getName()
+	{
+		return 'slideshowchoice';
+	}
 }

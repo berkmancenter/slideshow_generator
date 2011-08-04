@@ -25,4 +25,9 @@ class FindResultsType extends AbstractType
 			))
         ;
     }
+
+	public function getName()
+	{
+		return 'findresults';
+	}
 }

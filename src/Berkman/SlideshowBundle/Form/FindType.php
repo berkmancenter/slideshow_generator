@@ -20,4 +20,9 @@ class FindType extends AbstractType
 			)
         ;
     }
+
+	public function getName()
+	{
+		return 'find';
+	}
 }
