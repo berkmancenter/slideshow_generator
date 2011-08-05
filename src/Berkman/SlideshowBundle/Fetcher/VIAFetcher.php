@@ -114,6 +114,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 						else {
 							$imageCollection = new Entity\ImageCollection($this->getRepo(), $recordId);
 							$imageCollection->addImages($image);
+							error_log('have collection of '.$numberOfImages->textContent.' images with id ' . $recordId);
 							$results[] = $imageCollection;
 						}
 					}
@@ -216,25 +217,39 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 	 */
 	public function fetchImageCollectionResults(Entity\ImageCollection $collection, $startIndex, $endIndex)
 	{
+		$results = array();
+		$recordId = $collection->getId1();
+		$metadataId = $recordId;
+		$numResults = $endIndex - $startIndex + 1;
 		$imageXpath = $this->fetchXpath('http://webservices.lib.harvard.edu/rest/mods/via/'.$recordId);
 		$imageXpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
-		$constituents = $imageXpath->query("//mods:relatedItem[@type='constituent']");
+		$constituents = $imageXpath->query("//mods:location");
 		foreach ($constituents as $constituent) {
-			if (count($images) == $numResults) {
+			if (count($results) == $numResults) {
 				//break;
 			}
-			$fullImage = $imageXpath->query(".//mods:location/mods:url[@displayLabel='Full Image'][@note='unrestricted']", $constituent)->item(0);
+			$fullImage = $imageXpath->query(".//mods:url[@displayLabel='Full Image'][@note='unrestricted']", $constituent)->item(0);
 			if ($fullImage) {
 				$componentId = substr($fullImage->textContent, strpos($fullImage->textContent, ':', 5) + 1);
 				$imageId = $componentId;
-				$thumbnail = $imageXpath->query(".//mods:location/mods:url[@displayLabel='Thumbnail']", $constituent)->item(0);
+				$thumbnail = $imageXpath->query(".//mods:url[@displayLabel='Thumbnail']", $constituent)->item(0);
 				if ($thumbnail) {
 					$thumbnailId = substr($thumbnail->textContent, strpos($thumbnail->textContent, ':', 5) + 1).'?height=150&width=150';
 				}
-				$recordIdentifier = $imageXpath->query('.//mods:recordIdentifier', $constituent)->item(0);
+				$recordIdentifier = $imageXpath->query('.//mods:recordIdentifier')->item(0);
 				$metadataSubId = $recordIdentifier->textContent;
-				$images[] = new Entity\Image($this->getRepo(), $recordId, $componentId, $metadataId, $metadataSubId, $imageId, $thumbnailId);
+				$results[] = new Entity\Image(
+					$this->getRepo(),
+					$recordId,
+					$componentId,
+					$metadataId,
+					$metadataSubId,
+					$imageId,
+					$thumbnailId
+				);
 			}
 		}
+
+		return array('results' => $results, 'totalResults' => 0);
 	}
 }

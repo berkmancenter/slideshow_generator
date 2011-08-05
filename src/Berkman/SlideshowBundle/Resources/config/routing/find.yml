@@ -2,6 +2,10 @@ find_index:
     pattern: /
     defaults: { _controller: "BerkmanSlideshowBundle:Find:index" }
 
+find_collection:
+    pattern: /collection/{repo}/{collectionId}/{page}
+    defaults: { _controller: "BerkmanSlideshowBundle:Find:showCollection", page: 1 }
+
 find_show:
     pattern:  /{repos}/{keyword}/{page}
     defaults: { _controller: "BerkmanSlideshowBundle:Find:show", page: 1 }
@@ -10,3 +14,4 @@ find_submit:
     pattern: /submit
     defaults: { _controller: "BerkmanSlideshowBundle:Find:submit" }
     requirements: { _method: post }
+

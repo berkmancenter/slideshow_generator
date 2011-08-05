@@ -23,7 +23,7 @@ class Fetcher {
 		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 		$response = curl_exec($curl);
 		if (!$response) {
-			throw new ErrorException($url . ' did not return a valid response.');
+			throw new \ErrorException($url . ' did not return a valid response.');
 		}
 		$doc->loadXML($response);
 		$xpath = new \DOMXPath($doc);

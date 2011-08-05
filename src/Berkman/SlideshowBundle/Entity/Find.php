@@ -98,7 +98,35 @@ class Find
      *
      * @return array $results
      */
-	public function getImages($keyword = null, $page = null)
+	public function findCollectionResults($collection, $page = null)
+	{
+		$images = array();
+		$totalResults = 0;
+		$firstIndex = $page * self::RESULTS_PER_PAGE - self::RESULTS_PER_PAGE;
+		$lastIndex = $firstIndex + self::RESULTS_PER_PAGE - 1;
+
+		if (count($collection->getImages()) > 1) {
+			$images = array_slice($collection->getImages(), $firstIndex, $lastIndex - $firstIndex + 1);
+			$totalResults = count($collection->getImages());
+		}
+		else {
+			$searchResults = $collection->getRepo()->getFetcher()->fetchImageCollectionResults($collection, $firstIndex, $lastIndex);
+			$images = $searchResults['results'];
+			$totalResults = $searchResults['totalResults'];
+		}
+
+		$this->totalResults = $totalResults;
+		$this->images = $images;
+
+		return array('results' => $images, 'totalResults' => $totalResults);
+	}
+
+    /**
+     * Get images given a keyword and page
+     *
+     * @return array $results
+     */
+	public function findResults($keyword = null, $page = null)
 	{
 		if (($keyword == null || $keyword == $this->keyword) && $page == $this->currentPage) {
 			return $this->images;
@@ -112,7 +140,7 @@ class Find
 		else {
 			#throw exception
 		}
-		$images = array();
+		$results = array();
 		$totalResults = 0;
 		$resultsPerRepo = floor(self::RESULTS_PER_PAGE / count($this->repos));
 		$reposFirstIndex = $page * $resultsPerRepo - $resultsPerRepo;
@@ -126,14 +154,14 @@ class Find
 			else {
 				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
 			}
-			$images += $searchResults['results'];
+			$results += $searchResults['results'];
 			$totalResults += $searchResults['totalResults'];
 		}
 
 		$this->totalResults = $totalResults;
-		$this->images = $images;
+		$this->images = $results;
 
-		return $images;
+		return $results;
 	}
 
 	public function __construct($repos = null)

@@ -69,10 +69,15 @@ class FindController extends Controller
 		}
 
 		$finder = new Entity\Find($repos);
-		$images = $finder->getImages($keyword, $page);
+		$results = $finder->findResults($keyword, $page);
 
-		foreach ($images as $image) {
-			$imageChoices[strval($image)] = $image->getThumbnailUrl();
+		foreach ($results as $result) {
+			if ($result instanceof Entity\Image) {
+				$imageChoices[strval($result)] = $result->getThumbnailUrl();
+			}
+			elseif ($result instanceof Entity\ImageCollection) {
+				$imageChoices[strval($result->getCover())] = $result->getCover()->getThumbnailUrl();
+			}
 		}
 
 		$findResults->setImageChoices($imageChoices);
@@ -115,4 +120,44 @@ class FindController extends Controller
 
 		return $response;
 	}
+
+    public function showCollectionAction($repo, $collectionId, $page)
+    {
+		$images = array();
+		$imageChoices = array();
+		$findResults = new FindResultsType();
+
+		$em = $this->getDoctrine()->getEntityManager();
+		$repoString = $repo;
+		$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($repo);
+		$collection = new Entity\ImageCollection($repo, $collectionId);
+		$finder = new Entity\Find;
+
+		if (!$repo) {
+			throw $this->createNotFoundException('Unable to find Repo.');
+		}
+
+		$output = $finder->findCollectionResults($collection, $page);
+
+		foreach ($output['results'] as $result) {
+			if ($result instanceof Entity\Image) {
+				$imageChoices[strval($result)] = $result->getThumbnailUrl();
+			}
+			elseif ($result instanceof Entity\ImageCollection) {
+				$imageChoices[strval($result->getCover())] = $result->getCover()->getThumbnailUrl();
+			}
+		}
+
+		$findResults->setImageChoices($imageChoices);
+
+		$viewParams = array(
+			'totalResults' => $finder->getTotalResults(),
+			'form' => $this->createForm($findResults)->createView(),
+			'keyword' => 'house',
+			'repos' => $repoString,
+			'page' => $page
+		);
+
+		return $this->render('BerkmanSlideshowBundle:Find:show.html.twig', $viewParams);
+    }
 }
