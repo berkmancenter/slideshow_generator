@@ -70,7 +70,7 @@
 						url: '{{ slide.image.recordUrl }}',
 						metadata: {
 							{% for key, value in slide.image.metadata %}
-							'{{ key }}': '{{ value }}' {{ not loop.last ? ',' : '' }}
+							'{{ key }}': '{{- value -}}' {{ not loop.last ? ',' : '' }}
 							{% endfor %}
 						}
 					}{{ not loop.last ? ',' : '' }}
