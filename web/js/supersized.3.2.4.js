@@ -152,7 +152,7 @@
 				imgPrev.appendTo(slidePrev).wrap('<a ' + imageLink + linkTarget + '></a>').parent().parent().addClass('image-loading prevslide');
 				
 				imgPrev.load(function(){
-					$(this).data('origWidth', $(this).width()).data('origHeight', $(this).height());
+                    base._origDim($(this));
 					base.resizeNow();	// Resize background image
 				});	// End Load
 			} else {
@@ -184,7 +184,7 @@
 				imgNext.appendTo(slideNext).wrap('<a ' + imageLink + linkTarget + '></a>').parent().parent().addClass('image-loading');
 				
 				imgNext.load(function(){
-					$(this).data('origWidth', $(this).width()).data('origHeight', $(this).height());
+                    base._origDim($(this));
 					base.resizeNow();	// Resize background image
 				});	// End Load
 			}
@@ -387,8 +387,8 @@
 						    		thisSlide.height(thisSlide.width() * ratio);
 								}
 							}else{	// Otherwise, resize as normal
-								thisSlide.width(browserwidth);
-								thisSlide.height(browserwidth * ratio);
+                                thisSlide.width(Math.min(thisSlide.data('origWidth'), browserwidth));
+								thisSlide.height(thisSlide.width() * ratio);
 							}
 						}
 					};
@@ -398,7 +398,7 @@
 							if(thisSlide.height() < browserheight){
 								if (thisSlide.height() / ratio >= base.options.min_width){
 									thisSlide.height(base.options.min_height);
-									thisSlide.width(thisSlide.height() / ratio);
+									thisSlide.width(browserheight / ratio);
 								}else{
 									resizeWidth(true);
 								}
@@ -413,8 +413,8 @@
 						    		thisSlide.height(thisSlide.width() * ratio);
 								}
 							}else{	// Otherwise, resize as normal
-								thisSlide.height(browserheight);
-								thisSlide.width(browserheight / ratio);
+                                thisSlide.height(Math.min(thisSlide.data('origHeight'), browserheight));
+								thisSlide.width(thisSlide.height() / ratio);
 							}
 						}
 					};
@@ -817,7 +817,9 @@
 		/* Get Original Dimensions
 		----------------------------*/
 		base._origDim = function(targetSlide){
-			targetSlide.data('origWidth', targetSlide.width()).data('origHeight', targetSlide.height());
+            $("<img/>").attr("src", $(targetSlide).attr("src")).load(function() {
+                targetSlide.data('origWidth', this.width).data('origHeight', this.height);
+            });
 		};
 		
 		
