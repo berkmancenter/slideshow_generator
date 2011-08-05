@@ -12,7 +12,7 @@ Berkman\SlideshowBundle\Entity\ImageCollection:
       type: string
       nullable: TRUE
   manyToOne:
-    from_repo:
+    repo:
       targetEntity: Repo
   manyToMany:
     images:

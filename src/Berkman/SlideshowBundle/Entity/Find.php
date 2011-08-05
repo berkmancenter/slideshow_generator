@@ -121,12 +121,12 @@ class Find
 
 		foreach ($this->repos as $repo) {
 			if ($repo == end($this->repos)) {
-				$searchResults = $repo->getSearchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
+				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
 			}
 			else {
-				$searchResults = $repo->getSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
+				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
 			}
-			$images += $searchResults['images'];
+			$images += $searchResults['results'];
 			$totalResults += $searchResults['totalResults'];
 		}
 

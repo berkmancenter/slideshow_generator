@@ -29,10 +29,20 @@ class ImageCollection
      */
     private $id_2;
 
-    public function __construct()
-    {
+	/**
+	 * Construct an image collection from its parts
+	 *
+	 * @param Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @param string $id1
+	 * @param string $id2
+	 */
+	public function __construct(Repo $fromRepo, $id1, $id2 = null)
+	{
+		$this->setRepo($fromRepo);
+		$this->setId1($id1);
+		$this->setId2($id2);
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+	}
     
     /**
      * Get id
@@ -62,31 +72,6 @@ class ImageCollection
     public function getImages()
     {
         return $this->images;
-    }
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Repo
-     */
-    private $from_repo;
-
-
-    /**
-     * Set from_repo
-     *
-     * @param Berkman\SlideshowBundle\Entity\Repo $fromRepo
-     */
-    public function setFromRepo(\Berkman\SlideshowBundle\Entity\Repo $fromRepo)
-    {
-        $this->from_repo = $fromRepo;
-    }
-
-    /**
-     * Get from_repo
-     *
-     * @return Berkman\SlideshowBundle\Entity\Repo 
-     */
-    public function getFromRepo()
-    {
-        return $this->from_repo;
     }
 
     /**
@@ -128,4 +113,39 @@ class ImageCollection
     {
         return $this->id_2;
     }
+    /**
+     * @var Berkman\SlideshowBundle\Entity\Repo
+     */
+    private $repo;
+
+
+    /**
+     * Set repo
+     *
+     * @param Berkman\SlideshowBundle\Entity\Repo $repo
+     */
+    public function setRepo(\Berkman\SlideshowBundle\Entity\Repo $repo)
+    {
+        $this->repo = $repo;
+    }
+
+    /**
+     * Get repo
+     *
+     * @return Berkman\SlideshowBundle\Entity\Repo 
+     */
+    public function getRepo()
+    {
+        return $this->repo;
+    }
+
+	/**
+	 * Get the cover image of this collection
+	 *
+	 * @return Berkman\SlideshowBundle\Entity\Image $image
+	 */
+	public function getCover()
+	{
+		return $this->images[0];
+	}
 }

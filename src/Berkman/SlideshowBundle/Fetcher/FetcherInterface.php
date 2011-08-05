@@ -7,8 +7,8 @@ use Berkman\SlideshowBundle\Entity;
 interface FetcherInterface {
 	public function __construct(Entity\Repo $repo);
 	public function getRepo();
-	public function getSearchResults($keyword, $startIndex, $endIndex);
-	public function getMetadata(Entity\Image $image);
+	public function fetchSearchResults($keyword, $startIndex, $endIndex);
+	public function fetchImageMetadata(Entity\Image $image);
 	public function getImageUrl(Entity\Image $image);
 	public function getThumbnailUrl(Entity\Image $image);
 	public function getRecordUrl(Entity\Image $image);

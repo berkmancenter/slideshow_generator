@@ -227,7 +227,7 @@ class Image
 
 	public function getMetadata()
 	{
-		return $this->getFromRepo()->getFetcher()->getMetadata($this);
+		return $this->getFromRepo()->getFetcher()->getImageMetadata($this);
 	}
 
 	/**

@@ -6,5 +6,5 @@ use Berkman\SlideshowBundle\Entity;
 
 interface CollectionFetcherInterface {
 	public function getImageCollectionName(Entity\ImageCollection $collection);
-	public function getImageCollectionCover(Entity\ImageCollection $collection);
+	public function fetchImageCollectionResults(Entity\ImageCollection $collection);
 }
