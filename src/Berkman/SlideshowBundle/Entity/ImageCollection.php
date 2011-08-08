@@ -148,4 +148,19 @@ class ImageCollection
 	{
 		return $this->images[0];
 	}
+
+    /**
+     * Get the thumbnail image URL to represent this image collection (for search results form)
+     *
+     * @return string $url
+     */
+    public function getCoverUrl()
+    {
+        if ($this->getCover()) {
+        return $this->getCover()->getThumbnailUrl();
+        }
+        else {
+            return '';
+        }
+    }
 }

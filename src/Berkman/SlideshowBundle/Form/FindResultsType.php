@@ -4,22 +4,44 @@ namespace Berkman\SlideshowBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Berkman\SlideshowBundle\Entity;
 
 class FindResultsType extends AbstractType
 {
 
-	private $imageChoices = array();
+	private $imageResults = array();
 
-	public function setImageChoices(array $imageChoices)
+	private $imageCollectionResults = array();
+
+	public function setResults(array $results)
 	{
-		$this->imageChoices = $imageChoices;
+		foreach ($results as $result) {
+			if ($result instanceof Entity\Image) {
+                $this->imageResults[] = $result;
+			}
+			elseif ($result instanceof Entity\ImageCollection) {
+                $this->imageCollectionResults[] = $result;
+			}
+		}
 	}
 
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-			->add('images', 'choice', array(
-				'choices' => $this->imageChoices,
+			->add('images', 'entity', array(
+                'class' => 'Berkman\\SlideshowBundle\\Entity\\Image',
+                'property' => 'thumbnailUrl',
+				'choices' => $this->imageResults,
+				'multiple' => true,
+				'expanded' => true
+			))
+        ;
+
+        $builder
+			->add('imageCollections', 'entity', array(
+                'class' => 'Berkman\\SlideshowBundle\\Entity\\ImageCollection',
+                'property' => 'coverUrl',
+				'choices' => $this->imageCollectionResults,
 				'multiple' => true,
 				'expanded' => true
 			))

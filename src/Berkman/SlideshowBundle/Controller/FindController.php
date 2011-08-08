@@ -70,17 +70,12 @@ class FindController extends Controller
 
 		$finder = new Entity\Find($repos);
 		$results = $finder->findResults($keyword, $page);
+        foreach ($results as $result) {
+            $em->persist($result);
+        }
+        $em->flush();
 
-		foreach ($results as $result) {
-			if ($result instanceof Entity\Image) {
-				$imageChoices[strval($result)] = $result->getThumbnailUrl();
-			}
-			elseif ($result instanceof Entity\ImageCollection) {
-				$imageChoices[strval($result->getCover())] = $result->getCover()->getThumbnailUrl();
-			}
-		}
-
-		$findResults->setImageChoices($imageChoices);
+		$findResults->setResults($results);
 
 		$viewParams = array(
 			'totalResults' => $finder->getTotalResults(),
@@ -121,23 +116,21 @@ class FindController extends Controller
 		return $response;
 	}
 
-    public function showCollectionAction($repo, $collectionId, $page)
+    public function showCollectionAction($collectionId, $page)
     {
 		$images = array();
 		$imageChoices = array();
 		$findResults = new FindResultsType();
 
 		$em = $this->getDoctrine()->getEntityManager();
-		$repoString = $repo;
-		$repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($repo);
-		$collection = new Entity\ImageCollection($repo, $collectionId);
+		$collection = $em->getRepository('BerkmanSlideshowBundle:ImageCollection')->find($collectionId);
 		$finder = new Entity\Find;
 
-		if (!$repo) {
-			throw $this->createNotFoundException('Unable to find Repo.');
+		if (!$collection) {
+			throw $this->createNotFoundException('Unable to find Collection.');
 		}
 
-		$output = $finder->findCollectionResults($collection, $page);
+		$output = $finder->findImageCollectionResults($collection, $page);
 
 		foreach ($output['results'] as $result) {
 			if ($result instanceof Entity\Image) {
@@ -148,13 +141,13 @@ class FindController extends Controller
 			}
 		}
 
-		$findResults->setImageChoices($imageChoices);
+		$findResults->setResults($imageChoices);
 
 		$viewParams = array(
 			'totalResults' => $finder->getTotalResults(),
 			'form' => $this->createForm($findResults)->createView(),
 			'keyword' => 'house',
-			'repos' => $repoString,
+			'repos' => $collection->getRepo()->getId(),
 			'page' => $page
 		);
 

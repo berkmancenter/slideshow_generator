@@ -3,7 +3,7 @@ find_index:
     defaults: { _controller: "BerkmanSlideshowBundle:Find:index" }
 
 find_collection:
-    pattern: /collection/{repo}/{collectionId}/{page}
+    pattern: /collection/{collectionId}/{page}
     defaults: { _controller: "BerkmanSlideshowBundle:Find:showCollection", page: 1 }
 
 find_show:

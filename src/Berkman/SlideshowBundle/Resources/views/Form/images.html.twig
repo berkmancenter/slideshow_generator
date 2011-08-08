@@ -11,6 +11,19 @@
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
 
+{% block _findresults_imageCollections_row %}
+{% spaceless %}
+        <ol {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+			<a href="{{ path('find_collection', { 'collectionId': child.vars.value }) }}"><li class="image">
+            {{ image_label(child) }}
+			</li>
+            </a>
+        {% endfor %}
+        </ol>
+{% endspaceless %}
+{% endblock _findresults_imageCollections_row %}
+
 {% block _findresults_images_row %}
 {% spaceless %}
 	{{ block('_slideshow_slides_row') }}

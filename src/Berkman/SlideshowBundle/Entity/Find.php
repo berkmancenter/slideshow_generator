@@ -6,7 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Berkman\SlideshowBundle\Entity\Find
+ * Berkman\SlideshowBundle\Entity\Finder
+ *
+ * Note: The results returned and stored by this class can be of two types - images, or image collections
  */
 class Find
 {
@@ -14,34 +16,57 @@ class Find
 	const RESULTS_PER_PAGE = 25;
 
     /**
-     * @var string $keyword
+     * @var string $keyword The keyword for which the user is searching 
      */
     private $keyword;
 
     /**
-     * @var array $repos
+     * @var array $repos An array of the repositories under considering in the current search
      */
     private $repos;
 
 	/**
 	 * @var array An array that keeps track of various repo positions
+     *
+     * This is of the form array('repo-id' => array('startIndex' => 0, 'endIndex' => 24), ...)
 	 */
-	private $repoPositions;
+	private $repoIndexes;
 
     /**
-     * @var array $images
+     * @var array $selectedResults The results that the user has selected to add to a slideshow
      */
-    private $images;
+    private $selectedResults;
 
 	/**
-	 * @var int $currentPage
+	 * @var int $currentPage The number of the current page
 	 */
 	private $currentPage;
 
+    /**
+     * @var array $currentResults An array of the results currently being considered by the user
+     */
+    private $currentResults;
+
 	/**
-	 * @var int $numResults
+	 * @var int $totalResults The number of total results of the search
 	 */
 	private $totalResults;
+
+    /**
+     * Create the finder object 
+     *
+     * @param array of Berkman\SlideshowBundle\Entity\Repo 
+     */
+	public function __construct($repos = null)
+	{
+		if ($repos) {
+			$this->repos = $repos;
+            foreach ($repos as $repo) {
+                $this->repoIndexes[$repo->getId()] = array('startIndex' => 0, 'endIndex' => 0);
+            }
+		}
+		$this->currentPage = 1;
+	}
 
     /**
      * Set keyword
@@ -61,16 +86,6 @@ class Find
     public function getKeyword()
     {
         return $this->keyword;
-    }
-
-    /**
-     * Get total number of results
-     *
-     * @return int $numResults
-     */
-    public function getTotalResults()
-    {
-        return $this->totalResults;
     }
 
     /**
@@ -94,11 +109,73 @@ class Find
     }
 
     /**
+     * Get total number of results
+     *
+     * @return int $numResults
+     */
+    public function getTotalResults()
+    {
+        return $this->totalResults;
+    }
+
+    /**
      * Get images given a keyword and page
      *
      * @return array $results
      */
-	public function findCollectionResults($collection, $page = null)
+	public function findResults($keyword = null, $page = null)
+	{
+		if (($keyword == null || $keyword == $this->keyword) && $page == $this->currentPage) {
+			return $this->currentResults;
+		}
+		if (empty($keyword) && !empty($this->keyword)) {
+			$keyword = $this->keyword;
+		}
+		elseif (empty($this->keyword) && !empty($keyword)) {
+			$this->keyword = $keyword;
+		}
+		else {
+			throw new \ErrorException('No keyword set for search');
+		}
+		$results = array();
+		$totalResults = 0;
+		$resultsPerRepo = floor(self::RESULTS_PER_PAGE / count($this->repos));
+		$reposFirstIndex = $page * $resultsPerRepo - $resultsPerRepo;
+		$reposLastIndex = $reposFirstIndex + $resultsPerRepo - 1;
+		$lastRepoLastIndex = $reposLastIndex + self::RESULTS_PER_PAGE % ($resultsPerRepo * count($this->repos));
+
+		foreach ($this->repos as $repo) {
+			if ($repo == end($this->repos)) {
+                $this->repoIndexes[$repo->getId()] = array(
+                    'startIndex' => $reposFirstIndex,
+                    'endIndex' => $lastRepoLastIndex
+                );
+				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
+			}
+			else {
+                $this->repoIndexes[$repo->getId()] = array(
+                    'startIndex' => $reposFirstIndex,
+                    'endIndex' => $reposLastIndex
+                );
+				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
+			}
+			$results += $searchResults['results'];
+			$totalResults += $searchResults['totalResults'];
+		}
+
+        $this->currentPage = $page;
+		$this->totalResults = $totalResults;
+		$this->currentResults = $results;
+
+		return $results;
+	}
+
+    /**
+     * Get images given a keyword and page
+     *
+     * @return array $results
+     */
+	public function findImageCollectionResults($collection, $page = null)
 	{
 		$images = array();
 		$totalResults = 0;
@@ -119,57 +196,6 @@ class Find
 		$this->images = $images;
 
 		return array('results' => $images, 'totalResults' => $totalResults);
-	}
-
-    /**
-     * Get images given a keyword and page
-     *
-     * @return array $results
-     */
-	public function findResults($keyword = null, $page = null)
-	{
-		if (($keyword == null || $keyword == $this->keyword) && $page == $this->currentPage) {
-			return $this->images;
-		}
-		if (empty($keyword) && !empty($this->keyword)) {
-			$keyword = $this->keyword;
-		}
-		elseif (empty($this->keyword) && !empty($keyword)) {
-			$this->keyword = $keyword;
-		}
-		else {
-			#throw exception
-		}
-		$results = array();
-		$totalResults = 0;
-		$resultsPerRepo = floor(self::RESULTS_PER_PAGE / count($this->repos));
-		$reposFirstIndex = $page * $resultsPerRepo - $resultsPerRepo;
-		$reposLastIndex = $reposFirstIndex + $resultsPerRepo - 1;
-		$lastRepoLastIndex = $reposLastIndex + self::RESULTS_PER_PAGE % ($resultsPerRepo * count($this->repos));
-
-		foreach ($this->repos as $repo) {
-			if ($repo == end($this->repos)) {
-				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
-			}
-			else {
-				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
-			}
-			$results += $searchResults['results'];
-			$totalResults += $searchResults['totalResults'];
-		}
-
-		$this->totalResults = $totalResults;
-		$this->images = $results;
-
-		return $results;
-	}
-
-	public function __construct($repos = null)
-	{
-		if ($repos) {
-			$this->repos = $repos;
-		}
-		$this->currentPage = 1;
 	}
 }
 

@@ -63,7 +63,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 		$numResults = $endIndex - $startIndex + 1;
 		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
-#		while (count($results) < $numResults) {
+		while (count($results) < $numResults) {
 			$searchUrl = str_replace(
 				array('{keyword}', '{page}'),
 				array($keyword, $page), 
@@ -78,7 +78,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 			$nodeList = $xpath->document->getElementsByTagName('item');
 			foreach ($nodeList as $image) {
 				if (count($results) == $numResults) {
-					//break;
+					break;
 				}
 				$recordId = $image->getAttribute('hollisid');
 				$metadataId = $recordId;
@@ -122,7 +122,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 			}
 
 			$page++;
-#		}
+		}
 
 		return array('results' => $results, 'totalResults' => $totalResults);
 	}

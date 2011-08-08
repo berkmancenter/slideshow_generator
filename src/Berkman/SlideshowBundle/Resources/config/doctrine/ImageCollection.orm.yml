@@ -18,3 +18,5 @@ Berkman\SlideshowBundle\Entity\ImageCollection:
     images:
       targetEntity: Image
       mappedBy: collections
+      cascade: ["persist"]
+
