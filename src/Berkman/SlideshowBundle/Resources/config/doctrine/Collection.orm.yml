@@ -1,4 +1,4 @@
-Berkman\SlideshowBundle\Entity\ImageCollection:
+Berkman\SlideshowBundle\Entity\Collection:
   type: entity
   id:
     id:
@@ -11,9 +11,16 @@ Berkman\SlideshowBundle\Entity\ImageCollection:
     id_2:
       type: string
       nullable: TRUE
+  oneToMany:
+    children:
+      targetEntity: Collection
+      mappedBy: parent
   manyToOne:
     repo:
       targetEntity: Repo
+    parent:
+      targetEntity: Collection
+      inversedBy: children
   manyToMany:
     images:
       targetEntity: Image

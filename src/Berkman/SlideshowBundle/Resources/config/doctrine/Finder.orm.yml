@@ -1,0 +1,80 @@
+Berkman\SlideshowBundle\Entity\Finder:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    results_per_page:
+      type: integer
+    keyword:
+      type: string
+    current_page:
+      type: integer
+    total_results:
+      type: integer
+      nullable: TRUE
+    repo_indexes:
+      type: string
+      nullable: TRUE
+  manyToMany:
+    repos:
+      targetEntity: Repo
+      joinTable:
+        name: finder_repos
+        joinColumns:
+          finder_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          repo_id:
+            referencedColumnName: id
+            unique: TRUE
+    current_image_results:
+      targetEntity: Image
+      cascade: ["persist", "remove"]
+      joinTable:
+        name: finder_current_image_results
+        joinColumns:
+          finder_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          image_id:
+            referencedColumnName: id
+            unique: TRUE
+    current_collection_results:
+      targetEntity: Collection
+      cascade: ["persist", "remove"]
+      joinTable:
+        name: finder_current_collection_results
+        joinColumns:
+          finder_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          collection_id:
+            referencedColumnName: id
+            unique: TRUE
+    selected_image_results:
+      targetEntity: Image
+      cascade: ["persist", "remove"]
+      joinTable:
+        name: finder_selected_image_results
+        joinColumns:
+          finder_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          image_id:
+            referencedColumnName: id
+            unique: TRUE
+    selected_colletion_results:
+      targetEntity: Collection
+      cascade: ["persist", "remove"]
+      joinTable:
+        name: finder_selected_collection_results
+        joinColumns:
+          finder_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          collection_id:
+            referencedColumnName: id
+            unique: TRUE

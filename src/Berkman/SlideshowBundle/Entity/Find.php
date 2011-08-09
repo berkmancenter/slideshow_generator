@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * Note: The results returned and stored by this class can be of two types - images, or image collections
  */
-class Find
+class Finder
 {
 
 	const RESULTS_PER_PAGE = 25;
@@ -175,7 +175,7 @@ class Find
      *
      * @return array $results
      */
-	public function findImageCollectionResults($collection, $page = null)
+	public function findCollectionResults($collection, $page = null)
 	{
 		$images = array();
 		$totalResults = 0;
@@ -187,7 +187,7 @@ class Find
 			$totalResults = count($collection->getImages());
 		}
 		else {
-			$searchResults = $collection->getRepo()->getFetcher()->fetchImageCollectionResults($collection, $firstIndex, $lastIndex);
+			$searchResults = $collection->getRepo()->getFetcher()->fetchCollectionResults($collection, $firstIndex, $lastIndex);
 			$images = $searchResults['results'];
 			$totalResults = $searchResults['totalResults'];
 		}

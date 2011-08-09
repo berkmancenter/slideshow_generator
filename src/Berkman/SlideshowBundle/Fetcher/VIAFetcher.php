@@ -56,7 +56,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 	 * @param int $endIndex
 	 * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
 	 */
-	public function fetchSearchResults($keyword, $startIndex, $endIndex)
+	public function fetchResults($keyword, $startIndex, $endIndex)
 	{
 		$results = array();
 		$totalResults = 0;
@@ -112,7 +112,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 							$results[] = $image;
 						} 
 						else {
-							$imageCollection = new Entity\ImageCollection($this->getRepo(), $recordId);
+							$imageCollection = new Entity\Collection($this->getRepo(), $recordId);
 							$imageCollection->addImages($image);
 							error_log('have collection of '.$numberOfImages->textContent.' images with id ' . $recordId);
 							$results[] = $imageCollection;
@@ -201,10 +201,10 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 	/**
 	 * Get the name of an image collection
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\ImageCollection $collection
+	 * @param Berkman\SlideshowBundle\Entity\Collection $collection
 	 * @return string $name
 	 */
-	public function getImageCollectionName(Entity\ImageCollection $collection)
+	public function getCollectionName(Entity\Collection $collection)
 	{
 
 	}
@@ -212,10 +212,10 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 	/**
 	 * Fetch the results from an image collection
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\ImageCollection $collection
+	 * @param Berkman\SlideshowBundle\Entity\Collection $collection
 	 * @return array
 	 */
-	public function fetchImageCollectionResults(Entity\ImageCollection $collection, $startIndex, $endIndex)
+	public function fetchCollectionResults(Entity\Collection $collection, $startIndex, $endIndex)
 	{
 		$results = array();
 		$recordId = $collection->getId1();

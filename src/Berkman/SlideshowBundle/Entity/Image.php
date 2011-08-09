@@ -279,7 +279,7 @@ class Image
 		)));
 	}
     /**
-     * @var Berkman\SlideshowBundle\Entity\ImageCollection
+     * @var Berkman\SlideshowBundle\Entity\Collection
      */
     private $collections;
 
@@ -287,9 +287,9 @@ class Image
     /**
      * Add collections
      *
-     * @param Berkman\SlideshowBundle\Entity\ImageCollection $collections
+     * @param Berkman\SlideshowBundle\Entity\Collection $collections
      */
-    public function addCollections(\Berkman\SlideshowBundle\Entity\ImageCollection $collections)
+    public function addCollections(\Berkman\SlideshowBundle\Entity\Collection $collections)
     {
         $this->collections[] = $collections;
     }

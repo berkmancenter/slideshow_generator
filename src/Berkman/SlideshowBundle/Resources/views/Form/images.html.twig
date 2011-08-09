@@ -1,5 +1,6 @@
 {% block _slideshow_slides_row %}
 {% spaceless %}
+        <h3>Images</h3>
         <ol {{ block('widget_container_attributes') }}>
         {% for child in form %}
 			<li class="image">
@@ -11,21 +12,21 @@
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
 
-{% block _findresults_imageCollections_row %}
+{% block _finderresults_imageCollections_row %}
 {% spaceless %}
+        <h3>Image Collections</h3>
         <ol {{ block('widget_container_attributes') }}>
         {% for child in form %}
-			<a href="{{ path('find_collection', { 'collectionId': child.vars.value }) }}"><li class="image">
-            {{ image_label(child) }}
-			</li>
-            </a>
+            <li>
+                <input type="image" name="action" value="{{ path('finder_collection', { 'collectionId': child.vars.value }) }}" src="{{ child.vars.label }}"/>
+            </li>
         {% endfor %}
         </ol>
 {% endspaceless %}
-{% endblock _findresults_imageCollections_row %}
+{% endblock _finderresults_imageCollections_row %}
 
-{% block _findresults_images_row %}
+{% block _finderresults_images_row %}
 {% spaceless %}
 	{{ block('_slideshow_slides_row') }}
 {% endspaceless %}
-{% endblock _findresults_images_row %}
+{% endblock _finderresults_images_row %}

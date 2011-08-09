@@ -5,6 +5,6 @@ namespace Berkman\SlideshowBundle\Fetcher;
 use Berkman\SlideshowBundle\Entity;
 
 interface CollectionFetcherInterface {
-	public function getImageCollectionName(Entity\ImageCollection $collection);
-	public function fetchImageCollectionResults(Entity\ImageCollection $collection);
+	public function getCollectionName(Entity\Collection $collection);
+	public function fetchCollectionResults(Entity\Collection $collection);
 }

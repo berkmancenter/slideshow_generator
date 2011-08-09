@@ -28,5 +28,5 @@ Berkman\SlideshowBundle\Entity\Image:
       targetEntity: Repo
   manyToMany:
     collections:
-      targetEntity: ImageCollection
+      targetEntity: Collection
       inversedBy: images

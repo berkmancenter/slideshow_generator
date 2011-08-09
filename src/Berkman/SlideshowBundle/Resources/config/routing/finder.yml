@@ -1,0 +1,17 @@
+finder_index:
+    pattern: /
+    defaults: { _controller: "BerkmanSlideshowBundle:Finder:index" }
+
+finder_collection:
+    pattern: /collection/{collectionId}/{page}
+    defaults: { _controller: "BerkmanSlideshowBundle:Finder:showCollection", page: 1 }
+
+finder_show:
+    pattern:  /{repos}/{keyword}/{page}
+    defaults: { _controller: "BerkmanSlideshowBundle:Finder:show", page: 1 }
+
+finder_submit:
+    pattern: /submit
+    defaults: { _controller: "BerkmanSlideshowBundle:Finder:submit" }
+    requirements: { _method: post }
+

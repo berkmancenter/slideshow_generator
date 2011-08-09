@@ -9,7 +9,7 @@ use Berkman\SlideshowBundle\Entity\Image;
 use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Form\SlideshowType;
 use Berkman\SlideshowBundle\Form\SlideshowChoiceType;
-use Berkman\SlideshowBundle\Form\FindShow;
+use Berkman\SlideshowBundle\Form\FinderShow;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -22,7 +22,7 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 class SlideshowController extends Controller
 {
     /**
-     * Finds and displays a Slideshow entity.
+     * Finders and displays a Slideshow entity.
      *
      */
     public function showAction($id)

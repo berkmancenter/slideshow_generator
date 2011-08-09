@@ -6,8 +6,8 @@ BerkmanSlideshowBundle_slideshow:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/slideshow.yml"
     prefix:   /slideshow
 
-BerkmanSlideshowBundle_find:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/find.yml"
+BerkmanSlideshowBundle_finder:
+    resource: "@BerkmanSlideshowBundle/Resources/config/routing/finder.yml"
     prefix:   /find
 
 BerkmanSlideshowBundle_homepage:

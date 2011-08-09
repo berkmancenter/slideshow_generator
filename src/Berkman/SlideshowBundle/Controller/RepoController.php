@@ -29,7 +29,7 @@ class RepoController extends Controller
     }
 
     /**
-     * Finds and displays a Repo entity.
+     * Finders and displays a Repo entity.
      *
      */
     public function showAction($id)

@@ -3,7 +3,7 @@
 namespace Berkman\SlideshowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Berkman\SlideshowBundle\Form\FindType;
+use Berkman\SlideshowBundle\Form\FinderType;
 
 class DefaultController extends Controller
 {
@@ -12,11 +12,11 @@ class DefaultController extends Controller
     {
 		$em = $this->getDoctrine()->getEntityManager();
 		$slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
-        $form = $this->createForm(new FindType());
+        $form = $this->createForm(new FinderType());
 		
 		return $this->render('BerkmanSlideshowBundle:Default:index.html.twig', array(
 			'slideshows' => $slideshows,
-			'findForm'   => $form->createView()
+			'finderForm'   => $form->createView()
 		));
     }
 }
