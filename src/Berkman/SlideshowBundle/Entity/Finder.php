@@ -330,9 +330,9 @@ class Finder
                     'startIndex' => $reposFirstIndex,
                     'endIndex' => $reposLastIndex
                 );
-				$searchResults = $repo->fetchSearchResults($keyword, $reposFirstIndex, $reposLastIndex);
+				$searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $reposLastIndex);
 			}
-			$results += $searchResults['results'];
+            array_splice($results, count($results), 0, $searchResults['results']);
 			$totalResults += $searchResults['totalResults'];
 		}
 
