@@ -9,11 +9,16 @@ class LoadTestRepos implements FixtureInterface
 {
 	public function load($manager)
 	{
-		$viaRepo = new Repo();
-		$viaRepo->setId('VIA');
-		$viaRepo->setName('Visual Information Access (VIA)');
+		$via = new Repo();
+		$via->setId('VIA');
+		$via->setName('Visual Information Access (VIA)');
 
-		$manager->persist($viaRepo);
+        $oasis = new Repo();
+        $oasis->setId('OASIS');
+        $oasis->setName('Online Archival Search Information System (OASIS)');
+
+		$manager->persist($via);
+        $manager->persist($oasis);
 		$manager->flush();
 	}
 }
