@@ -4,7 +4,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class VIAFetcher extends Fetcher implements FetcherInterface {
+class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherInterface {
 
 	/*
 	 * id_1 = recordId
@@ -114,7 +114,6 @@ class VIAFetcher extends Fetcher implements FetcherInterface {
 						else {
 							$imageCollection = new Entity\Collection($this->getRepo(), $recordId);
 							$imageCollection->addImages($image);
-							error_log('have collection of '.$numberOfImages->textContent.' images with id ' . $recordId);
 							$results[] = $imageCollection;
 						}
 					}
