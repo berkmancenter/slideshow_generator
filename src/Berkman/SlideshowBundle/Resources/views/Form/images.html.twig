@@ -18,7 +18,7 @@
         <ol {{ block('widget_container_attributes') }}>
         {% for child in form %}
             <li>
-                <input type="image" name="action" value="{{ path('finder_collection', { 'collectionId': child.vars.value }) }}" src="{{ child.vars.label }}"/>
+                <input type="image" name="action" value="{{ child.vars.value }}" src="{{ child.vars.label }}"/>
             </li>
         {% endfor %}
         </ol>
