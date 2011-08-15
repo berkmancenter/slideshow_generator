@@ -94,14 +94,17 @@ class SlideshowController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
 				$user = $this->get('security.context')->getToken()->getUser();
 				$slideshow->setPerson($user);
-				if ($this->get('session')->get('images')) {
-					$images = $this->getSessionImages();
+                $finder = $em->find('BerkmanSlideshowBundle:Finder', $this->getRequest()->getSession()->get('finder_id'));
+
+                if ($finder) {
+                    $images = $finder->getSelectedImageResults();
 					foreach ($images as $image) {
-						$em->persist($image);
-						$slide = new Slide($image);
+                        $newImage = clone $image;
+						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
 					}
-					$this->get('session')->remove('images');
+                    $em->remove($finder);
+					$request->getSession()->remove('finder_id');
 				}
                 $em->persist($slideshow);
                 $em->flush();
@@ -263,14 +266,19 @@ class SlideshowController extends Controller
 
 	/**
 	 * Add Images to a Slideshow
+     *
+     * @param integer The slideshow id to add images to
+     * 
+     * Images always come from the finder object
 	 *
 	 */
 	public function addImagesAction()
 	{
-		$images = $this->getSessionImages();
+		$slideshow = new Slideshow();
 		$request   = $this->getRequest();
 		$em        = $this->getDoctrine()->getEntityManager();
-		$slideshow = new Slideshow();
+        $finder    = $em->find('BerkmanSlideshowBundle:Finder', $request->getSession()->get('finder_id'));
+        $images    = $finder->getSelectedImageResults();
 
 		$slideshowChoiceType = new SlideshowChoiceType();
 		$slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
@@ -288,7 +296,6 @@ class SlideshowController extends Controller
 
 			if (isset($slideshowChoice['slideshows']) && !empty($images)) {
 				foreach ($images as $image) {
-					$em->persist($image);
 					foreach ($slideshowChoice['slideshows'] as $slideshow) {
 						$slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshow);
 						// check for update access
@@ -296,7 +303,8 @@ class SlideshowController extends Controller
 						{
 							throw new AccessDeniedException();
 						}
-						$slide = new Slide($image);
+                        $newImage = clone $image;
+						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
 
 						$em->persist($slideshow);
@@ -304,6 +312,8 @@ class SlideshowController extends Controller
 						$this->get('session')->setFlash('notice', $flashMessage);
 					}
 				}
+                $request->getSession()->remove('finder_id');
+                $em->remove($finder);
 				$em->flush();
 				$response = $this->redirect($this->generateUrl('slideshow'));
 				$response->headers->clearCookie('images');
@@ -320,27 +330,4 @@ class SlideshowController extends Controller
             ->getForm()
         ;
     }
-
-	private function getSessionImages() {
-		$em           = $this->getDoctrine()->getEntityManager();
-		$images       = unserialize(base64_decode($this->getRequest()->getSession()->get('images')));
-		$imageObjects = array();
-
-		foreach ($images as $image) {
-			$image = unserialize(base64_decode($image));
-			$fromRepo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($image['fromRepo']);
-			$image = new Image(
-				$fromRepo,
-				$image['id1'],
-				$image['id2'],
-				$image['id3'],
-				$image['id4'],
-				$image['id5'],
-				$image['id6']
-			);
-			$imageObjects[] = $image;
-		}
-
-		return $imageObjects;
-	}
 }
