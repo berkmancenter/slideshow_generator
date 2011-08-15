@@ -15,6 +15,7 @@ class Fetcher {
 	protected function fetchXpath($url)
 	{
 		$doc = new \DOMDocument();
+        $doc->recover = true;
 		libxml_use_internal_errors(true);
 
 		$curl = curl_init($url);
