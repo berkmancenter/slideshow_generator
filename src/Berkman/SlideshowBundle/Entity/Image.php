@@ -260,24 +260,6 @@ class Image
 		return $this->getFromRepo()->getFetcher()->getRecordUrl($this);
 	}	
 
-	/**
-	 * Convert the image to a string to be moved around
-	 *
-	 * @return string $image
-	 */
-	public function __toString() 
-	{
-		return base64_encode(serialize(array(
-			'id' => $this->getId(),
-			'id1' => $this->getId1(),
-			'id2' => $this->getId2(),
-			'id3' => $this->getId3(),
-			'id4' => $this->getId4(),
-			'id5' => $this->getId5(),
-			'id6' => $this->getId6(),
-			'fromRepo' => $this->getFromRepo()->getId()
-		)));
-	}
     /**
      * @var Berkman\SlideshowBundle\Entity\Collection
      */
