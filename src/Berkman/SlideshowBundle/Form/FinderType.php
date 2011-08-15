@@ -23,6 +23,6 @@ class FinderType extends AbstractType
 
 	public function getName()
 	{
-		return 'find';
+		return 'finder';
 	}
 }
