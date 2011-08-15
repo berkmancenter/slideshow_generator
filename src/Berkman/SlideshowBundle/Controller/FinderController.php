@@ -38,7 +38,7 @@ class FinderController extends Controller
                 $request->getSession()->set('finder_id', $finder->getId());
 
 				return $this->redirect($this->generateUrl('finder_show', array(
-					'repos' => implode('+', $repoIds),
+					'repos' => implode('_', $repoIds),
 					'keyword' => $finder->getKeyword(),
 					'page' => 1
 				)));
@@ -63,7 +63,7 @@ class FinderController extends Controller
 		$finderResultsFormType = new FinderResultsType();
 
 		$repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findBy(array(
-			'id' => explode('+', $repos)
+			'id' => explode('_', $repos)
 		));
 		if (!$repos) {
 			throw $this->createNotFoundException('Unable to find Repos.');
@@ -103,7 +103,10 @@ class FinderController extends Controller
 			throw $this->createNotFoundException('Unable to find Collection.');
 		}
 
-		$finder = new Entity\Finder;
+        $finder = $em->getRepository('BerkmanSlideshowBundle:Finder')->find($this->getRequest()->getSession()->get('finder_id'));
+        if (!$finder) {
+            $finder = new Entity\Finder;
+        }
 		$output = $finder->findCollectionResults($collection, $page);
 		$finderResultsFormType->setResults($output['results']);
         foreach ($output['results'] as $result) {
@@ -155,7 +158,9 @@ class FinderController extends Controller
 			)));
 		}
         elseif ($request->get('action') != 'Finish') {
-            $response = $this->redirect($request->get('action'));
+            $response = $this->redirect($this->generateUrl('finder_collection', array(
+                'collectionId' => $request->get('action')
+            )));
         }
 
 		return $response;
