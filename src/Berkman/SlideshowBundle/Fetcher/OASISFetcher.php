@@ -4,7 +4,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class OASISFetcher extends Fetcher implements FetcherInterface {
+class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetcherInterface {
 
 	/*
 	 * id_1 = recordId
@@ -14,7 +14,8 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 
 	const SEARCH_URL_PATTERN          = 'http://webservices.lib.harvard.edu/rest/hollis/search/mods/?curpage={page}&q=eadid:*+{keyword}&add_ref=612';
 	const FINDING_AID_XML_URL_PATTERN = 'http://oasis.lib.harvard.edu/oasis/ead2002/schema/{finding-aid-id}';
-	const PAGED_RESOURCES_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-resource-id}?op=n&printThumbnails=true';
+	const PAGED_OBJECT_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=n&treeaction=expand&printThumbnails=true';
+	const PAGED_OBJECT_LINKS_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/links/{paged-object-id}';
 
 	const RECORD_URL_PATTERN    = 'http://oasis.lib.harvard.edu/oasis/deliver/deepLink?_collection=oasis&uniqueId={id-1}';
 	const METADATA_URL_PATTERN = 'http://oasis.lib.harvard.edu/oasis/ead2002/schema/{id-1}';
@@ -56,10 +57,9 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 	 * @param int $endIndex
 	 * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
 	 */
-	public function getSearchResults($keyword, $startIndex, $endIndex)
+	public function fetchResults($keyword, $startIndex, $endIndex)
 	{
-		$images = array();
-		$pdsIds = array();
+		$results = array();
 		$totalResults = 0;
 		$numResults = $endIndex - $startIndex + 1;
 		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
@@ -73,10 +73,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 		$xpath = $this->fetchXpath($searchUrl);
 		$totalResults = (int) $xpath->document->getElementsByTagName('totalResults')->item(0)->textContent;
 		if ($totalResults < $numResults) {
-			$numResults = $totalResults;
+            // This isn't really true here as results can contain a whole bunch of images
+			#$numResults = $totalResults;
 		}
 		$noteNodes = $xpath->query('//note[@xlink:href]');
-		//$pagedObjectFetcher = new PagedObjectFetcher($this->getRepo());
 
 		foreach ($noteNodes as $noteNode) {
 			$findingAidId = substr($noteNode->getAttribute('xlink:href'), -8);
@@ -93,8 +93,8 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 				if ($unitId) {
 					$unitId = $unitId->textContent;
 				}
-				if (count($images) == $numResults) {
-					#break 2;
+				if (count($results) == $numResults) {
+					break 2;
 				}
 				$imageLink = $imageLinkNode->getAttribute('xlink:href');
 
@@ -107,20 +107,24 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 					if (strpos($response, 'Location: http://ids.') !== false) {
 						preg_match('!Location: http://ids\.lib\.harvard\.edu/ids/view/(.*)\?.*\\r\\n!', $response, $resourceLink);
 						$imageId = $resourceLink[1];
-						$images[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
+						$results[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
 					}
 					if (strpos($response, 'Location: http://pds.') !== false) {
 						preg_match('!Location: http://pds\.lib\.harvard\.edu/pds/view/(.*)\?.*\\r\\n!', $response, $resourceLink);
 						if (isset($resourceLink[1])) {
-							//$results = $pagedObjectFetcher->getSearchResults($resourceLink[1], $startIndex, $endIndex);
-							//$images += $results['images'];
+                            $imageCollection = new Entity\Collection($this->getRepo(), $resourceLink[1]);
+                            $collectionResult = $this->fetchCollectionResults($imageCollection, 0, 1);
+                            if (!empty($collectionResult['results'])) {
+                                $imageCollection->addImages($collectionResult['results'][0]);
+                                $results[] = $imageCollection;
+                            }
 						}
 					}
 				}
 			}
 		}
 
-		return array('images' => $images, 'totalResults' => $totalResults);
+		return array('results' => $results, 'totalResults' => $totalResults);
 	}
 
 	/**
@@ -129,7 +133,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 	 * @param Berkman\SlideshowBundle\Entity\Image $image
 	 * @return array An associative array where the key is the metadata field name and value is the value
 	 */
-	public function getMetadata(Entity\Image $image)
+	public function fetchImageMetadata(Entity\Image $image)
 	{
 		$metadata = array();
 		$fields = array(
@@ -142,13 +146,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 		$unitId = $image->getId4();
 
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
-		$response = $this->fetchXml($metadataUrl);
-		if (!$response) {
-			return array();
-		}
-		$doc = new \DOMDocument();
-		$doc->loadXML($response);
-		$xpath = new \DOMXPath($doc);
+		$xpath = $this->fetchXpath($metadataUrl);
 		$xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
 		$recordContainer = $xpath->query('//ns:unitid[.="'.$unitId.'"]')->item(0);
 		if ($recordContainer) {
@@ -196,4 +194,72 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 	{
 		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
+
+    public function getCollectionName(Entity\Collection $collection)
+    {
+
+    }
+
+    public function fetchCollectionResults(Entity\Collection $collection, $startIndex, $endIndex)
+    {
+		$results = array();
+		$totalResults = 0;
+		$hollisId = '';
+		$numResults = $endIndex - $startIndex + 1;
+		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
+
+		$searchUrl = str_replace(
+			array('{paged-object-id}'),
+			array($collection->getId1()), 
+			self::PAGED_OBJECT_URL_PATTERN
+		);
+
+		$linksUrl = str_replace(
+			array('{paged-object-id}'),
+			array($collection->getId1()), 
+			self::PAGED_OBJECT_LINKS_URL_PATTERN
+		);
+
+		$xpath = $this->fetchXpath($searchUrl);
+        $xpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+		$linksXpath = $this->fetchXpath($linksUrl);
+        $linksXpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+
+		$hollisLine = $linksXpath->query('//ns:a[@class="citLinksLine"][contains(., "HOLLIS")]')->item(0);
+		if ($hollisLine) {
+			$hollisId = trim(substr($hollisLine->textContent, stripos('HOLLIS', $hollisLine->textContent) + 6));
+		}
+
+        #TODO: handle pages without thumbnails
+		$links = $xpath->query('//ns:a[@class="thumbLinks"]');
+		foreach ($links as $link) {
+            if (count($results) >= $numResults) {
+                break;
+            }
+			$pageId = array();
+			$imageId = array();
+
+			preg_match('!.*/pds/view/(\d+\?n=\d+)\D.*!', $link->getAttribute('href'), $pageId);
+			if (isset($pageId[1])) {
+				$pageId = $pageId[1];
+			}
+
+			$thumbnail = $xpath->query('.//ns:img[@class="thumbLinks"]', $link)->item(0);
+			if ($thumbnail) {
+				preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\D.*!', $thumbnail->getAttribute('src'), $imageId);
+				if (isset($imageId[1])) {
+					$imageId = $imageId[1];
+				}
+			}
+			else {
+                echo $thumbnail->length; exit;
+			}
+
+			if (!empty($hollisId) && !empty($pageId) && !empty($imageId)) {
+				$results[] = new Entity\Image($this->getRepo(), $hollisId, $pageId, $imageId);
+			}
+		}
+
+		return array('results' => $results, 'totalResults' => $totalResults);
+	}
 }
