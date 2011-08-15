@@ -10,6 +10,7 @@ Berkman\SlideshowBundle\Entity\Finder:
       type: integer
     keyword:
       type: string
+      nullable: TRUE
     current_page:
       type: integer
     total_results:
@@ -21,18 +22,8 @@ Berkman\SlideshowBundle\Entity\Finder:
   manyToMany:
     repos:
       targetEntity: Repo
-      joinTable:
-        name: finder_repos
-        joinColumns:
-          finder_id:
-            referencedColumnName: id
-        inverseJoinColumns:
-          repo_id:
-            referencedColumnName: id
-            unique: TRUE
     current_image_results:
       targetEntity: Image
-      cascade: ["persist", "remove"]
       joinTable:
         name: finder_current_image_results
         joinColumns:
@@ -41,10 +32,8 @@ Berkman\SlideshowBundle\Entity\Finder:
         inverseJoinColumns:
           image_id:
             referencedColumnName: id
-            unique: TRUE
     current_collection_results:
       targetEntity: Collection
-      cascade: ["persist", "remove"]
       joinTable:
         name: finder_current_collection_results
         joinColumns:
@@ -53,10 +42,8 @@ Berkman\SlideshowBundle\Entity\Finder:
         inverseJoinColumns:
           collection_id:
             referencedColumnName: id
-            unique: TRUE
     selected_image_results:
       targetEntity: Image
-      cascade: ["persist", "remove"]
       joinTable:
         name: finder_selected_image_results
         joinColumns:
@@ -65,10 +52,8 @@ Berkman\SlideshowBundle\Entity\Finder:
         inverseJoinColumns:
           image_id:
             referencedColumnName: id
-            unique: TRUE
     selected_colletion_results:
       targetEntity: Collection
-      cascade: ["persist", "remove"]
       joinTable:
         name: finder_selected_collection_results
         joinColumns:
@@ -77,4 +62,3 @@ Berkman\SlideshowBundle\Entity\Finder:
         inverseJoinColumns:
           collection_id:
             referencedColumnName: id
-            unique: TRUE

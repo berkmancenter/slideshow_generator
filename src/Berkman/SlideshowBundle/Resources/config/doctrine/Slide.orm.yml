@@ -12,6 +12,7 @@ Berkman\SlideshowBundle\Entity\Slide:
   oneToOne:
     image:
       targetEntity: Image
+      cascade: ["persist"]
   manyToOne:
     slideshow:
       targetEntity: Slideshow
