@@ -73,9 +73,11 @@ class Finder
         $this->selected_colletion_results = new \Doctrine\Common\Collections\ArrayCollection();
 		if ($repos) {
 			$this->repos = $repos;
+            $repoIndxes = $this->getRepoIndexes();
             foreach ($repos as $repo) {
-                $this->repoIndexes[$repo->getId()] = array('startIndex' => 0, 'endIndex' => 0);
+                $repoIndexes[$repo->getId()] = array('startIndex' => 0, 'endIndex' => 0);
             }
+            $this->setRepoIndexes($repoIndexes);
 		}
 		$this->setCurrentPage(1);
         $this->setResultsPerPage(25);
@@ -178,7 +180,7 @@ class Finder
      */
     public function setRepoIndexes($repoIndexes)
     {
-        $this->repo_indexes = $repoIndexes;
+        $this->repo_indexes = serialize($repoIndexes);
     }
 
     /**
@@ -188,7 +190,7 @@ class Finder
      */
     public function getRepoIndexes()
     {
-        return $this->repo_indexes;
+        return unserialize($this->repo_indexes);
     }
 
     /**
@@ -199,6 +201,25 @@ class Finder
     public function addRepos(\Berkman\SlideshowBundle\Entity\Repo $repos)
     {
         $this->repos[] = $repos;
+        $repoIndexes = $this->getRepoIndexes();
+        $repoIndexes[$repos->getId()] = array('startIndex' => 0, 'endIndex' => 0);
+        $this->setRepoIndexes($repoIndexes);
+    }
+
+    /**
+     * Set repos
+     *
+     * @param array $repos
+     */
+    public function setRepos($repos)
+    {
+        $this->repos = new \Doctrine\Common\Collections\ArrayCollection();
+        $repoIndexes = array();
+        foreach ($repos as $repo) {
+            $this->repos[] = $repo;
+            $repoIndexes[$repo->getId()] = array('startIndex' => 0, 'endIndex' => 0);
+        }
+        $this->setRepoIndexes($repoIndexes);
     }
 
     /**
@@ -298,47 +319,58 @@ class Finder
      */
 	public function findResults($keyword = null, $page = null)
 	{
-		if (($keyword == null || $keyword == $this->keyword) && $page == $this->currentPage) {
-			return $this->currentResults;
-		}
+		/*if (($keyword == null || $keyword == $this->keyword) && $page == $this->current_page) {
+            return array(
+                'results' => $this->getCurrentImageResults() + $this->getCurrentCollectionResults(),
+                'totalResults' => $this->getTotalResults()
+            );
+        }*/
 		if (empty($keyword) && !empty($this->keyword)) {
 			$keyword = $this->keyword;
 		}
-		elseif (empty($this->keyword) && !empty($keyword)) {
+		elseif (!empty($keyword)) {
 			$this->keyword = $keyword;
 		}
 		else {
 			throw new \ErrorException('No keyword set for search');
 		}
-		$results = array();
-		$totalResults = 0;
-		$resultsPerRepo = floor($this->getResultsPerPage() / count($this->repos));
-		$reposFirstIndex = $page * $resultsPerRepo - $resultsPerRepo;
-		$reposLastIndex = $reposFirstIndex + $resultsPerRepo - 1;
+		$results           = array();
+        $imageResults      = array();
+        $collectionResults = array();
+		$totalResults      = 0;
+		$resultsPerRepo    = floor($this->getResultsPerPage() / count($this->repos));
+		$reposFirstIndex   = $page * $resultsPerRepo - $resultsPerRepo;
+		$reposLastIndex    = $reposFirstIndex + $resultsPerRepo - 1;
 		$lastRepoLastIndex = $reposLastIndex + $this->getResultsPerPage() % ($resultsPerRepo * count($this->repos));
+        $repoIndexes       = $this->getRepoIndexes();
 
 		foreach ($this->repos as $repo) {
 			if ($repo == end($this->repos)) {
-                $this->repoIndexes[$repo->getId()] = array(
-                    'startIndex' => $reposFirstIndex,
-                    'endIndex' => $lastRepoLastIndex
-                );
-				$searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $lastRepoLastIndex);
+                $reposLastIndex = $lastRepoLastIndex;
 			}
-			else {
-                $this->repoIndexes[$repo->getId()] = array(
-                    'startIndex' => $reposFirstIndex,
-                    'endIndex' => $reposLastIndex
-                );
-				$searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $reposLastIndex);
-			}
+            $repoIndexes[$repo->getId()] = array(
+                'startIndex' => $reposFirstIndex,
+                'endIndex' => $reposLastIndex
+            );
+            $searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $reposLastIndex);
             array_splice($results, count($results), 0, $searchResults['results']);
 			$totalResults += $searchResults['totalResults'];
 		}
 
-        $this->currentPage = $page;
-		$this->totalResults = $totalResults;
-		$this->currentResults = $results;
+        foreach ($results as $result) {
+            if ($result instanceof Entity\Image) {
+                $imageResults[] = $result;
+            }
+            elseif ($result instanceof Entity\Collection) {
+                $collectionResults[] = $result;
+            }
+        }
+		$this->current_image_results = $imageResults;
+		$this->current_collection_results = $collectionResults;
+
+        $this->setRepoIndexes($repoIndexes);
+        $this->setCurrentPage($page);
+		$this->setTotalResults($totalResults);
 
 		return array('results' => $results, 'totalResults' => $totalResults);
 	}
@@ -350,24 +382,25 @@ class Finder
      */
 	public function findCollectionResults($collection, $page = null)
 	{
-		$images = array();
+		$results = array();
 		$totalResults = 0;
 		$firstIndex = $page * $this->getResultsPerPage() - $this->getResultsPerPage();
 		$lastIndex = $firstIndex + $this->getResultsPerPage() - 1;
 
-		if (count($collection->getImages()) > 1) {
-			$images = array_slice($collection->getImages(), $firstIndex, $lastIndex - $firstIndex + 1);
+		if (count($collection->getImages()) > 0) {
+			$results = array_slice($collection->getImages(), $firstIndex, $lastIndex - $firstIndex);
 			$totalResults = count($collection->getImages());
+            echo 'in here'; exit;
 		}
 		else {
 			$searchResults = $collection->getRepo()->getFetcher()->fetchCollectionResults($collection, $firstIndex, $lastIndex);
-			$images = $searchResults['results'];
+			$results = $searchResults['results'];
 			$totalResults = $searchResults['totalResults'];
 		}
 
-		$this->totalResults = $totalResults;
-		$this->images = $images;
+		$this->setTotalResults($totalResults);
+		$this->current_image_results = $results;
 
-		return array('results' => $images, 'totalResults' => $totalResults);
+		return array('results' => $results, 'totalResults' => $totalResults);
 	}
 }

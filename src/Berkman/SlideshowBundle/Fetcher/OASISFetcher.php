@@ -7,9 +7,11 @@ use Berkman\SlideshowBundle\Entity;
 class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetcherInterface {
 
 	/*
-	 * id_1 = recordId
+     * id_1 = oasisFindingAidId
+     * id_2 = hollisId
 	 * id_3 = imageId
-	 * id_4 = finding aid unit id
+     * id_4 = unitId
+	 * id_5 = pageId
 	 */
 
 	const SEARCH_URL_PATTERN          = 'http://webservices.lib.harvard.edu/rest/hollis/search/mods/?curpage={page}&q=eadid:*+{keyword}&add_ref=612';
@@ -66,7 +68,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 
 		$searchUrl = str_replace(
 			array('{keyword}', '{page}'),
-			array($keyword, $page), 
+			array(urlencode($keyword), $page), 
 			self::SEARCH_URL_PATTERN
 		);
 
@@ -106,8 +108,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 					$resourceLink = '';
 					if (strpos($response, 'Location: http://ids.') !== false) {
 						preg_match('!Location: http://ids\.lib\.harvard\.edu/ids/view/(.*)\?.*\\r\\n!', $response, $resourceLink);
-						$imageId = $resourceLink[1];
-						$results[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
+                        if (isset($resourceLink[1])) {
+                            $imageId = $resourceLink[1];
+                            $results[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
+                        }
 					}
 					if (strpos($response, 'Location: http://pds.') !== false) {
 						preg_match('!Location: http://pds\.lib\.harvard\.edu/pds/view/(.*)\?.*\\r\\n!', $response, $resourceLink);
@@ -142,10 +146,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 			'Date' => './/ns:unitdate',
 			'Notes' => './/ns:note'
 		);
-		$metadataId = $image->getId2();
 		$unitId = $image->getId4();
 
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
+        echo $metadataUrl . ' ' . $unitId; exit;
 		$xpath = $this->fetchXpath($metadataUrl);
 		$xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
 		$recordContainer = $xpath->query('//ns:unitid[.="'.$unitId.'"]')->item(0);
@@ -230,7 +234,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 			$hollisId = trim(substr($hollisLine->textContent, stripos('HOLLIS', $hollisLine->textContent) + 6));
 		}
 
-        #TODO: handle pages without thumbnails
+		$oasisLine = $linksXpath->query('//ns:a[@class="citLinksLine"][contains(., "OASIS")]')->item(0);
+		if ($oasisLine) {
+			$oasisId = trim(substr($oasisLine->getAttribute('href'), -8)); 
+		}
+
 		$links = $xpath->query('//ns:a[@class="thumbLinks"]');
 		foreach ($links as $link) {
             if (count($results) >= $numResults) {
@@ -255,9 +263,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                 echo $thumbnail->length; exit;
 			}
 
-			if (!empty($hollisId) && !empty($pageId) && !empty($imageId)) {
-				$results[] = new Entity\Image($this->getRepo(), $hollisId, $pageId, $imageId);
-			}
+			if (!empty($hollisId) && !empty($pageId) && !empty($imageId) && !empty($oasisId)) {
+                $image = new Entity\Image($this->getRepo(), $oasisId, $hollisId, $imageId, $unitId, $pageId);
+                $results[] = $image;
+            }
 		}
 
 		return array('results' => $results, 'totalResults' => $totalResults);

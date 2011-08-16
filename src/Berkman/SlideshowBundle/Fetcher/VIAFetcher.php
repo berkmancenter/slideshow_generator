@@ -66,7 +66,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 		while (count($results) < $numResults) {
 			$searchUrl = str_replace(
 				array('{keyword}', '{page}'),
-				array($keyword, $page), 
+				array(urlencode($keyword), $page), 
 				self::SEARCH_URL_PATTERN
 			);
 
