@@ -44,10 +44,19 @@ class Collection
      */
     private $images;
 
-    public function __construct(Repo $repo, $id1)
+    public function __construct(Repo $repo, $id1, $id2 = null, $id3 = null, $id4 = null)
     {
         $this->setRepo($repo);
         $this->setId1($id1);
+        if ($id2) {
+            $this->setId2($id2);
+        }
+        if ($id3) {
+            $this->setId3($id3);
+        }
+        if ($id4) {
+            $this->setId4($id4);
+        }
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -202,5 +211,55 @@ class Collection
         if ($this->getCover()) {
             return $this->getCover()->getThumbnailUrl();
         }
+    }
+    /**
+     * @var string $id_3
+     */
+    private $id_3;
+
+    /**
+     * @var string $id_4
+     */
+    private $id_4;
+
+
+    /**
+     * Set id_3
+     *
+     * @param string $id3
+     */
+    public function setId3($id3)
+    {
+        $this->id_3 = $id3;
+    }
+
+    /**
+     * Get id_3
+     *
+     * @return string 
+     */
+    public function getId3()
+    {
+        return $this->id_3;
+    }
+
+    /**
+     * Set id_4
+     *
+     * @param string $id4
+     */
+    public function setId4($id4)
+    {
+        $this->id_4 = $id4;
+    }
+
+    /**
+     * Get id_4
+     *
+     * @return string 
+     */
+    public function getId4()
+    {
+        return $this->id_4;
     }
 }

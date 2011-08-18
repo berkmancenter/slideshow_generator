@@ -11,6 +11,12 @@ Berkman\SlideshowBundle\Entity\Collection:
     id_2:
       type: string
       nullable: TRUE
+    id_3:
+      type: string
+      nullable: TRUE
+    id_4:
+      type: string
+      nullable: TRUE
   oneToMany:
     children:
       targetEntity: Collection
