@@ -102,7 +102,6 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             if (count($results) == $numResults) {
                 break;
             }
-            $used = false;
 
             // Get the finding aid
 			$findingAidId = substr($noteNode->getAttribute('xlink:href'), -8);
@@ -160,7 +159,6 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                         );
                         $collection->addImages($coverImage);
                         $results[] = $collection;
-                        $used = true;
                         break;
                     }
                 }
@@ -179,14 +177,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                         if (!empty($collectionResult['results'])) {
                             $imageCollection->addImages($collectionResult['results'][0]);
                             $results[] = $imageCollection;
-                            $used = true;
                             break;
                         }
                     }
                 }
             }
-            if ($used == false)
-            error_log('Skipped finding aid ' . $findingAidUrl . ' with ' . $imageLinkNodes->length . ' nodes');
 		}
 
 		return array('results' => $results, 'totalResults' => $totalResults);
@@ -208,14 +203,36 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 			'Notes' => './/ns:note'
 		);
 		$unitId = $image->getId4();
+        $pageId = $image->getId5();
 
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
-        #echo $metadataUrl . ' ' . $unitId; exit;
 		$xpath = $this->fetchXpath($metadataUrl);
 		$xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
-		$recordContainer = $xpath->query('//ns:unitid[.="'.$unitId.'"]')->item(0);
+        if (!empty($pageId)) {
+            $links = $xpath->query('//ns:dao[@xlink:href]');
+            foreach ($links as $link) {
+                $curl = curl_init($link->getAttribute('xlink:href'));
+                curl_setopt($curl, CURLOPT_HEADER, true);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($curl);
+                $resourceLink = array();
+                // Is it a redirect to a paged object?
+                if (strpos($response, 'Location: http://pds.') !== false) {
+                    preg_match('!Location: http://pds\.lib\.harvard\.edu/pds/view/(\d*\?n=\d*)\D*\\r\\n!', $response, $resourceLink);
+                    if (isset($resourceLink[1]) && $pageId == $resourceLink[1]) {
+                        $recordContainer = $link->parentNode;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!isset($recordContainer)) {
+            $recordContainer = $xpath->query('//ns:unitid[.="'.$unitId.'"]')->item(0);
+            if ($recordContainer) {
+                $recordContainer = $recordContainer->parentNode->parentNode;
+            }
+        }
 		if ($recordContainer) {
-			$recordContainer = $recordContainer->parentNode->parentNode;
 			foreach ($fields as $name => $query) {
 				$node = $xpath->query($query, $recordContainer)->item(0);
 				if ($node) {
@@ -344,15 +361,16 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         elseif ($collection->getId1() == 'pagedObject') {
             $searchUrl = str_replace(
                 array('{paged-object-id}'),
-                array($collection->getId1()), 
+                array($collection->getId2()), 
                 self::PAGED_OBJECT_URL_PATTERN
             );
 
             $linksUrl = str_replace(
                 array('{paged-object-id}'),
-                array($collection->getId1()), 
+                array($collection->getId2()), 
                 self::PAGED_OBJECT_LINKS_URL_PATTERN
             );
+            error_log('object url: ' . $searchUrl . ' - links url: ' . $linksUrl);
 
             $xpath = $this->fetchXpath($searchUrl);
             $xpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
@@ -394,7 +412,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                 }
 
                 if (!empty($hollisId) && !empty($pageId) && !empty($imageId) && !empty($oasisId)) {
-                    $image = new Entity\Image($this->getRepo(), $oasisId, $hollisId, $imageId, $collection->getId2(), $pageId);
+                    $image = new Entity\Image($this->getRepo(), $oasisId, $hollisId, $imageId, $collection->getId3(), $pageId);
                     $results[] = $image;
                 }
             }
