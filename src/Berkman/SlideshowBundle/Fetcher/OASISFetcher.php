@@ -407,9 +407,6 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                         $imageId = $imageId[1];
                     }
                 }
-                else {
-                    echo $thumbnail->length; exit;
-                }
 
                 if (!empty($hollisId) && !empty($pageId) && !empty($imageId) && !empty($oasisId)) {
                     $image = new Entity\Image($this->getRepo(), $oasisId, $hollisId, $imageId, $collection->getId3(), $pageId);

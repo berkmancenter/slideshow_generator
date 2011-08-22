@@ -283,6 +283,16 @@ class Finder
     }
 
     /**
+     * Set selected_image_results
+     *
+     * @param array $selectedImageResults
+     */
+    public function setSelectedImageResults($selectedImageResults)
+    {
+        $this->selected_image_results = $selectedImageResults;
+    }
+
+    /**
      * Get selected_image_results
      *
      * @return Doctrine\Common\Collections\Collection 
@@ -300,6 +310,16 @@ class Finder
     public function addSelectedColletionResults(\Berkman\SlideshowBundle\Entity\Collection $selectedColletionResults)
     {
         $this->selected_colletion_results[] = $selectedColletionResults;
+    }
+
+    /**
+     * Set selected_colletion_results
+     *
+     * @param array $selectedColletionResults
+     */
+    public function setSelectedColletionResults($selectedColletionResults)
+    {
+        $this->selected_colletion_results = $selectedColletionResults;
     }
 
     /**

@@ -97,7 +97,11 @@ class SlideshowController extends Controller
                 $finder = $em->find('BerkmanSlideshowBundle:Finder', $this->getRequest()->getSession()->get('finder_id'));
 
                 if ($finder) {
+                    // TODO: Decide what to do with collections here
                     $images = $finder->getSelectedImageResults();
+                    $finder->setSelectedImageResults(array());
+                    $em->persist($finder);
+                    $em->flush();
 					foreach ($images as $image) {
                         $newImage = clone $image;
 						$slide = new Slide($newImage);
