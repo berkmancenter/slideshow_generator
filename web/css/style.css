@@ -138,13 +138,18 @@ a:visited, a:active {
 	left: 7px;
 	margin: 0;
 }
-.image-block li {
+.image label {
+    margin: 0;
+}
+.image, .image-block li {
 	position: relative;
-	width: 170px;
-	overflow: hidden;
 	display: inline-block;
 	vertical-align: top;
 	margin: 10px;
+}
+.image-block li {
+	width: 170px;
+	overflow: hidden;
 	border-radius: 20px;
 	text-align: center;
 	padding: 20px 20px 30px;
@@ -163,9 +168,6 @@ a:visited, a:active {
 }
 #finder > div:first-child {
 	float: left;
-}
-.image {
-	display: inline-block;
 }
 #slideshow #slideshow_slides li img:hover {
 	cursor: move;
