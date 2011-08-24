@@ -68,6 +68,9 @@ class Collection
      */
     public function getId()
     {
+        if (empty($this->id)) {
+            $this->id = mt_rand();
+        }
         return $this->id;
     }
 
@@ -188,7 +191,33 @@ class Collection
      */
     public function getImages()
     {
+        if ($this->images->count() < 2) {
+            $images = new \Doctrine\Common\Collections\ArrayCollection();
+            $results = $this->getRepo()->getFetcher()->fetchCollectionResults($this);
+            foreach ($results['results'] as $result) {
+                if ($result instanceof Image) {
+                    $images[] = $result;
+                }
+            }
+            $this->images = $images;
+        }
+
         return $this->images;
+    }
+
+    /**
+     * Get all images i.e. include images in children
+     *
+     * @param Berkman\SlideshowBundle\Entity\Collection $collection
+     * @return array $images
+     */
+    public function getAllImages()
+    {
+        $images = $this->getImages();
+        foreach ($this->getChildren() as $collection) {
+            $images += $collection->getAllImages();
+        }
+        return $images;
     }
 
 	/**
@@ -201,17 +230,11 @@ class Collection
 		return $this->images[0];
 	}
 
-    /**
-     * Get the thumbnail image URL to represent this image collection (for search results form)
-     *
-     * @return string $url
-     */
-    public function getCoverUrl()
+    public function getMetadata()
     {
-        if ($this->getCover()) {
-            return $this->getCover()->getThumbnailUrl();
-        }
+        return $this->repo->getFetcher()->fetchCollectionMetadata($this);
     }
+
     /**
      * @var string $id_3
      */

@@ -277,7 +277,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 		return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
 	}	
 
-    public function getCollectionName(Entity\Collection $collection)
+    public function fetchCollectionMetadata(Entity\Collection $collection)
     {
 
     }

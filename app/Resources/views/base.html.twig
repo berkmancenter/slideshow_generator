@@ -20,6 +20,10 @@
 				<div id="utility">
 					{% block utility %}
 					<div>
+                        {% if app.session and app.session.get('finder') %}
+                        {{ app.session.get('finder').selectedImageResults|length }}
+                        {% endif %}
+
 						{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 							{% set username %}
 								<a href="{{ path('fos_user_profile_show') }}">

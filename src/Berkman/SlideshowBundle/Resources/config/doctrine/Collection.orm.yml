@@ -31,5 +31,5 @@ Berkman\SlideshowBundle\Entity\Collection:
     images:
       targetEntity: Image
       mappedBy: collections
-      cascade: ["persist", "remove"]
+      cascade: ["all"]
 

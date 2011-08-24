@@ -24,7 +24,7 @@ Berkman\SlideshowBundle\Entity\Finder:
       targetEntity: Repo
     current_image_results:
       targetEntity: Image
-      cascade: ["remove"]
+      cascade: ["all"]
       joinTable:
         name: finder_current_image_results
         joinColumns:
@@ -35,7 +35,7 @@ Berkman\SlideshowBundle\Entity\Finder:
             referencedColumnName: id
     current_collection_results:
       targetEntity: Collection
-      cascade: ["remove"]
+      cascade: ["all"]
       joinTable:
         name: finder_current_collection_results
         joinColumns:
@@ -46,7 +46,7 @@ Berkman\SlideshowBundle\Entity\Finder:
             referencedColumnName: id
     selected_image_results:
       targetEntity: Image
-      cascade: ["remove"]
+      cascade: ["all"]
       joinTable:
         name: finder_selected_image_results
         joinColumns:
@@ -54,15 +54,4 @@ Berkman\SlideshowBundle\Entity\Finder:
             referencedColumnName: id
         inverseJoinColumns:
           image_id:
-            referencedColumnName: id
-    selected_colletion_results:
-      targetEntity: Collection
-      cascade: ["remove"]
-      joinTable:
-        name: finder_selected_collection_results
-        joinColumns:
-          finder_id:
-            referencedColumnName: id
-        inverseJoinColumns:
-          collection_id:
             referencedColumnName: id

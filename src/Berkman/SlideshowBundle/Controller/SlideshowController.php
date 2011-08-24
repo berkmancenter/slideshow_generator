@@ -36,9 +36,14 @@ class SlideshowController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
+        $images = array();
+        foreach ($entity->getSlides() as $slide) {
+            $images[] = $slide->getImage();
+        }
 
         return $this->render('BerkmanSlideshowBundle:Slideshow:show.html.twig', array(
             'entity'      => $entity,
+            'images'      => $images,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -94,21 +99,17 @@ class SlideshowController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
 				$user = $this->get('security.context')->getToken()->getUser();
 				$slideshow->setPerson($user);
-                $finder = $em->find('BerkmanSlideshowBundle:Finder', $this->getRequest()->getSession()->get('finder_id'));
+                $finder = $this->getRequest()->getSession()->get('finder');
 
                 if ($finder) {
-                    // TODO: Decide what to do with collections here
                     $images = $finder->getSelectedImageResults();
-                    $finder->setSelectedImageResults(array());
-                    $em->persist($finder);
-                    $em->flush();
 					foreach ($images as $image) {
                         $newImage = clone $image;
+                        $newImage->setFromRepo($em->find('BerkmanSlideshowBundle:Repo', $image->getFromRepo()->getId()));
 						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
 					}
-                    $em->remove($finder);
-					$request->getSession()->remove('finder_id');
+					$request->getSession()->remove('finder');
 				}
                 $em->persist($slideshow);
                 $em->flush();
@@ -281,7 +282,7 @@ class SlideshowController extends Controller
 		$slideshow = new Slideshow();
 		$request   = $this->getRequest();
 		$em        = $this->getDoctrine()->getEntityManager();
-        $finder    = $em->find('BerkmanSlideshowBundle:Finder', $request->getSession()->get('finder_id'));
+        $finder    = $request->getSession()->get('finder');
         $images    = $finder->getSelectedImageResults();
 
 		$slideshowChoiceType = new SlideshowChoiceType();
@@ -308,6 +309,7 @@ class SlideshowController extends Controller
 							throw new AccessDeniedException();
 						}
                         $newImage = clone $image;
+                        $newImage->setFromRepo($em->find('BerkmanSlideshowBundle:Repo', $image->getFromRepo()->getId()));
 						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
 
@@ -316,11 +318,9 @@ class SlideshowController extends Controller
 						$this->get('session')->setFlash('notice', $flashMessage);
 					}
 				}
-                $request->getSession()->remove('finder_id');
-                $em->remove($finder);
+                $request->getSession()->remove('finder');
 				$em->flush();
 				$response = $this->redirect($this->generateUrl('slideshow'));
-				$response->headers->clearCookie('images');
 			}
 		}
 

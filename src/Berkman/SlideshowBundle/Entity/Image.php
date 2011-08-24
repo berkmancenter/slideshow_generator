@@ -76,6 +76,10 @@ class Image
      */
     public function getId()
     {
+        if (empty($this->id)) {
+            // This is stupid and can fail.
+            $this->id = mt_rand();
+        }
         return $this->id;
     }
 

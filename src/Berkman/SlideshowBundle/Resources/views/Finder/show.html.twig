@@ -1,12 +1,23 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+{% import "BerkmanSlideshowBundle::macros.html.twig" as macros %}
 
 {% block body %}
-{% form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
+{# form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' #}
 <h2>{{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot;</h2>
 
 <div class="lightWrap">
-<form action="{{ path('finder_submit') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+<form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
+    {# form_widget(form) #}
+    
+    {% if images is defined %}
+    <h3>Images</h3>
+    {{ macros.show_images(images, 'show_finderresults_images', 'Add to slideshow') }}
+    {% endif %}
+
+    {% if collections is defined %}
+    <h3>Collections</h3>
+    {{ macros.show_collections(collections, 'show_finderresults_collections', 'Add to slideshow') }}
+    {% endif %}
     <p>
 		{% if finder.currentPage > 1 %}
 		<input type="submit" name="action" value="Previous Page" />
