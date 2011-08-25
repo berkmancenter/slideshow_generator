@@ -27,7 +27,7 @@ class Slideshow
     /**
      * @var boolean $display_info
      */
-    private $display_info;
+    private $always_show_info;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Person
@@ -94,9 +94,9 @@ class Slideshow
      *
      * @param boolean $displayInfo
      */
-    public function setDisplayInfo($displayInfo)
+    public function setAlwaysShowInfo($alwaysShowInfo)
     {
-        $this->display_info = $displayInfo;
+        $this->always_show_info = $alwaysShowInfo;
     }
 
     /**
@@ -104,9 +104,9 @@ class Slideshow
      *
      * @return boolean $displayInfo
      */
-    public function getDisplayInfo()
+    public function getAlwaysShowInfo()
     {
-        return $this->display_info;
+        return $this->always_show_info;
     }
 
     /**
@@ -132,7 +132,7 @@ class Slideshow
     public function __construct()
     {
 		$this->slide_delay = 5;
-		$this->display_info = true;
+		$this->always_show_info = false;
 		$this->display_controls = false;
         $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
     }

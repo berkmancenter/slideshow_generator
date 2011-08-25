@@ -11,7 +11,7 @@ Berkman\SlideshowBundle\Entity\Slideshow:
       nullable: true
     slide_delay:
       type: smallint
-    display_info:
+    always_show_info:
       type: boolean
     display_controls:
       type: boolean

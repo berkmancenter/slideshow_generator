@@ -128,6 +128,22 @@
 		    $(vars.play_button).click(function() {
 				api.playToggle();						    
 		    });
+
+            /* Toggle Metadata display
+            -----------------------------*/
+            if (api.options.always_show_meta && $(window).height() >= api.options.hide_metadata_height) {
+                $(vars.toggle_metadata).hide();
+            }
+            else {
+                $(vars.slide_metadata).hide();
+            }
+            $(vars.toggle_metadata).click(function() {
+                $(vars.slide_metadata).slideToggle( function() {
+                    $(vars.toggle_metadata_icon).html( function() {
+                        return $(vars.slide_metadata).css('display') == 'none' ? '&#9660;' : '&#9650;';
+                    });
+                });
+            });
 			
 			
 			/* Thumbnail Mouse Scrub
@@ -153,6 +169,22 @@
 			/* Window Resize
 			----------------------------*/
 			$(window).resize(function(){
+
+                // Hide the metadata info bar if the window gets too small
+                if ($(window).height() < api.options.hide_metadata_height) {
+                    $(vars.slide_metadata).slideUp(function() {
+                        $(vars.toggle_metadata).show();
+                    });
+                }
+
+                // Show the metadata info bar if the window gets big again
+                if ($(window).height() >= api.options.hide_metadata_height) {
+                    $(vars.slide_metadata).slideDown(function() {
+                        if (api.options.always_show_meta) {
+                            $(vars.toggle_metadata).hide();
+                        }
+                    });
+                }
 				
 				// Delay progress bar on resize
 				if (api.options.progress_bar && !vars.in_animation){
@@ -204,7 +236,6 @@
 					vars.control_hide_timer = setTimeout('theme.hideControls()', api.options.control_hide_delay);
 				});*/
 			}
-
 	 	},
 	 	
 	 	
@@ -230,7 +261,6 @@
 	 			if ($(vars.play_button).attr('src')) $(vars.play_button).attr("src", vars.image_path + "play.png");
         		if (api.options.progress_bar && vars.is_paused)$(vars.progress_bar).stop().animate({left : -$(window).width()}, 0 );
 	 		}
-	 		
 	 	},
 	 	
 	 	
@@ -294,10 +324,7 @@
 						}
 					}
 				}
-				
-				
 			}
-		    
 	 	},
 	 	
 	 	
@@ -347,6 +374,8 @@
 		controls_wrapper	:	'#controls-wrapper',
 		progress_wrapper	:	'#progress-back',
 		hide_cursor			:	'#supersized',
+        toggle_metadata     :   '#toggle-metadata',
+        toggle_metadata_icon:   '#toggle-metadata-icon',
 		
 		slide_caption		:	'#slidecaption',	// Slide caption
 		slide_current		:	'.slidenumber',		// Current slide number
@@ -374,7 +403,9 @@
 		mouse_scrub			:	0,		// Thumbnails move with mouse
 		control_hide_delay	:	4000,
 		control_hide_speed	:	1000,
-		show_controls		:	1
+		show_controls		:	1,
+        always_show_meta    :   0,
+        hide_metadata_height:   400
 		
 	 };
 	

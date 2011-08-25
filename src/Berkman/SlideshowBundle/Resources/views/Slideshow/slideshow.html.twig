@@ -11,7 +11,10 @@
 	</head>
 	<body>
 
-		<div id="metadata" style="display: {{ slideshow.displayInfo ? 'block' : 'none' }}"></div>
+        <div id="metadata-wrap">
+            <div id="metadata"></div>
+            <div id="toggle-metadata">Info <span id="toggle-metadata-icon">&#9660;</span></div>
+        </div>
 
 		<!--Thumbnail Navigation-->
 		<div id="prevthumb"></div>
@@ -113,7 +116,10 @@
 					// Theme Options			   
 					progress_bar			:	1,			// Timer for each slide							
 					mouse_scrub				:	0,
-					show_controls			:	{{ slideshow.displayControls ? '1' : '0' }}
+                    show_controls			:	{{ slideshow.displayControls ? '1' : '0' }},
+                    always_show_meta        :   {{ slideshow.alwaysShowInfo ? '1' : '0' }},
+                    hide_metadata_height    :   500,
+                    control_hide_delay      :   0
 				});
 			});
 		</script>
