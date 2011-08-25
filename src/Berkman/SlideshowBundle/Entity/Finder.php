@@ -15,11 +15,6 @@ class Finder
     private $id;
 
     /**
-     * @var integer $results_per_page
-     */
-    private $results_per_page;
-
-    /**
      * @var string $keyword
      */
     private $keyword;
@@ -38,11 +33,6 @@ class Finder
      * @var integer $total_pages
      */
     private $total_pages;
-
-    /**
-     * @var string $repo_indexes
-     */
-    private $repo_indexes;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Repo
@@ -73,14 +63,8 @@ class Finder
         $this->selected_colletion_results = new \Doctrine\Common\Collections\ArrayCollection();
 		if ($repos) {
 			$this->repos = $repos;
-            $repoIndxes = $this->getRepoIndexes();
-            foreach ($repos as $repo) {
-                $repoIndexes[$repo->getId()] = array('startIndex' => 0, 'endIndex' => 0);
-            }
-            $this->setRepoIndexes($repoIndexes);
 		}
 		$this->setCurrentPage(1);
-        $this->setResultsPerPage(25);
     }
     
     /**
@@ -93,24 +77,9 @@ class Finder
         return $this->id;
     }
 
-    /**
-     * Set results_per_page
-     *
-     * @param integer $resultsPerPage
-     */
-    public function setResultsPerPage($resultsPerPage)
-    {
-        $this->results_per_page = $resultsPerPage;
-    }
-
-    /**
-     * Get results_per_page
-     *
-     * @return integer 
-     */
     public function getResultsPerPage()
     {
-        return $this->results_per_page;
+        return 25;
     }
 
     /**
@@ -182,6 +151,7 @@ class Finder
     {
         $this->total_pages = $totalPages;
     }
+
     /**
      * Get total_pages
      *
@@ -193,26 +163,6 @@ class Finder
     }
 
     /**
-     * Set repo_indexes
-     *
-     * @param string $repoIndexes
-     */
-    public function setRepoIndexes($repoIndexes)
-    {
-        $this->repo_indexes = serialize($repoIndexes);
-    }
-
-    /**
-     * Get repo_indexes
-     *
-     * @return string 
-     */
-    public function getRepoIndexes()
-    {
-        return unserialize($this->repo_indexes);
-    }
-
-    /**
      * Add repos
      *
      * @param Berkman\SlideshowBundle\Entity\Repo $repos
@@ -220,9 +170,6 @@ class Finder
     public function addRepos(\Berkman\SlideshowBundle\Entity\Repo $repos)
     {
         $this->repos[] = $repos;
-        $repoIndexes = $this->getRepoIndexes();
-        $repoIndexes[$repos->getId()] = array('startIndex' => 0, 'endIndex' => 0);
-        $this->setRepoIndexes($repoIndexes);
     }
 
     /**
@@ -232,13 +179,7 @@ class Finder
      */
     public function setRepos($repos)
     {
-        $this->repos = new \Doctrine\Common\Collections\ArrayCollection();
-        $repoIndexes = array();
-        foreach ($repos as $repo) {
-            $this->repos[] = $repo;
-            $repoIndexes[$repo->getId()] = array('startIndex' => 0, 'endIndex' => 0);
-        }
-        $this->setRepoIndexes($repoIndexes);
+        $this->repos = new \Doctrine\Common\Collections\ArrayCollection($repos);
     }
 
     /**
@@ -375,22 +316,10 @@ class Finder
         $imageResults =  new \Doctrine\Common\Collections\ArrayCollection();
         $collectionResults =  new \Doctrine\Common\Collections\ArrayCollection();
 		$totalResults      = 0;
-		$resultsPerRepo    = floor($this->getResultsPerPage() / count($this->repos));
-		$reposFirstIndex   = $page * $resultsPerRepo - $resultsPerRepo;
-		$reposLastIndex    = $reposFirstIndex + $resultsPerRepo - 1;
-		$lastRepoLastIndex = $reposLastIndex + $this->getResultsPerPage() % ($resultsPerRepo * count($this->repos));
-        $repoIndexes       = $this->getRepoIndexes();
 
 		foreach ($this->repos as $repo) {
-			if ($repo == end($this->repos)) {
-                $reposLastIndex = $lastRepoLastIndex;
-			}
-            $searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $reposLastIndex);
+            $searchResults = $repo->fetchResults($keyword, $page);
             array_splice($results, count($results), 0, $searchResults['results']);
-            $repoIndexes[$repo->getId()] = array(
-                'startIndex' => $reposFirstIndex,
-                'endIndex' => $searchResults['endIndex']
-            );
 			$totalResults += $searchResults['totalResults'];
 		}
 
@@ -405,10 +334,9 @@ class Finder
 		$this->current_image_results = $imageResults;
 		$this->current_collection_results = $collectionResults;
 
-        $this->setRepoIndexes($repoIndexes);
         $this->setCurrentPage($page);
-		$this->setTotalResults($totalResults);
         $this->setTotalPages(floor($totalResults / $this->getResultsPerPage()));
+		$this->setTotalResults($totalResults);
 
 		return array('results' => $results, 'totalResults' => $totalResults);
 	}

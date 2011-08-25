@@ -56,75 +56,62 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 	 * @param int $endIndex
 	 * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
 	 */
-	public function fetchResults($keyword, $startIndex, $endIndex)
+	public function fetchResults($keyword, $page)
 	{
 		$results = array();
 		$totalResults = 0;
-		$numResults = $endIndex - $startIndex + 1;
-		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
-		while (count($results) < $numResults) {
-			$searchUrl = str_replace(
-				array('{keyword}', '{page}'),
-				array(urlencode($keyword), $page), 
-				self::SEARCH_URL_PATTERN
-			);
+        $searchUrl = str_replace(
+            array('{keyword}', '{page}'),
+            array(urlencode($keyword), $page), 
+            self::SEARCH_URL_PATTERN
+        );
 
-			$xpath = $this->fetchXpath($searchUrl);
-			$totalResults = (int) $xpath->document->getElementsByTagName('totalResults')->item(0)->textContent;
-			if ($totalResults < $numResults) {
-				$numResults = $totalResults;
-			}
-			$nodeList = $xpath->document->getElementsByTagName('item');
-			foreach ($nodeList as $image) {
-				if (count($results) == $numResults) {
-                    $endIndex = $image->getAttribute('position') - 2; //One because we're breaking on this, and one to zero-index
-					break;
-				}
-				$recordId = $image->getAttribute('hollisid');
-				$metadataId = $recordId;
-				$componentId = null;
-				$metadataSubId = null;
-				$imageId = null;
-				$thumbnailId = null;
+        $xpath = $this->fetchXpath($searchUrl);
+        $totalResults = (int) $xpath->document->getElementsByTagName('totalResults')->item(0)->textContent;
+        $nodeList = $xpath->document->getElementsByTagName('item');
+        foreach ($nodeList as $image) {
+            $recordId = $image->getAttribute('hollisid');
+            $metadataId = $recordId;
+            $componentId = null;
+            $metadataSubId = null;
+            $imageId = null;
+            $thumbnailId = null;
 
-				$numberOfImages = $image->getElementsByTagName('numberofimages')->item(0);
+            $numberOfImages = $image->getElementsByTagName('numberofimages')->item(0);
 
-				if ($numberOfImages && $numberOfImages->textContent >= 1) {
-					$thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
-					$fullImage = $image->getElementsByTagName('fullimage')->item(0);
+            if ($numberOfImages && $numberOfImages->textContent >= 1) {
+                $thumbnail = $image->getElementsByTagName('thumbnail')->item(0);
+                $fullImage = $image->getElementsByTagName('fullimage')->item(0);
 
-					if ($thumbnail && $fullImage) {
-						$thumbnailUrl = $thumbnail->textContent;
-						$thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
-						$fullImageUrl = $fullImage->textContent;
-						$componentId = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
-						$imageId = $componentId;
-						$image = new Entity\Image(
-							$this->getRepo(),
-							$recordId,
-							$componentId,
-							$metadataId,
-							$metadataSubId,
-							$imageId,
-							$thumbnailId
-						);
-						if ($numberOfImages->textContent == 1) {
-							$results[] = $image;
-						} 
-						else {
-							$imageCollection = new Entity\Collection($this->getRepo(), $recordId);
-							$imageCollection->addImages($image);
-							$results[] = $imageCollection;
-						}
-					}
-				}
-			}
+                if ($thumbnail && $fullImage) {
+                    $thumbnailUrl = $thumbnail->textContent;
+                    $thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
+                    $fullImageUrl = $fullImage->textContent;
+                    $componentId = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
+                    $imageId = $componentId;
+                    $image = new Entity\Image(
+                        $this->getRepo(),
+                        $recordId,
+                        $componentId,
+                        $metadataId,
+                        $metadataSubId,
+                        $imageId,
+                        $thumbnailId
+                    );
+                    if ($numberOfImages->textContent == 1) {
+                        $results[] = $image;
+                    } 
+                    else {
+                        $imageCollection = new Entity\Collection($this->getRepo(), $recordId);
+                        $imageCollection->addImages($image);
+                        $results[] = $imageCollection;
+                    }
+                }
+            }
+        }
 
-			$page++;
-		}
-
-		return array('results' => $results, 'totalResults' => $totalResults, 'endIndex' => $endIndex);
+		return array('results' => $results, 'totalResults' => $totalResults);
 	}
 
 	/**
