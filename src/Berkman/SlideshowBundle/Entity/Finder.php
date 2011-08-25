@@ -35,6 +35,11 @@ class Finder
     private $total_results;
 
     /**
+     * @var integer $total_pages
+     */
+    private $total_pages;
+
+    /**
      * @var string $repo_indexes
      */
     private $repo_indexes;
@@ -166,6 +171,25 @@ class Finder
     public function getTotalResults()
     {
         return $this->total_results;
+    }
+
+    /**
+     * Set total_pages
+     *
+     * @param integer 
+     */
+    public function setTotalPages($totalPages)
+    {
+        $this->total_pages = $totalPages;
+    }
+    /**
+     * Get total_pages
+     *
+     * @return integer 
+     */
+    public function getTotalPages()
+    {
+        return $this->total_pages;
     }
 
     /**
@@ -361,12 +385,12 @@ class Finder
 			if ($repo == end($this->repos)) {
                 $reposLastIndex = $lastRepoLastIndex;
 			}
-            $repoIndexes[$repo->getId()] = array(
-                'startIndex' => $reposFirstIndex,
-                'endIndex' => $reposLastIndex
-            );
             $searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $reposLastIndex);
             array_splice($results, count($results), 0, $searchResults['results']);
+            $repoIndexes[$repo->getId()] = array(
+                'startIndex' => $reposFirstIndex,
+                'endIndex' => $searchResults['endIndex']
+            );
 			$totalResults += $searchResults['totalResults'];
 		}
 
@@ -384,6 +408,7 @@ class Finder
         $this->setRepoIndexes($repoIndexes);
         $this->setCurrentPage($page);
 		$this->setTotalResults($totalResults);
+        $this->setTotalPages(floor($totalResults / $this->getResultsPerPage()));
 
 		return array('results' => $results, 'totalResults' => $totalResults);
 	}

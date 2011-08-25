@@ -78,6 +78,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 			$nodeList = $xpath->document->getElementsByTagName('item');
 			foreach ($nodeList as $image) {
 				if (count($results) == $numResults) {
+                    $endIndex = $image->getAttribute('position') - 2; //One because we're breaking on this, and one to zero-index
 					break;
 				}
 				$recordId = $image->getAttribute('hollisid');
@@ -123,7 +124,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 			$page++;
 		}
 
-		return array('results' => $results, 'totalResults' => $totalResults);
+		return array('results' => $results, 'totalResults' => $totalResults, 'endIndex' => $endIndex);
 	}
 
 	/**

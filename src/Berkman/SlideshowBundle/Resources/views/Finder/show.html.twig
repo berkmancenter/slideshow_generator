@@ -3,7 +3,7 @@
 
 {% block body %}
 {# form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' #}
-<h2>{{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot;</h2>
+<h2>{{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}</h2>
 
 <div class="lightWrap">
 <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
@@ -22,7 +22,9 @@
 		{% if finder.currentPage > 1 %}
 		<input type="submit" name="action" value="Previous Page" />
 		{% endif %}
+        {% if finder.currentPage < finder.totalPages %}
 		<input type="submit" name="action" value="Next Page" />
+        {% endif %}
         <input type="submit" name="action" value="Finish" />
     </p>
 </form> 
