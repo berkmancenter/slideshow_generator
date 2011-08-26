@@ -190,6 +190,8 @@ a:visited, a:active {
 	background-color: #781800;
 	height: 140px;
 	width: 140px;
+    display: inline-block;
+    margin: 5px 5px 10px;
 }
 .metadata {
 	font-size: 16px;
