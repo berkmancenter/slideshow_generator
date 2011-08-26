@@ -5,11 +5,9 @@ namespace Berkman\SlideshowBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berkman\SlideshowBundle\Entity\Slideshow;
-use Berkman\SlideshowBundle\Entity\Image;
 use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Form\SlideshowType;
 use Berkman\SlideshowBundle\Form\SlideshowChoiceType;
-use Berkman\SlideshowBundle\Form\FinderShow;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -22,8 +20,10 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 class SlideshowController extends Controller
 {
     /**
-     * Finders and displays a Slideshow entity.
+     * Finds and displays a Slideshow entity.
      *
+     * @param integer $id  Slideshow id
+     * @return Symfony Response
      */
     public function showAction($id)
     {
@@ -49,8 +49,10 @@ class SlideshowController extends Controller
     }
 
 	/**
-	 * Displays a slideshow
-	 *
+	 * Displays the actual slideshow
+     *
+     * @param integer $id  Slideshow id
+     * @return Symfony Response
 	 */
 	public function slideshowAction($id)
 	{
@@ -70,6 +72,7 @@ class SlideshowController extends Controller
     /**
      * Displays a form to create a new Slideshow entity.
      *
+     * @return Symfony Response
      */
     public function newAction()
     {
@@ -85,6 +88,7 @@ class SlideshowController extends Controller
     /**
      * Creates a new Slideshow entity.
      *
+     * @return Symfony Response
      */
     public function createAction()
     {
@@ -113,6 +117,7 @@ class SlideshowController extends Controller
 				}
                 $em->persist($slideshow);
                 $em->flush();
+                $request->getSession()->setFlash('notice', 'New slideshow "' . $slideshow->getName() . '" created with ' . count($slideshow->getSlides()) . ' slides.');
 
 				 // creating the ACL
 				$aclProvider = $this->get('security.acl.provider');
@@ -139,6 +144,8 @@ class SlideshowController extends Controller
     /**
      * Displays a form to edit an existing Slideshow entity.
      *
+     * @param integer $id  Slideshow id
+     * @return Symfony Response
      */
     public function editAction($id)
     {
@@ -169,6 +176,8 @@ class SlideshowController extends Controller
     /**
      * Edits an existing Slideshow entity.
      *
+     * @param integer $id  Slideshow id
+     * @return Symfony Response
      */
     public function updateAction($id)
     {
@@ -216,7 +225,7 @@ class SlideshowController extends Controller
                 $em->persist($entity);
                 $em->flush();
 
-				$request->getSession()->setFlash('notice', 'Slideshow successfully updated');
+				$request->getSession()->setFlash('notice', 'Slideshow "' . $entity->getName() . '" successfully updated.');
 
                 return $this->redirect($this->generateUrl('slideshow_edit', array('id' => $id)));
             }
@@ -232,6 +241,8 @@ class SlideshowController extends Controller
     /**
      * Deletes a Slideshow entity.
      *
+     * @param integer $id  Slideshow id
+     * @return Symfony Response
      */
     public function deleteAction($id)
     {
@@ -258,9 +269,7 @@ class SlideshowController extends Controller
 					throw new AccessDeniedException();
 				}
 
-				foreach ($slides as $slide) {
-					$em->remove($slide);
-				}
+                $request->getSession()->setFlash('notice', 'Slideshow "' . $entity->getName() . '" successfully deleted.');
                 $em->remove($entity);
                 $em->flush();
             }
@@ -273,9 +282,7 @@ class SlideshowController extends Controller
 	 * Add Images to a Slideshow
      *
      * @param integer The slideshow id to add images to
-     * 
-     * Images always come from the finder object
-	 *
+     * @return Symfony Response
 	 */
 	public function addImagesAction()
 	{
@@ -314,7 +321,7 @@ class SlideshowController extends Controller
 						$slideshow->addSlide($slide);
 
 						$em->persist($slideshow);
-						$flashMessage = count($images) . ' slides added to ' . $slideshow->getName();
+						$flashMessage = count($images) . ' slides added to slideshow "' . $slideshow->getName() . '"';
 						$this->get('session')->setFlash('notice', $flashMessage);
 					}
 				}
@@ -327,6 +334,12 @@ class SlideshowController extends Controller
         return $response;
 	}
 
+    /**
+     * Create a form to delete a slide
+     *
+     * @param integer $id  Slideshow id
+     * @return Symfony Response
+     */
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))

@@ -1,8 +1,9 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>Repo edit</h2>
+<h2>Edit {{ entity.id }}</h2>
 
+<div class="lightWrap">
 <form action="{{ path('repo_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_widget(edit_form) }}
     <p>
@@ -23,4 +24,5 @@
         </form>
     </li>
 </ul>
+</div>
 {% endblock %}

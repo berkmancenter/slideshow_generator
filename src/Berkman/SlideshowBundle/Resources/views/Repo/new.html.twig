@@ -3,6 +3,7 @@
 {% block body %}
 <h2>Repo creation</h2>
 
+<div class="lightWrap">
 <form action="{{ path('repo_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <p>
@@ -17,5 +18,6 @@
         </a>
     </li>
 </ul>
+</div>
 {% endblock %}
 

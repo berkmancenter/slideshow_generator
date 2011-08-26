@@ -82,6 +82,7 @@ class RepoController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($entity);
                 $em->flush();
+                $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully created.');
 
                 return $this->redirect($this->generateUrl('repo_show', array('id' => $entity->getId())));
                 
@@ -144,6 +145,7 @@ class RepoController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($entity);
                 $em->flush();
+                $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully updated.');
 
                 return $this->redirect($this->generateUrl('repo_edit', array('id' => $id)));
             }
@@ -178,6 +180,7 @@ class RepoController extends Controller
 
                 $em->remove($entity);
                 $em->flush();
+                $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully deleted.');
             }
         }
 
