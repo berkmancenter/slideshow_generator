@@ -178,11 +178,9 @@
                 }
 
                 // Show the metadata info bar if the window gets big again
-                if ($(window).height() >= api.options.hide_metadata_height) {
+                if ($(window).height() >= api.options.hide_metadata_height && api.options.always_show_meta) {
                     $(vars.slide_metadata).slideDown(function() {
-                        if (api.options.always_show_meta) {
-                            $(vars.toggle_metadata).hide();
-                        }
+                        $(vars.toggle_metadata).hide();
                     });
                 }
 				
