@@ -470,7 +470,7 @@
                     
                     // Vertically Center
                     if (base.options.vertical_center){
-                        if (base.options.animate_on_resize) {
+                        if (base.options.animate_y_change) {
                             $(this).animate(
                                 {
                                     top: (browserheight - $(this).height())/2 + base.$el.offset().top,
@@ -962,7 +962,8 @@
         horizontal_center       :   1,          // Horizontally center background
         vertical_center         :   1,          // Vertically center background
         animate_on_resize       :   0,
-        animation_time          :   100,
+        animate_y_change        :   1,
+        animation_time          :   500,
         
                                                    
         // Components                           
