@@ -138,11 +138,7 @@
                 $(vars.slide_metadata).hide();
             }
             $(vars.toggle_metadata).click(function() {
-                $(vars.slide_metadata).slideToggle( function() {
-                    $(vars.toggle_metadata_icon).html( function() {
-                        return $(vars.slide_metadata).css('display') == 'none' ? '&#9660;' : '&#9650;';
-                    });
-                });
+                theme.toggleMetadata();
             });
 			
 			
@@ -170,18 +166,18 @@
 			----------------------------*/
 			$(window).resize(function(){
 
+                api.$el.height($(window).height() - $(vars.metadata_wrapper).height());
+
                 // Hide the metadata info bar if the window gets too small
                 if ($(window).height() < api.options.hide_metadata_height) {
-                    $(vars.slide_metadata).slideUp(function() {
-                        $(vars.toggle_metadata).show();
-                    });
+                    theme.hideMetadata();
+                    $(vars.toggle_metadata).show();
                 }
 
                 // Show the metadata info bar if the window gets big again
                 if ($(window).height() >= api.options.hide_metadata_height && api.options.always_show_meta) {
-                    $(vars.slide_metadata).slideDown(function() {
-                        $(vars.toggle_metadata).hide();
-                    });
+                    theme.showMetadata();
+                    $(vars.toggle_metadata).hide();
                 }
 				
 				// Delay progress bar on resize
@@ -346,8 +342,48 @@
 			$(vars.controls_wrapper).slideUp(api.options.control_hide_speed);
 			$(vars.progress_wrapper).animate({ bottom: 0 }, api.options.control_hide_speed);
 			$(vars.hide_cursor).addClass('hidden-cursor');
-	   }
-	 
+        },
+
+        /* Toggle the metadata display
+        ----------------------------*/
+        toggleMetadata : function(){
+            if ($(vars.slide_metadata).css('display') == 'none') {
+                theme.showMetadata();
+            }
+            else {
+                theme.hideMetadata();
+            }
+        },
+
+        hideMetadata : function(){
+            $(vars.slide_metadata).animate(
+                {
+                    height: 'hide'
+                },
+                {
+                    complete: function() {
+                        $(vars.toggle_metadata_icon).html('&#9660;');
+                        api.$el.height($(window).height());
+                        api.resizeNow();
+                    }
+                }
+            );
+        },
+
+        showMetadata : function(){
+            $(vars.slide_metadata).animate(
+                {
+                    height: 'show'
+                },
+                {
+                    complete: function() {
+                        $(vars.toggle_metadata_icon).html('&#9650;');
+                        api.$el.height($(window).height() - $(vars.metadata_wrapper).height());
+                        api.resizeNow();
+                    }
+                }
+            );
+        }
 	 };
 	 
 	 
@@ -374,6 +410,7 @@
 		hide_cursor			:	'#supersized',
         toggle_metadata     :   '#toggle-metadata',
         toggle_metadata_icon:   '#toggle-metadata-icon',
+        metadata_wrapper    :   '#metadata-wrap',
 		
 		slide_caption		:	'#slidecaption',	// Slide caption
 		slide_current		:	'.slidenumber',		// Current slide number

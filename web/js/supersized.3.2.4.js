@@ -384,8 +384,22 @@
                                     thisSlide.height(thisSlide.width() * ratio);
                                 }
                             }else{  // Otherwise, resize as normal
-                                thisSlide.width(Math.min(thisSlide.data('origWidth'), browserwidth));
-                                thisSlide.height(thisSlide.width() * ratio);
+                                if (base.options.animate_on_resize) {
+                                    thisSlide.animate(
+                                        {
+                                            width: Math.min(thisSlide.data('origWidth'), browserwidth),
+                                            height: thisSlide.width() * ratio
+                                        },
+                                        {
+                                            queue: false,
+                                            duration: base.options.animation_time
+                                        }
+                                    );
+                                }
+                                else {
+                                    thisSlide.width(Math.min(thisSlide.data('origWidth'), browserwidth));
+                                    thisSlide.height(thisSlide.width() * ratio);
+                                }
                             }
                         }
                     };
@@ -410,8 +424,22 @@
                                     thisSlide.height(thisSlide.width() * ratio);
                                 }
                             }else{  // Otherwise, resize as normal
-                                thisSlide.height(Math.min(thisSlide.data('origHeight'), browserheight));
-                                thisSlide.width(thisSlide.height() / ratio);
+                                if (base.options.animate_on_resize) {
+                                    thisSlide.animate(
+                                        {
+                                            height: Math.min(thisSlide.data('origHeight'), browserheight),
+                                            width: thisSlide.height() / ratio
+                                        },
+                                        {
+                                            queue: false,
+                                            duration: base.options.animation_time
+                                        }
+                                    );
+                                }
+                                else {
+                                    thisSlide.height(Math.min(thisSlide.data('origHeight'), browserheight));
+                                    thisSlide.width(thisSlide.height() / ratio);
+                                }
                             }
                         }
                     };
@@ -424,12 +452,38 @@
                     
                     // Horizontally Center
                     if (base.options.horizontal_center){
-                        $(this).css('left', (browserwidth - $(this).width())/2);
+                        if (base.options.animate_on_resize) {
+                            $(this).animate(
+                                {
+                                    left: (browserwidth - $(this).width())/2,
+                                },
+                                {
+                                    duration: base.options.animation_time,
+                                    queue: false
+                                }
+                            );
+                        }
+                        else {
+                            $(this).css('left', (browserwidth - $(this).width())/2);
+                        }
                     }
                     
                     // Vertically Center
                     if (base.options.vertical_center){
-                        $(this).css('top', (browserheight - $(this).height())/2);
+                        if (base.options.animate_on_resize) {
+                            $(this).animate(
+                                {
+                                    top: (browserheight - $(this).height())/2 + base.$el.offset().top,
+                                },
+                                {
+                                    duration: base.options.animation_time,
+                                    queue: false
+                                }
+                            );
+                        }
+                        else {
+                            $(this).css('top', (browserheight - $(this).height())/2 + base.$el.offset().top);
+                        }
                     }
                     
                 });
@@ -907,6 +961,8 @@
         min_height              :   0,          // Min height allowed (in pixels)
         horizontal_center       :   1,          // Horizontally center background
         vertical_center         :   1,          // Vertically center background
+        animate_on_resize       :   0,
+        animation_time          :   100,
         
                                                    
         // Components                           
