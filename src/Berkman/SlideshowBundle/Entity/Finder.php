@@ -35,6 +35,16 @@ class Finder
     private $total_pages;
 
     /**
+     * @var array $images
+     */
+    private $images;
+
+    /**
+     * @var array $collections
+     */
+    private $collections;
+
+    /**
      * @var Berkman\SlideshowBundle\Entity\Repo
      */
     private $repos;
@@ -56,11 +66,11 @@ class Finder
 
     public function __construct($repos = null)
     {
-        $this->repos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->current_image_results = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->current_collection_results = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->selected_image_results = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->selected_colletion_results = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->images = array();
+        $this->collections = array();
+        $this->current_image_results = array();
+        $this->current_collection_results = array();
+        $this->selected_image_results = array();
 		if ($repos) {
 			$this->repos = $repos;
 		}
@@ -179,7 +189,10 @@ class Finder
      */
     public function setRepos($repos)
     {
-        $this->repos = new \Doctrine\Common\Collections\ArrayCollection($repos);
+        if ($repos instanceof Repo) {
+            $repos = array($repos);
+        }
+        $this->repos = $repos;
     }
 
     /**
@@ -193,13 +206,103 @@ class Finder
     }
 
     /**
-     * Add current_image_results
+     * Get image by id
      *
-     * @param Berkman\SlideshowBundle\Entity\Image $currentImageResults
+     * @param integer $id
+     * @return Berkman\SlideshowBundle\Entity\Image
      */
-    public function addCurrentImageResults(\Berkman\SlideshowBundle\Entity\Image $currentImageResults)
+    public function getImage($id)
     {
-        $this->current_image_results[] = $currentImageResults;
+        foreach($this->getImages() as $image) {
+            if ($image->getId() == $id)
+                return $image;
+        }
+    }
+
+    /**
+     * Add image
+     *
+     * @param Berkman\SlideshowBundle\Entity\Image
+     * @return integer $imageId
+     */
+    public function addImage(Image $image)
+    {
+        $imageId = $image->getId();
+        if (empty($imageId)) {
+            $image->setId(count($this->images));
+        }
+        $this->images[] = $image;
+        return $image->getId();
+    }
+
+    /**
+     * Set images
+     *
+     * @param array $images
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    }
+
+    /**
+     * Get images
+     *
+     * @return array $images
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Get collection by id
+     *
+     * @param integer $id
+     * @return Berkman\SlideshowBundle\Entity\Collection
+     */
+    public function getCollection($id)
+    {
+        foreach($this->getCollections() as $collection) {
+            if ($collection->getId() == $id)
+                return $collection;
+        }
+    }
+
+    /**
+     * Add collection
+     *
+     * @param Berkman\SlideshowBundle\Entity\Collection
+     * @return integer $collectionId
+     */
+    public function addCollection(Collection $collection)
+    {
+        $collectionId = $collection->getId();
+        if (empty($collectionId)) {
+            $collection->setId(count($this->collections));
+        }
+        $this->collections[] = $collection;
+        return $collection->getId();
+    }
+
+    /**
+     * Set collections
+     *
+     * @param array $collections
+     */
+    public function setCollections($collections)
+    {
+        $this->collections = $collections;
+    }
+
+    /**
+     * Get images
+     *
+     * @return array $collections
+     */
+    public function getCollections()
+    {
+        return $this->collections;
     }
 
     /**
@@ -209,31 +312,31 @@ class Finder
      */
     public function getCurrentImageResults()
     {
-        return $this->current_image_results;
-    }
-
-    /**
-     * Get current_image_results
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getCurrentImageResult($id)
-    {
-        foreach ($this->getCurrentImageResults() as $image) {
-            if ($image->getId() == $id) {
-                return $image;
-            }
+        $imageResults = array();
+        foreach ($this->current_image_results as $imageId) {
+            $imageResults[] = $this->getImage($imageId);
         }
+        return $imageResults;
     }
 
     /**
-     * Add current_collection_results
+     * Add current_image_results
      *
-     * @param Berkman\SlideshowBundle\Entity\Collection $currentCollectionResults
+     * @param integer $image_id
      */
-    public function addCurrentCollectionResults(\Berkman\SlideshowBundle\Entity\Collection $currentCollectionResults)
+    public function addCurrentImageResult($imageId)
     {
-        $this->current_collection_results[] = $currentCollectionResults;
+        $this->current_image_results[] = $imageId;
+    }
+
+    /**
+     * Set current_image_results
+     *
+     * @param array $currentImageResults
+     */
+    public function setCurrentImageResults($currentImageResults)
+    {
+        $this->current_image_results = $currentImageResults;
     }
 
     /**
@@ -243,31 +346,55 @@ class Finder
      */
     public function getCurrentCollectionResults()
     {
-        return $this->current_collection_results;
+        $collectionResults = array();
+        foreach ($this->current_collection_results as $collectionId) {
+            $collectionResults[] = $this->getCollection($collectionId);
+        }
+        return $collectionResults;
     }
 
     /**
-     * Get current_collection_result
+     * Add current_collection_results
+     *
+     * @param integer $collectionId
+     */
+    public function addCurrentCollectionResult($collectionId)
+    {
+        $this->current_collection_results[] = $collectionId;
+    }
+
+    /**
+     * Set current_collection_results
+     *
+     * @param integer $currentCollectionResults
+     */
+    public function setCurrentCollectionResults($currentCollectionResults)
+    {
+        $this->current_collection_results = $currentCollectionResults;
+    }
+
+    /**
+     * Get selected_image_results
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getCurrentCollectionResult($id)
+    public function getSelectedImageResults()
     {
-        foreach ($this->getCurrentCollectionResults() as $collection) {
-            if ($collection->getId() == $id) {
-                return $collection;
-            }
+        $imageResults = array();
+        foreach ($this->selected_image_results as $imageId) {
+            $imageResults[] = $this->getImage($imageId);
         }
+        return $imageResults;
     }
 
     /**
      * Add selected_image_results
      *
-     * @param Berkman\SlideshowBundle\Entity\Image $selectedImageResults
+     * @param integer $imageId
      */
-    public function addSelectedImageResults(\Berkman\SlideshowBundle\Entity\Image $selectedImageResults)
+    public function addSelectedImageResult($imageId)
     {
-        $this->selected_image_results[] = $selectedImageResults;
+        $this->selected_image_results[] = $imageId;
     }
 
     /**
@@ -281,28 +408,12 @@ class Finder
     }
 
     /**
-     * Get selected_image_results
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getSelectedImageResults()
-    {
-        return $this->selected_image_results;
-    }
-
-    /**
      * Get images given a keyword and page
      *
      * @return array $results
      */
 	public function findResults($keyword = null, $page = null)
 	{
-		/*if (($keyword == null || $keyword == $this->keyword) && $page == $this->current_page) {
-            return array(
-                'results' => $this->getCurrentImageResults() + $this->getCurrentCollectionResults(),
-                'totalResults' => $this->getTotalResults()
-            );
-        }*/
 		if (empty($keyword) && !empty($this->keyword)) {
 			$keyword = $this->keyword;
 		}
@@ -313,8 +424,8 @@ class Finder
 			throw new \ErrorException('No keyword set for search');
 		}
 		$results           = array();
-        $imageResults =  new \Doctrine\Common\Collections\ArrayCollection();
-        $collectionResults =  new \Doctrine\Common\Collections\ArrayCollection();
+        $imageResults      = array();
+        $collectionResults = array();
 		$totalResults      = 0;
 
 		foreach ($this->repos as $repo) {
@@ -325,14 +436,14 @@ class Finder
 
         foreach ($results as $result) {
             if ($result instanceof Image) {
-                $imageResults[] = $result;
+                $imageResults[] = $this->addImage($result);
             }
             elseif ($result instanceof Collection) {
-                $collectionResults[] = $result;
+                $collectionResults[] = $this->addCollection($result);
             }
         }
-		$this->current_image_results = $imageResults;
-		$this->current_collection_results = $collectionResults;
+		$this->setCurrentImageResults($imageResults);
+		$this->setCurrentCollectionResults($collectionResults);
 
         $this->setCurrentPage($page);
         $this->setTotalPages(floor($totalResults / $this->getResultsPerPage()));
@@ -348,12 +459,12 @@ class Finder
      */
 	public function findCollectionResults($collection, $page = null)
 	{
-		$results = array();
-        $imageResults =  new \Doctrine\Common\Collections\ArrayCollection();
-        $collectionResults =  new \Doctrine\Common\Collections\ArrayCollection();
-		$totalResults = 0;
-		$firstIndex = $page * $this->getResultsPerPage() - $this->getResultsPerPage();
-		$lastIndex = $firstIndex + $this->getResultsPerPage() - 1;
+		$results           = array();
+        $imageResults      = array();
+        $collectionResults = array();
+		$totalResults      = 0;
+		$firstIndex        = $page * $this->getResultsPerPage() - $this->getResultsPerPage();
+		$lastIndex         = $firstIndex + $this->getResultsPerPage() - 1;
 
 		if (count($collection->getImages()) > 1) {
 			$results = array_slice($collection->getImages()->toArray(), $firstIndex, $lastIndex - $firstIndex);
@@ -367,15 +478,14 @@ class Finder
 
         foreach ($results as $result) {
             if ($result instanceof Image) {
-                $imageResults[] = $result;
+                $imageResults[] = $this->addImage($result);
             }
             elseif ($result instanceof Collection) {
-                $collectionResults[] = $result;
+                $collectionResults[] = $this->addCollection($result);
             }
         }
-		$this->current_image_results = $imageResults;
-		$this->current_collection_results = $collectionResults;
-
+		$this->setCurrentImageResults($imageResults);
+		$this->setCurrentCollectionResults($collectionResults);
 		$this->setTotalResults($totalResults);
 
 		return array('results' => $results, 'totalResults' => $totalResults);

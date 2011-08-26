@@ -28,8 +28,8 @@ class FinderController extends Controller
      */
     public function indexAction()
     {
-        $request = $this->getRequest();
-		$finder = new Entity\Finder;
+        $request    = $this->getRequest();
+		$finder     = new Entity\Finder;
         $finderForm = $this->createForm(new FinderType(), $finder);
 
         if ('POST' === $request->getMethod()) {
@@ -43,15 +43,15 @@ class FinderController extends Controller
 				}
 
 				return $this->redirect($this->generateUrl('finder_show', array(
-					'repos' => implode('_', $repoIds),
+					'repos'   => implode('_', $repoIds),
 					'keyword' => $finder->getKeyword(),
-					'page' => 1
+					'page'    => 1
 				)));
             }
         }
 		else {
 			return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
-				'finderForm'   => $finderForm->createView()
+				'finderForm'  => $finderForm->createView()
 			));
 		}
 
@@ -105,7 +105,7 @@ class FinderController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
         $finder = $this->getFinder();
 
-		$collection = $finder->getCurrentCollectionResult($collectionId);
+		$collection = $finder->getCollection($collectionId);
 		if (!$collection) {
 			throw $this->createNotFoundException('Unable to find Collection.');
 		}
@@ -114,8 +114,8 @@ class FinderController extends Controller
         $this->setFinder($finder);
 
 		return $this->render('BerkmanSlideshowBundle:Finder:show.html.twig', array(
-            'finder' => $finder,
-            'images' => $finder->getCurrentImageResults(),
+            'finder'      => $finder,
+            'images'      => $finder->getCurrentImageResults(),
             'collections' => $finder->getCurrentCollectionResults(),
         ));
     }
@@ -133,24 +133,24 @@ class FinderController extends Controller
      */
 	public function submitAction()
 	{
-		$request = $this->getRequest();
-        $em = $this->getDoctrine()->getEntityManager();
-        $finder = $this->getFinder();
+		$request   = $this->getRequest();
+        $em        = $this->getDoctrine()->getEntityManager();
+        $finder    = $this->getFinder();
 		$response  = $this->redirect($this->generateUrl('slideshow_add_images'));
 
 		$images = $request->get('images');
 		if (!empty($images)) {
             foreach ($images as $image_id) {
-                $finder->addSelectedImageResults($finder->getCurrentImageResult($image_id)); 
+                $finder->addSelectedImageResult($image_id); 
             }
 		}
 
 		$collections = $request->get('collections');
 		if (!empty($collections)) {
             foreach ($collections as $collection_id) {
-                $images = $finder->getCurrentCollectionResult($collection_id)->getAllImages();
+                $images = $finder->getCollection($collection_id)->getAllImages();
                 foreach ($images as $image) {
-                    $finder->addSelectedImageResults($image);
+                    $finder->addSelectedImageResult($finder->addImage($image));
                 }
             }
 		}

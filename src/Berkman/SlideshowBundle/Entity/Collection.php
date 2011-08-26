@@ -68,10 +68,17 @@ class Collection
      */
     public function getId()
     {
-        if (empty($this->id)) {
-            $this->id = mt_rand();
-        }
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

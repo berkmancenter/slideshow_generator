@@ -76,11 +76,17 @@ class Image
      */
     public function getId()
     {
-        if (empty($this->id)) {
-            // This is stupid and can fail.
-            $this->id = mt_rand();
-        }
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -263,30 +269,4 @@ class Image
 	{
 		return $this->getFromRepo()->getFetcher()->getRecordUrl($this);
 	}	
-
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Collection
-     */
-    private $collections;
-
-
-    /**
-     * Add collections
-     *
-     * @param Berkman\SlideshowBundle\Entity\Collection $collections
-     */
-    public function addCollections(\Berkman\SlideshowBundle\Entity\Collection $collections)
-    {
-        $this->collections[] = $collections;
-    }
-
-    /**
-     * Get collections
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getCollections()
-    {
-        return $this->collections;
-    }
 }
