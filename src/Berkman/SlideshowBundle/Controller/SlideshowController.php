@@ -263,7 +263,7 @@ class SlideshowController extends Controller
                     throw $this->createNotFoundException('Unable to find Slideshow entity.');
                 }
 
-				// check for update access
+				// check for delete access
 				if (false === $this->get('security.context')->isGranted('DELETE', $entity))
 				{
 					throw new AccessDeniedException();

@@ -193,7 +193,8 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 	 */
 	public function fetchCollectionMetadata(Entity\Collection $collection)
 	{
-        return array('Title' => 'Collection', 'Date' => '2011');
+        $coverImage = $collection->getCover();
+        return $coverImage->getMetadata();
 	}
 
 	/**
