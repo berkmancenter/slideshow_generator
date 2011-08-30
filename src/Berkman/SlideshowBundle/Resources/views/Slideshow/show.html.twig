@@ -14,7 +14,7 @@
 		</form>
 		{% endif %}
 		<div>
-			<span>Copy this code to embed this slideshow:</span>
+			<span>Embed Code:</span>
 			<textarea id="embed_code" readonly="readonly">
 	{{- '<iframe src="' ~ url('slideshow_slideshow', { 'id' : entity.id }) ~ '" width="400" height="300" frameborder="0"></iframe>' -}} 
 			</textarea>
@@ -25,4 +25,3 @@
     {% endif %}
 </div>
 {% endblock %}
-

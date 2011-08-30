@@ -25,16 +25,6 @@ class Person extends BaseUser
 		parent::__construct();
         $this->slideshows = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
-    /**
-     * Add slideshows
-     *
-     * @param Berkman\SlideshowBundle\Entity\Slideshow $slideshows
-     */
-    public function addSlideshows(\Berkman\SlideshowBundle\Entity\Slideshow $slideshows)
-    {
-        $this->slideshows[] = $slideshows;
-    }
 
     /**
      * Get slideshows
@@ -54,5 +44,15 @@ class Person extends BaseUser
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add slideshows
+     *
+     * @param Berkman\SlideshowBundle\Entity\Slideshow $slideshows
+     */
+    public function addSlideshow(\Berkman\SlideshowBundle\Entity\Slideshow $slideshows)
+    {
+        $this->slideshows[] = $slideshows;
     }
 }

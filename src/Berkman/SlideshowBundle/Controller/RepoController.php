@@ -80,6 +80,8 @@ class RepoController extends Controller
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
+                $entity->setCreated(new \DateTime('now'));
+                $entity->setUpdated(new \DateTime('now'));
                 $em->persist($entity);
                 $em->flush();
                 $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully created.');
@@ -143,6 +145,7 @@ class RepoController extends Controller
 
             if ($editForm->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
+                $entity->setUpdated(new \DateTime('now'));
                 $em->persist($entity);
                 $em->flush();
                 $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully updated.');

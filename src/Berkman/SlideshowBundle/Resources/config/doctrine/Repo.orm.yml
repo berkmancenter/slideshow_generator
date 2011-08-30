@@ -7,3 +7,7 @@ Berkman\SlideshowBundle\Entity\Repo:
   fields:
     name:
       type: string
+    created:
+      type: datetime
+    updated:
+      type: datetime

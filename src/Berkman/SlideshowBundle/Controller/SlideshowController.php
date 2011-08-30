@@ -103,6 +103,7 @@ class SlideshowController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
 				$user = $this->get('security.context')->getToken()->getUser();
 				$slideshow->setPerson($user);
+                $slideshow->setCreated(new \DateTime('now'));
                 $finder = $this->getRequest()->getSession()->get('finder');
 
                 if ($finder) {
@@ -115,6 +116,7 @@ class SlideshowController extends Controller
 					}
 					$request->getSession()->remove('finder');
 				}
+                $slideshow->setUpdated(new \DateTime('now'));
                 $em->persist($slideshow);
                 $em->flush();
                 $request->getSession()->setFlash('notice', 'New slideshow "' . $slideshow->getName() . '" created with ' . count($slideshow->getSlides()) . ' slides.');
@@ -221,6 +223,8 @@ class SlideshowController extends Controller
 					$slide->setPosition($position + 1);
 					$em->persist($slide);
 				}
+                
+                $entity->setUpdated(new \DateTime('now'));
 
                 $em->persist($entity);
                 $em->flush();

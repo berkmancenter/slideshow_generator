@@ -15,6 +15,10 @@ Berkman\SlideshowBundle\Entity\Slideshow:
       type: boolean
     display_controls:
       type: boolean
+    created:
+      type: datetime
+    updated:
+      type: datetime
   manyToOne:
     person:
       targetEntity: Person
