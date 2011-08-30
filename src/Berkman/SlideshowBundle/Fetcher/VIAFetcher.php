@@ -211,8 +211,9 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
         if (isset($startIndex, $endIndex)) {
             $numResults = $endIndex - $startIndex + 1;
         }
+        $collectionUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
 
-		$imageXpath = $this->fetchXpath('http://webservices.lib.harvard.edu/rest/mods/via/'.$recordId);
+		$imageXpath = $this->fetchXpath($collectionUrl);
 		$imageXpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
 		$constituents = $imageXpath->query("//mods:location");
 		foreach ($constituents as $constituent) {
@@ -226,7 +227,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 				$thumbnail = $imageXpath->query(".//mods:url[@displayLabel='Thumbnail']", $constituent)->item(0);
 				if ($thumbnail) {
 					$thumbnailId = substr($thumbnail->textContent, strpos($thumbnail->textContent, ':', 5) + 1).'?height=150&width=150';
-                    $recordIdentifier = $imageXpath->query('.//mods:recordIdentifier')->item(0);
+                    $recordIdentifier = $imageXpath->query('.//mods:recordIdentifier', $constituent->parentNode)->item(0);
                     $metadataSubId = $recordIdentifier->textContent;
                     if (!empty($thumbnailId)) {
                         $results[] = new Entity\Image(
