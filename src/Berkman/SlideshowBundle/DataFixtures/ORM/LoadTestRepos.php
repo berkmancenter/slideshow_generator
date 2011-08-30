@@ -13,12 +13,14 @@ class LoadTestRepos implements FixtureInterface
 		$via->setId('VIA');
 		$via->setName('Visual Information Access (VIA)');
 
+        /*
         $oasis = new Repo();
         $oasis->setId('OASIS');
         $oasis->setName('Online Archival Search Information System (OASIS)');
+         */
 
 		$manager->persist($via);
-        $manager->persist($oasis);
+        //$manager->persist($oasis);
 		$manager->flush();
 	}
 }
