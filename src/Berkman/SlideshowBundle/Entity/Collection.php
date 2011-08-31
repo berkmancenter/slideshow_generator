@@ -44,6 +44,11 @@ class Collection
      */
     private $images;
 
+    /**
+     * @var boolean $public
+     */
+    private $public;
+
     public function __construct(Repo $repo, $id1, $id2 = null, $id3 = null, $id4 = null)
     {
         $this->setRepo($repo);
@@ -291,5 +296,28 @@ class Collection
     public function getId4()
     {
         return $this->id_4;
+    }
+
+    /**
+     * Get publicness of a collection
+     *
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        if (!isset($this->public)) {
+            $this->public = $this->getRepo()->getFetcher()->fetchCollectionPublicness($this);
+        }
+        return $this->public;
+    }
+
+    /**
+     * Set publicness of a collection
+     *
+     * @param boolean $public
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
     }
 }

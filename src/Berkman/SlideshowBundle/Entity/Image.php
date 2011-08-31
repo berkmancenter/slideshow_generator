@@ -45,6 +45,11 @@ class Image
     private $id_6;
 
     /**
+     * @var boolean $public
+     */
+    private $public;
+
+    /**
      * @var Berkman\SlideshowBundle\Entity\Repo
      */
     private $from_repo;
@@ -269,4 +274,27 @@ class Image
 	{
 		return $this->getFromRepo()->getFetcher()->getRecordUrl($this);
 	}	
+
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean 
+     */
+    public function isPublic()
+    {
+        if (!isset($this->public)) {
+            $this->public = $this->getFromRepo()->getFetcher()->fetchImagePublicness($this);
+        }
+        return $this->public;
+    }
 }

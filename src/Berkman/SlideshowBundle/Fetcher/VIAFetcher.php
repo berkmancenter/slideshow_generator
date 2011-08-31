@@ -99,13 +99,15 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
                         $imageId,
                         $thumbnailId
                     );
-                    if ($numberOfImages->textContent == 1) {
+                    if ($numberOfImages->textContent == 1 && $image->isPublic()) {
                         $results[] = $image;
                     } 
                     else {
                         $imageCollection = new Entity\Collection($this->getRepo(), $recordId);
                         $imageCollection->addImages($image);
-                        $results[] = $imageCollection;
+                        if ($imageCollection->isPublic()) {
+                            $results[] = $imageCollection;
+                        }
                     }
                 }
             }
@@ -151,6 +153,28 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 
 		return $metadata;
 	}
+
+    public function fetchImagePublicness(Entity\Image $image)
+    {
+        $public = false;
+        $xpath = $this->fetchXpath($this->fillUrl(self::METADATA_URL_PATTERN, $image));
+		$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $imageNodes = $xpath->query("//mods:url[@displayLabel='Full Image'][contains(.,'" . $image->getId5() . "')]");
+        if ($imageNodes->item(0) && $imageNodes->item(0)->getAttribute('note') == 'unrestricted') {
+            $public = true;
+        }
+        return $public;
+    }
+
+    public function fetchCollectionPublicness(Entity\Collection $collection)
+    {
+        $recordId = $collection->getId1();
+        $collectionUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
+        $xpath = $this->fetchXpath($collectionUrl);
+		$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+        $publicImages = $xpath->query(".//mods:url[@displayLabel='Full Image'][@note='unrestricted']");
+        return $publicImages->length > 0;
+    }
 
 	/**
 	 * Get the full image url for a given image object
