@@ -12,6 +12,8 @@ class LoadTestRepos implements FixtureInterface
 		$via = new Repo();
 		$via->setId('VIA');
 		$via->setName('Visual Information Access (VIA)');
+        $via->setCreated(new \DateTime('now'));
+        $via->setUpdated(new \DateTime('now'));
 
         /*
         $oasis = new Repo();
