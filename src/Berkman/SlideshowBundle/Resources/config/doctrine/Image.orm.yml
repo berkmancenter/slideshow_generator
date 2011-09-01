@@ -25,6 +25,7 @@ Berkman\SlideshowBundle\Entity\Image:
       nullable: TRUE
     public:
       type: boolean
+      nullable: TRUE
   manyToOne:
     from_repo:
       targetEntity: Repo

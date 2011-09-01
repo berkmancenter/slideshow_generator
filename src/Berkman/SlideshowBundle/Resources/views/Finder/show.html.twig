@@ -3,7 +3,9 @@
 
 {% block body %}
 {# form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' #}
-<h2>{{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}</h2>
+<h2>
+{{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
+</h2>
 
 <div class="lightWrap">
 <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
@@ -19,6 +21,10 @@
     {{ macros.show_collections(collections, 'show_finderresults_collections', 'Add to slideshow') }}
     {% endif %}
     <p>
+        {% if showing == 'collection' and referrer is defined %}
+        <input type="submit" name="action" value="Back" />
+        <input type="hidden" name="referrer" value="{{ referrer }}" />
+        {% endif %}
 		{% if finder.currentPage > 1 %}
 		<input type="submit" name="action" value="Previous Page" />
 		{% endif %}

@@ -85,9 +85,10 @@ class FinderController extends Controller
         $this->setFinder($finder);
 
 		return $this->render('BerkmanSlideshowBundle:Finder:show.html.twig', array(
-            'finder' => $finder,
-            'images' => $finder->getCurrentImageResults(),
-            'collections' => $finder->getCurrentCollectionResults()
+            'finder'      => $finder,
+            'images'      => $finder->getCurrentImageResults(),
+            'collections' => $finder->getCurrentCollectionResults(),
+            'showing'     => 'results'
         ));
     }
 
@@ -117,6 +118,8 @@ class FinderController extends Controller
             'finder'      => $finder,
             'images'      => $finder->getCurrentImageResults(),
             'collections' => $finder->getCurrentCollectionResults(),
+            'showing'     => 'collection',
+            'referrer'    => $_SERVER['HTTP_REFERER']
         ));
     }
 
@@ -172,6 +175,9 @@ class FinderController extends Controller
 				'page' => $page
 			)));
 		}
+        elseif ($request->get('action') == 'Back') {
+            $response = $this->redirect($request->get('referrer'));
+        }
         elseif ($request->get('action') != 'Finish') {
             $response = $this->redirect($this->generateUrl('finder_collection', array(
                 'collectionId' => $request->get('action')
