@@ -25,10 +25,10 @@
         <input type="submit" name="action" value="Back" />
         <input type="hidden" name="referrer" value="{{ referrer }}" />
         {% endif %}
-		{% if finder.currentPage > 1 %}
+		{% if finder.currentPage > 1 and showing != 'collection' %}
 		<input type="submit" name="action" value="Previous Page" />
 		{% endif %}
-        {% if finder.currentPage < finder.totalPages %}
+        {% if finder.currentPage < finder.totalPages and showing != 'collection' %}
 		<input type="submit" name="action" value="Next Page" />
         {% endif %}
         <input type="submit" name="action" value="Finish" />
