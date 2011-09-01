@@ -15,14 +15,15 @@ class LoadTestRepos implements FixtureInterface
         $via->setCreated(new \DateTime('now'));
         $via->setUpdated(new \DateTime('now'));
 
-        /*
         $oasis = new Repo();
         $oasis->setId('OASIS');
         $oasis->setName('Online Archival Search Information System (OASIS)');
-         */
+        $oasis->setCreated(new \DateTime('now'));
+        $oasis->setUpdated(new \DateTime('now'));
+        
 
 		$manager->persist($via);
-        //$manager->persist($oasis);
+        $manager->persist($oasis);
 		$manager->flush();
 	}
 }

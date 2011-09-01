@@ -76,12 +76,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
      *   Still have to figure this out.
      *
 	 */
-	public function fetchResults($keyword, $startIndex, $endIndex)
+	public function fetchResults($keyword, $page)
 	{
 		$results = array();
 		$totalResults = 0;
-		$numResults = $endIndex - $startIndex + 1;
-		$page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
 		$searchUrl = str_replace(
 			array('{keyword}', '{page}'),
@@ -99,9 +97,6 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 		$noteNodes = $xpath->query('//note[@xlink:href]');
 
 		foreach ($noteNodes as $noteNode) {
-            if (count($results) == $numResults) {
-                break;
-            }
 
             // Get the finding aid
 			$findingAidId = substr($noteNode->getAttribute('xlink:href'), -8);
@@ -244,6 +239,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 		return $metadata;
 	}
 
+    public function fetchImagePublicness(Entity\Image $image)
+    {
+
+    }
+
 	/**
 	 * Get the full image url for a given image object
 	 *
@@ -278,6 +278,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 	}	
 
     public function fetchCollectionMetadata(Entity\Collection $collection)
+    {
+
+    }
+
+    public function fetchCollectionPublicness(Entity\Collection $collection)
     {
 
     }
