@@ -121,3 +121,12 @@
 	dd {
 		margin-left: 20px;
 	}
+    #qr-code-wrap {
+        background-color: black;
+        background-color: rgba(0, 0, 0, 0.7);
+        filter: alpha(opacity = 70);
+        padding: 10px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }

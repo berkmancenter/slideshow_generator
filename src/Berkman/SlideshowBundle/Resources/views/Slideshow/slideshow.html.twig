@@ -16,6 +16,12 @@
             <div id="toggle-metadata">Info <span id="toggle-metadata-icon">&#9660;</span></div>
         </div>
 
+        {% if slideshow.showQrCode %}
+        <div id="qr-code-wrap">
+            <img id="qr-code" src="" />
+        </div>
+        {% endif %}
+
 		<!--Thumbnail Navigation-->
 		<div id="prevthumb"></div>
 		<div id="nextthumb"></div>
@@ -68,9 +74,9 @@
 			var slideshow_slides = [
 				{% for slide in slideshow.slides %}
 					{
-						image: '{{ slide.image.imageUrl }}',
-						thumb: '{{ slide.image.thumbnailUrl }}',
-						url: '{{ slide.image.recordUrl }}',
+						image: '{{ slide.image.imageUrl|raw }}',
+                        thumb: '{{ slide.image.thumbnailUrl|raw }}',
+						url: '{{ slide.image.recordUrl|raw }}',
 						metadata: {
 							{% for key, value in slide.image.metadata %}
 							'{{ key }}': '{{- value -}}' {{ not loop.last ? ',' : '' }}
@@ -119,6 +125,7 @@
 					mouse_scrub				:	0,
                     show_controls			:	{{ slideshow.displayControls ? '1' : '0' }},
                     always_show_meta        :   {{ slideshow.alwaysShowInfo ? '1' : '0' }},
+                    show_qr_code            :   {{ slideshow.showQrCode ? '1' : '0' }},
                     hide_metadata_height    :   500,
                     control_hide_delay      :   0
 				});

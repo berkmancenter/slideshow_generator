@@ -140,6 +140,10 @@
             $(vars.toggle_metadata).click(function() {
                 theme.toggleMetadata();
             });
+
+            if ($(window).height() <= api.options.hide_metadata_height) {
+                $(vars.qr_code_wrapper).hide();
+            }
 			
 			
 			/* Thumbnail Mouse Scrub
@@ -172,12 +176,18 @@
                 if ($(window).height() < api.options.hide_metadata_height) {
                     theme.hideMetadata();
                     $(vars.toggle_metadata).show();
+                    $(vars.qr_code_wrapper).hide();
                 }
 
                 // Show the metadata info bar if the window gets big again
-                if ($(window).height() >= api.options.hide_metadata_height && api.options.always_show_meta) {
-                    theme.showMetadata();
-                    $(vars.toggle_metadata).hide();
+                if ($(window).height() >= api.options.hide_metadata_height) {
+                    if (api.options.always_show_meta) {
+                        theme.showMetadata();
+                        $(vars.toggle_metadata).hide();
+                    }
+                    if (api.options.show_qr_code) {
+                        $(vars.qr_code_wrapper).show();
+                    }
                 }
 				
 				// Delay progress bar on resize
@@ -287,6 +297,10 @@
 				}
 			}
 		    
+            if (api.options.show_qr_code) {
+                var qrCodeUrl = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=' + encodeURIComponent(api.getField('url'));
+                $(vars.qr_code_img).attr('src', qrCodeUrl);
+            }
 		    
 		    // Highlight current thumbnail and adjust row position
 		    if (api.options.thumb_links){
@@ -411,6 +425,8 @@
         toggle_metadata     :   '#toggle-metadata',
         toggle_metadata_icon:   '#toggle-metadata-icon',
         metadata_wrapper    :   '#metadata-wrap',
+        qr_code_wrapper     :   '#qr-code-wrap',
+        qr_code_img         :   '#qr-code',
 		
 		slide_caption		:	'#slidecaption',	// Slide caption
 		slide_current		:	'.slidenumber',		// Current slide number
@@ -440,6 +456,7 @@
 		control_hide_speed	:	1000,
 		show_controls		:	1,
         always_show_meta    :   0,
+        show_qr_code        :   0,
         hide_metadata_height:   400
 		
 	 };

@@ -185,6 +185,7 @@ class Slideshow
 		$this->slide_delay = 5;
 		$this->always_show_info = false;
 		$this->display_controls = false;
+        $this->show_qr_code = true;
         $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -260,4 +261,29 @@ class Slideshow
         $this->slides[] = $slides;
     }
 
+    /**
+     * @var boolean $show_qr_code
+     */
+    private $show_qr_code;
+
+
+    /**
+     * Set show_qr_code
+     *
+     * @param boolean $showQrCode
+     */
+    public function setShowQrCode($showQrCode)
+    {
+        $this->show_qr_code = $showQrCode;
+    }
+
+    /**
+     * Get show_qr_code
+     *
+     * @return boolean 
+     */
+    public function getShowQrCode()
+    {
+        return $this->show_qr_code;
+    }
 }

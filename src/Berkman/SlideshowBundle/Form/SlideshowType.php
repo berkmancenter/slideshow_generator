@@ -15,6 +15,7 @@ class SlideshowType extends AbstractType
             ->add('slide_delay', null, array('label' => 'Slide Delay (seconds)'))
             ->add('always_show_info', 'checkbox', array('required' => false))
 			->add('display_controls', 'checkbox', array('required' => false))
+			->add('show_qr_code', 'checkbox', array('required' => false))
 		;
 
 		if ($builder->getData()->getId()) {
