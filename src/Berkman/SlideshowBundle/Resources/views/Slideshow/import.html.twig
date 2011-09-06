@@ -3,11 +3,19 @@
 {% block body %}
 <h2>Import Images</h2>
 <div class="centered lightWrap">
+    <h3>Instructions</h3>
+    <p>
+        Upload a CSV document with the format: "REPO_CODE","URL_TO_IMAGE_RECORD"
+    </p>
+    <p>
+        For example:<br />
+        "VIA","http://via.lib.harvard.edu/via/deliver/deepLinkItem?recordId=olvwork163352&componentId=FHCL.HOUGH:90803"<br />
+        "VIA","http://via.lib.harvard.edu/via/deliver/deepLinkItem?recordId=HUAM93534&componentId=HUAM:DDC101225_mddl"<br />
+        "VIA","http://via.lib.harvard.edu/via/deliver/deepLinkItem?recordId=olvwork441333&componentId=FHCL:2573411"<br />
+    </p>
 	<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(import_form) }}>
 		{{ form_widget(import_form) }}
-		<p>
-			<button type="submit">Import</button>
-		</p>
+        <button type="submit">Import</button>
 	</form>
 </div>
 {% endblock %}
