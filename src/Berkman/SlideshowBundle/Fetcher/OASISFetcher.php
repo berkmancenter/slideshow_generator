@@ -197,13 +197,14 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 			'Date' => './/ns:unitdate',
 			'Notes' => './/ns:note'
 		);
-		$unitId = $image->getId4();
-        $pageId = $image->getId5();
+        $imageId = $image->getId3();
+		$unitId  = $image->getId4();
+        $pageId  = $image->getId5();
 
 		$metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
 		$xpath = $this->fetchXpath($metadataUrl);
 		$xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
-        if (!empty($pageId)) {
+        if (!empty($pageId) || !empty($imageId)) {
             $links = $xpath->query('//ns:dao[@xlink:href]');
             foreach ($links as $link) {
                 $curl = curl_init($link->getAttribute('xlink:href'));
@@ -215,6 +216,14 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                 if (strpos($response, 'Location: http://pds.') !== false) {
                     preg_match('!Location: http://pds\.lib\.harvard\.edu/pds/view/(\d*\?n=\d*)\D*\\r\\n!', $response, $resourceLink);
                     if (isset($resourceLink[1]) && $pageId == $resourceLink[1]) {
+                        $recordContainer = $link->parentNode;
+                        break;
+                    }
+                }
+                // Is it a redirect to an image?
+                if (strpos($response, 'Location: http://ids.') !== false) {
+                    preg_match('!Location: http://ids\.lib\.harvard\.edu/ids/view/(\d*)\D*\\r\\n!', $response, $resourceLink);
+                    if (isset($resourceLink[1]) && $imageId == $resourceLink[1]) {
                         $recordContainer = $link->parentNode;
                         break;
                     }
@@ -422,4 +431,9 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 
 		return array('results' => $results, 'totalResults' => $totalResults);
 	}
+
+    public function importImage($url)
+    {
+
+    }
 }
