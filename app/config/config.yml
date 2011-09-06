@@ -64,5 +64,5 @@ fos_user:
     firewall_name: main
     user_class: Berkman\SlideshowBundle\Entity\Person
     encoder:
-        iterations: 500
+        iterations: 5000
         encode_as_base64: true
