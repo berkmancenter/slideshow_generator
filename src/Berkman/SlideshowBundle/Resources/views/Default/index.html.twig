@@ -2,12 +2,12 @@
 
 {% block body %}
 <div>
-	<h2>Find Images</h2>
+	<h2>Find Images or <a href="{{ path('slideshow_import') }}">Import Images</a></h2>
 	<div id="finder" class="centered lightWrap">
 	{% include 'BerkmanSlideshowBundle:Finder:finder.html.twig' %}
 	</div>
 </div>
-{% if slideshows %}
+{% if slideshows is not empty %}
 <div>
 	<h2>Browse Slideshows</h2>
 	<div id="slideshows" class="centered lightWrap">

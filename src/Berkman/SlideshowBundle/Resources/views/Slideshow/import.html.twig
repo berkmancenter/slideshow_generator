@@ -1,0 +1,13 @@
+{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+
+{% block body %}
+<h2>Import Images</h2>
+<div class="centered lightWrap">
+	<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(import_form) }}>
+		{{ form_widget(import_form) }}
+		<p>
+			<button type="submit">Import</button>
+		</p>
+	</form>
+</div>
+{% endblock %}

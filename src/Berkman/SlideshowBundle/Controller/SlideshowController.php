@@ -6,12 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berkman\SlideshowBundle\Entity\Slideshow;
 use Berkman\SlideshowBundle\Entity\Slide;
+use Berkman\SlideshowBundle\Entity\Finder;
 use Berkman\SlideshowBundle\Form\SlideshowType;
 use Berkman\SlideshowBundle\Form\SlideshowChoiceType;
+use Berkman\SlideshowBundle\Form\ImportType;
+
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Slideshow controller.
@@ -104,7 +108,7 @@ class SlideshowController extends Controller
 				$user = $this->get('security.context')->getToken()->getUser();
 				$slideshow->setPerson($user);
                 $slideshow->setCreated(new \DateTime('now'));
-                $finder = $this->getRequest()->getSession()->get('finder');
+                $finder = $this->getFinder();
 
                 if ($finder) {
                     $images = $finder->getSelectedImageResults();
@@ -293,7 +297,7 @@ class SlideshowController extends Controller
 		$slideshow = new Slideshow();
 		$request   = $this->getRequest();
 		$em        = $this->getDoctrine()->getEntityManager();
-        $finder    = $request->getSession()->get('finder');
+        $finder    = $this->getFinder();
         $images    = $finder->getSelectedImageResults();
 
 		$slideshowChoiceType = new SlideshowChoiceType();
@@ -339,6 +343,43 @@ class SlideshowController extends Controller
 	}
 
     /**
+     * Show the import screen
+     */
+    public function importAction()
+    {
+		$request = $this->getRequest();
+        $form = $this->createForm(new ImportType());
+		$em = $this->getDoctrine()->getEntityManager();
+        $images = array();
+        $finder = $this->getFinder();
+
+        if ('POST' == $request->getMethod()) {
+            $form->bindRequest($request);
+            if ($form->isValid()) {
+                $file = $form['attachment']->getData();
+                $file = $file->openFile();
+                $file->setFlags(\SplFileObject::READ_CSV);
+                foreach ($file as $row) {
+                    if (isset($row[1])) {
+                        list($repo, $url) = $row;
+                        $repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($repo);
+                        $imageId = $finder->addImage($repo->getFetcher()->importImage($url));
+                        $finder->addSelectedImageResult($imageId);
+                    }
+                }
+                $this->setFinder($finder);
+
+                return $this->forward('BerkmanSlideshowBundle:Slideshow:addImages');
+            }
+        }
+
+        return $this->render('BerkmanSlideshowBundle:Slideshow:import.html.twig', array(
+            'import_form' => $form->createView()
+        ));
+
+    }
+
+    /**
      * Create a form to delete a slide
      *
      * @param integer $id  Slideshow id
@@ -350,5 +391,33 @@ class SlideshowController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+
+
+    /**
+     * Get the Finder object for the current session
+     * or make a new one.
+     *
+     * @return Berkman\SlideshowBundle\Entity\Finder
+     */
+    private function getFinder()
+    {
+        $finder = $this->getRequest()->getSession()->get('finder');
+        if (!$finder) {
+            $finder = new Finder();
+            $this->setFinder($finder);
+        }
+
+        return $finder;
+    }
+
+    /**
+     * Assign some Finder object to the current session
+     *
+     * @param Berkman\SlideshowBundle\Entity\Finder $finder
+     */
+    private function setFinder(Finder $finder)
+    {
+        $this->getRequest()->getSession()->set('finder', $finder);
     }
 }

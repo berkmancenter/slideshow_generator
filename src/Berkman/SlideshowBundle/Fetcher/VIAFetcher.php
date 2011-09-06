@@ -16,7 +16,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 	 */
 
 	const SEARCH_URL_PATTERN    = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=material-id:matPhoto+{keyword}';
-	const RECORD_URL_PATTERN    = 'http://via.lib.harvard.edu:80/via/deliver/deepLinkItem?recordId={id-1}&componentId={id-2}';
+	const RECORD_URL_PATTERN    = 'http://via.lib.harvard.edu/via/deliver/deepLinkItem?recordId={id-1}&componentId={id-2}';
 	const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/mods/via/{id-3}';
 	const IMAGE_URL_PATTERN     = 'http://nrs.harvard.edu/urn-3:{id-5}?width=2400&height=2400';
 	const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-6}';
@@ -270,4 +270,34 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 
 		return array('results' => $results, 'totalResults' => 0);
 	}
+
+    /**
+     * Note: This URL will be of the RECORD_URL_PATTERN form.
+     */
+    public function importImage($url)
+    {
+        $xpath = $this->fetchXpath($url);
+        $matches = array();
+        $urlPattern = '!' . str_replace(array('\{id\-1\}', '\{id\-2\}'), array('(\w*)', '([:\.\w]*)'), preg_quote(self::RECORD_URL_PATTERN)) . '!';
+        preg_match($urlPattern, $url, $matches);
+        $recordId = $matches[1];
+        $componentId = $matches[2];
+        $metadataId = $recordId;
+        $metadataSubId = null;
+        $imageId = $componentId;
+        $link = $xpath->query('//a[.="View large image"]')->item(0);
+        $container = $link->parentNode->parentNode->parentNode;
+        $thumbnailUrl = $xpath->query('.//img', $container)->item(0)->getAttribute('src');
+        $thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
+        $image = new Entity\Image(
+            $this->getRepo(),
+            $recordId,
+            $componentId,
+            $metadataId,
+            $metadataSubId,
+            $imageId,
+            $thumbnailId
+        );
+        return $image;
+    }
 }

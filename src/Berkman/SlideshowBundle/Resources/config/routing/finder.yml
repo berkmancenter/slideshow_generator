@@ -14,4 +14,3 @@ finder_submit:
     pattern: /submit
     defaults: { _controller: "BerkmanSlideshowBundle:Finder:submit" }
     requirements: { _method: post }
-

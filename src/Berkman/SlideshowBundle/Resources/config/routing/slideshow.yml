@@ -36,3 +36,12 @@ slideshow_add_images:
 slideshow_slideshow:
     pattern: /{id}/slideshow
     defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:slideshow" }
+
+slideshow_import:
+    pattern: /import
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:import" }
+
+slideshow_import_upload:
+    pattern: /import/upload
+    defaults: { _controller: "BerkmanSlideshowBundle:Slideshow:importUpload" }
+    requirements: { _method: post }

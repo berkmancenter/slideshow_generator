@@ -205,7 +205,7 @@ class Collection
     {
         if ($this->images->count() < 2) {
             $images = new \Doctrine\Common\Collections\ArrayCollection();
-            $results = $this->getRepo()->getFetcher()->fetchCollectionResults($this);
+            $results = $this->getRepo()->getFetcher()->fetchCollectionResults($this, 0, 100);
             foreach ($results['results'] as $result) {
                 if ($result instanceof Image) {
                     $images[] = $result;
