@@ -8,9 +8,7 @@
 	<form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
 		{{ form_widget(edit_form) }}
 		<input type="hidden" name="slide_order" value="" id="slide_order" />
-		<p>
-			<button type="submit">Update</button>
-		</p>
+        <button type="submit">Update</button>
 	</form>
 	<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
 		{{ form_widget(delete_form) }}
