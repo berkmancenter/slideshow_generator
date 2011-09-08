@@ -274,8 +274,9 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
     /**
      * Note: This URL will be of the RECORD_URL_PATTERN form.
      */
-    public function importImage($url)
+    public function importImage(array $args)
     {
+        $url = $args[0];
         $xpath = $this->fetchXpath($url);
         $matches = array();
         $urlPattern = '!' . str_replace(array('\{id\-1\}', '\{id\-2\}'), array('(\w*)', '([:\.\w]*)'), preg_quote(self::RECORD_URL_PATTERN)) . '!';
@@ -299,5 +300,10 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
             $thumbnailId
         );
         return $image;
+    }
+
+    public function getImportFormat()
+    {
+        return '"Record URL"';
     }
 }

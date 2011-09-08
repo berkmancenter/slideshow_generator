@@ -13,5 +13,6 @@ interface FetcherInterface {
 	public function fetchResults($keyword, $page);
 	public function fetchImageMetadata(Entity\Image $image);
     public function fetchImagePublicness(Entity\Image $image);
-    public function importImage($url);
+    public function importImage(array $args);
+    public function getImportFormat();
 }

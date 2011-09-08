@@ -432,8 +432,14 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 		return array('results' => $results, 'totalResults' => $totalResults);
 	}
 
-    public function importImage($url)
+    public function importImage(array $args)
     {
+        $findingAidUrl = $args[0];
+        $recordUrl = $args[1];
+    }
 
+    public function getImportFormat()
+    {
+        return '"Finding Aid URL", "Record URL"';
     }
 }

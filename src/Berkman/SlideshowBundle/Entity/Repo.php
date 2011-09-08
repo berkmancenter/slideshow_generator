@@ -151,4 +151,9 @@ class Repo
     {
         return $this->updated;
     }
+
+    public function getImportFormat()
+    {
+        return $this->getFetcher()->getImportFormat();
+    }
 }

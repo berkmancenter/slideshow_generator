@@ -352,6 +352,7 @@ class SlideshowController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
         $images = array();
         $finder = $this->getFinder();
+        $repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findAll();
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
@@ -361,20 +362,22 @@ class SlideshowController extends Controller
                 $file->setFlags(\SplFileObject::READ_CSV);
                 foreach ($file as $row) {
                     if (isset($row[1])) {
-                        list($repo, $url) = $row;
+                        $repo = $row[0];
+                        $args = array_slice($row, 1);
                         $repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($repo);
-                        $imageId = $finder->addImage($repo->getFetcher()->importImage($url));
+                        $imageId = $finder->addImage($repo->getFetcher()->importImage($args));
                         $finder->addSelectedImageResult($imageId);
                     }
                 }
                 $this->setFinder($finder);
 
-                return $this->forward('BerkmanSlideshowBundle:Slideshow:addImages');
+                return $this->redirect($this->generateUrl('slideshow_add_images'));
             }
         }
 
         return $this->render('BerkmanSlideshowBundle:Slideshow:import.html.twig', array(
-            'import_form' => $form->createView()
+            'import_form' => $form->createView(),
+            'repos' => $repos
         ));
 
     }
