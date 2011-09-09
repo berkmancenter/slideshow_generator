@@ -105,14 +105,14 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                 self::FINDING_AID_XML_URL_PATTERN
             );
             $findingAidXpath = $this->fetchXpath($findingAidUrl);
+            $findingAidXpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
 
             $hollisNode = $findingAidXpath->document->getElementsByTagName('eadid')->item(0);
             if ($hollisNode)
                 $hollisId = $hollisNode->getAttribute('identifier');
 
             // Find the links in the finding aid
-            // TODO: There are also apparently daoloc tags
-            $imageLinkNodes = $findingAidXpath->document->getElementsByTagName('dao');
+            $imageLinkNodes = $findingAidXpath->query('//ns:dao|//ns:daoloc');
             foreach ($imageLinkNodes as $imageLinkNode) {
                 // Get the unit id of the unit in the finding aid that contains the link (to get metadata later)
                 $unitId = $imageLinkNode->parentNode->parentNode->parentNode->getElementsByTagName('unitid')->item(0);
@@ -125,6 +125,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
                 // Figure out where the Name Resolution Server redirects to so we know the resource type
                 // TODO: VIA is sometimes a target
                 $curl = curl_init($imageLink);
+                curl_setopt($curl, CURLOPT_NOBODY, true);
                 curl_setopt($curl, CURLOPT_HEADER, true);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($curl);
@@ -204,9 +205,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         $xpath = $this->fetchXpath($metadataUrl);
         $xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
         if (!empty($pageId) || !empty($imageId)) {
-            $links = $xpath->query('//ns:dao[@xlink:href]');
+            $links = $xpath->query('//ns:dao[@xlink:href]|//ns:daoloc[@xlink:href]');
             foreach ($links as $link) {
                 $curl = curl_init($link->getAttribute('xlink:href'));
+                curl_setopt($curl, CURLOPT_NOBODY, true);
                 curl_setopt($curl, CURLOPT_HEADER, true);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($curl);
@@ -327,6 +329,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         $totalResults = 0;
         $hollisId = '';
         $oasisId = '';
+        $results = array();
         $numResults = $endIndex - $startIndex + 1;
         $page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
@@ -395,6 +398,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
     private function fetchFindingAidResults(Entity\Collection $collection, $startIndex, $endIndex)
     {
         $totalResults = 0;
+        $results = array();
         $numResults = $endIndex - $startIndex + 1;
         $page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
@@ -406,6 +410,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             self::FINDING_AID_XML_URL_PATTERN
         );
         $findingAidXpath = $this->fetchXpath($findingAidUrl);
+        $findingAidXpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
 
         // Get the Hollis ID
         $hollisNode = $findingAidXpath->document->getElementsByTagName('eadid')->item(0);
@@ -414,8 +419,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         }
 
         // Find the links in the finding aid
-        // TODO: Potentially also daoloc tags
-        $imageLinkNodes = $findingAidXpath->document->getElementsByTagName('dao');
+        $imageLinkNodes = $findingAidXpath->query('//ns:dao|//ns:daoloc');
         foreach ($imageLinkNodes as $imageLinkNode) {
             if (count($results) == $numResults) {
                 break;
@@ -434,6 +438,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             $curl = curl_init($imageLink);
             curl_setopt($curl, CURLOPT_HEADER, true);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_NOBODY, true);
             $response = curl_exec($curl);
             // Is it a redirect?  Probably, because most/all links point at the NRS
             if (strpos($response, 'HTTP/1.1 303 See Other') !== false) {
