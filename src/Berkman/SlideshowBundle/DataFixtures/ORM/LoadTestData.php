@@ -16,13 +16,13 @@ class LoadTestRepos implements FixtureInterface
 	{
 		$via = new Repo();
 		$via->setId('VIA');
-		$via->setName('Visual Information Access (VIA)');
+		$via->setName('Visual Information Access');
         $via->setCreated(new \DateTime('now'));
         $via->setUpdated(new \DateTime('now'));
 
         $oasis = new Repo();
         $oasis->setId('OASIS');
-        $oasis->setName('Online Archival Search Information System (OASIS)');
+        $oasis->setName('Online Archival Search Information System');
         $oasis->setCreated(new \DateTime('now'));
         $oasis->setUpdated(new \DateTime('now'));
         
