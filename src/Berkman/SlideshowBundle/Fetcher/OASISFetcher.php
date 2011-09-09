@@ -316,12 +316,65 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
     public function importImage(array $args)
     {
         $findingAidUrl = $args[0];
-        $recordUrl = $args[1];
+        $resourceUrl = $args[1];
+        $matches = array();
+
+        preg_match(str_replace('\{id\-1\}', '(\w)*', preg_quote(self::RECORD_URL_PATTERN)), $matches);
+        $findingAidId = $matches[1];
+
+        $findingAidUrl = str_replace(
+            array('{finding-aid-id}'),
+            array($findingAidId),
+            self::FINDING_AID_XML_URL_PATTERN
+        );
+        $findingAidXpath = $this->fetchXpath($findingAidUrl);
+        $findingAidXpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
+
+        // Get the Hollis ID
+        $hollisNode = $findingAidXpath->document->getElementsByTagName('eadid')->item(0);
+        if ($hollisNode) {
+            $hollisId = $hollisNode->getAttribute('identifier');
+        }
+
+        // Find the links in the finding aid
+        $imageLinkNode = $findingAidXpath->query('//ns:*[@xlink:href="'.$resourceUrl.'"]')->item(0);
+        // Get the unit id of the unit in the finding aid that contains the link (to get metadata later)
+        $unitId = $imageLinkNode->parentNode->parentNode->parentNode->getElementsByTagName('unitid')->item(0);
+        if ($unitId) {
+            $unitId = $unitId->textContent;
+        }
+        
+        if ($this->isImage($resourceUrl)) {
+            $matches = array();
+            preg_match(str_replace('\{id\-3\}', '(\d)*', preg_quote(self::IMAGE_URL_PATTERN)), $matches);
+            $imageId = $matches[1];
+            $results[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
+        }
+        elseif ($this->isDocument($resourceUrl)) {
+            //preg_match('!.*/pds/view/(\d+\?n=\d+)\D.*!', $link->getAttribute('href'), $pageId);
+            /*if (isset($pageId[1])) {
+                $pageId = $pageId[1];
+            }
+
+            $thumbnail = $xpath->query('.//ns:img[@class="thumbLinks"]', $link)->item(0);
+            if ($thumbnail) {
+                preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\D.*!', $thumbnail->getAttribute('src'), $imageId);
+                if (isset($imageId[1])) {
+                    $imageId = $imageId[1];
+                }
+            }
+            if (!empty($hollisId) && !empty($oasisId) && !empty($pageId) && !empty($imageId)) {
+                $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId, $pageId);
+                $results[] = $image;
+            }
+            /* PAGED_OBJECT_URL_PATTERN       = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=n&treeaction=expand&printThumbnails=true';
+            PAGED_OBJECT_RELATED_LINKS_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/links/{paged-object-id}';*/
+        }
     }
 
     public function getImportFormat()
     {
-        return '"Finding Aid URL", "Record URL"';
+        return '"Finding Aid URL", "Record URL (as NRS link)"';
     }
 
     private function fetchPagedObjectResults(Entity\Collection $collection, $startIndex, $endIndex)
@@ -434,7 +487,6 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             $imageLink = $imageLinkNode->getAttribute('xlink:href');
 
             // Figure out where the Name Resolution Server redirects to so we know the resource type
-            // TODO: Make this a HEAD request
             $curl = curl_init($imageLink);
             curl_setopt($curl, CURLOPT_HEADER, true);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -475,5 +527,35 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         }
 
         return array('results' => $results, 'totalResults' => $totalResults);
+    }
+
+    private function isImage($url)
+    {
+        if (strpos($url, 'http://nrs.harvard.edu') !== false) {
+            $url = getUrlFromNrs($url);
+        }
+
+        return strpos($url, 'http://ids.lib.harvard.edu') !== false;
+    }
+
+    private function isDocument($url)
+    {
+        if (strpos($url, 'http://nrs.harvard.edu') !== false) {
+            $url = getUrlFromNrs($url);
+        }
+
+        return strpos($url, 'http://pds.lib.harvard.edu') !== false;
+    }
+
+    private function getUrlFromNrs($url)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        $matches = array();
+        preg_match('!Location: (http://.*)\\r\\n!', $response, $matches);
+        return $matches[1];
     }
 }
