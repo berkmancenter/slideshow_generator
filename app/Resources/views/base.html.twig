@@ -21,8 +21,10 @@
 				<div id="utility">
 					{% block utility %}
 					<div>
-                        {% if app.session and app.session.get('finder') %}
-                        {{ app.session.get('finder').selectedImageResults|length }}
+                        {% if app.session and app.session.get('finder') and app.session.get('finder').selectedImageResults|length > 0 %}
+                        <a href="{{ path('slideshow_add_images') }}">
+                        {{ app.session.get('finder').selectedImageResults|length }} images
+                        </a>
                         {% endif %}
 
 						{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
