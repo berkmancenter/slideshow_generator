@@ -317,10 +317,13 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
     {
         $findingAidUrl = $args[0];
         $resourceUrl = $args[1];
-        $matches = array();
+        $queryVars = array();
+        $image = '';
 
-        preg_match(str_replace('\{id\-1\}', '(\w)*', preg_quote(self::RECORD_URL_PATTERN)), $matches);
-        $findingAidId = $matches[1];
+        parse_str(parse_url($findingAidUrl, PHP_URL_QUERY), $queryVars);
+        if (isset($queryVars['uniqueId'])) {
+            $findingAidId = $queryVars['uniqueId'];
+        }
 
         $findingAidUrl = str_replace(
             array('{finding-aid-id}'),
@@ -338,8 +341,9 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 
         // Find the links in the finding aid
         $imageLinkNode = $findingAidXpath->query('//ns:*[@xlink:href="'.$resourceUrl.'"]')->item(0);
+
         // Get the unit id of the unit in the finding aid that contains the link (to get metadata later)
-        $unitId = $imageLinkNode->parentNode->parentNode->parentNode->getElementsByTagName('unitid')->item(0);
+        $unitId = $imageLinkNode->parentNode->getElementsByTagName('unitid')->item(0);
         if ($unitId) {
             $unitId = $unitId->textContent;
         }
@@ -348,27 +352,40 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             $matches = array();
             preg_match(str_replace('\{id\-3\}', '(\d)*', preg_quote(self::IMAGE_URL_PATTERN)), $matches);
             $imageId = $matches[1];
-            $results[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
+            $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId);
         }
         elseif ($this->isDocument($resourceUrl)) {
-            //preg_match('!.*/pds/view/(\d+\?n=\d+)\D.*!', $link->getAttribute('href'), $pageId);
-            /*if (isset($pageId[1])) {
+            $pageId = array();
+            $url = $this->getUrlFromNrs($resourceUrl);
+            preg_match('!.*/pds/view/(\d+\?n=\d+)\D*!', $url, $pageId);
+            if (isset($pageId[1])) {
                 $pageId = $pageId[1];
             }
 
-            $thumbnail = $xpath->query('.//ns:img[@class="thumbLinks"]', $link)->item(0);
-            if ($thumbnail) {
-                preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\D.*!', $thumbnail->getAttribute('src'), $imageId);
+            // TODO: Check if this always works.  It won't if there are NRS links that contain GET params
+            $params = array();
+            parse_str(parse_url($url, PHP_URL_QUERY), $params);
+            $params['op'] = 't';
+            $oasisXmlUrl = substr($url, 0, strpos($url, '?') + 1) . http_build_query($params);
+            $xpath = $this->fetchXpath($oasisXmlUrl);
+            $xpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+            $imageNode = $xpath->query('//ns:img[contains(@src, "ids.lib.harvard.edu")]')->item(0);
+
+            if (!empty($imageNode)) {
+                $imageId = array();
+                preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\D.*!', $imageNode->getAttribute('src'), $imageId);
                 if (isset($imageId[1])) {
                     $imageId = $imageId[1];
                 }
             }
-            if (!empty($hollisId) && !empty($oasisId) && !empty($pageId) && !empty($imageId)) {
+
+            if (!empty($pageId) && !empty($imageId)) {
                 $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId, $pageId);
-                $results[] = $image;
             }
-            /* PAGED_OBJECT_URL_PATTERN       = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=n&treeaction=expand&printThumbnails=true';
-            PAGED_OBJECT_RELATED_LINKS_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/links/{paged-object-id}';*/
+        }
+
+        if (!empty($image)) {
+            return $image;
         }
     }
 
@@ -532,7 +549,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
     private function isImage($url)
     {
         if (strpos($url, 'http://nrs.harvard.edu') !== false) {
-            $url = getUrlFromNrs($url);
+            $url = $this->getUrlFromNrs($url);
         }
 
         return strpos($url, 'http://ids.lib.harvard.edu') !== false;
@@ -541,7 +558,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
     private function isDocument($url)
     {
         if (strpos($url, 'http://nrs.harvard.edu') !== false) {
-            $url = getUrlFromNrs($url);
+            $url = $this->getUrlFromNrs($url);
         }
 
         return strpos($url, 'http://pds.lib.harvard.edu') !== false;
