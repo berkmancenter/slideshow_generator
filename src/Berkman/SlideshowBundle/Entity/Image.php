@@ -293,7 +293,7 @@ class Image
     public function isPublic()
     {
         if (!isset($this->public)) {
-            $this->public = $this->getFromRepo()->getFetcher()->fetchImagePublicness($this);
+            $this->public = $this->getFromRepo()->getFetcher()->isImagePublic($this);
         }
         return $this->public;
     }

@@ -306,7 +306,7 @@ class Collection
     public function isPublic()
     {
         if (!isset($this->public)) {
-            $this->public = $this->getRepo()->getFetcher()->fetchCollectionPublicness($this);
+            $this->public = $this->getRepo()->getFetcher()->isCollectionPublic($this);
         }
         return $this->public;
     }

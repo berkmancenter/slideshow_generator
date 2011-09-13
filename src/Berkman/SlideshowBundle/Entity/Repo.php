@@ -156,4 +156,9 @@ class Repo
     {
         return $this->getFetcher()->getImportFormat();
     }
+
+    public function hasCustomImporter()
+    {
+        return $this->getFetcher()->hasCustomImporter();
+    }
 }

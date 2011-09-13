@@ -5,7 +5,9 @@ namespace Berkman\SlideshowBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berkman\SlideshowBundle\Entity\Repo;
+use Berkman\SlideshowBundle\Entity\Finder;
 use Berkman\SlideshowBundle\Form\RepoType;
+use Berkman\SlideshowBundle\Form\ImportType;
 
 /**
  * Repo controller.
@@ -190,11 +192,69 @@ class RepoController extends Controller
         return $this->redirect($this->generateUrl('repo'));
     }
 
+    public function importAction($id)
+    {
+		$request = $this->getRequest();
+        if ('POST' === $request->getMethod()) {
+            $finder = $this->getFinder();
+            $em = $this->getDoctrine()->getEntityManager();
+            $repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
+            if (!$repo) {
+                throw $this->createNotFoundException('Unable to find Repo entity.');
+            }
+
+            $importForm = $this->createForm(new ImportType());
+            $importForm->bindRequest($request);
+            if ($importForm->isValid()) {
+                $file = $importForm['attachment']->getData();
+
+                $file = $file->openFile();
+                $images = $repo->getFetcher()->getImagesFromImport($file);
+
+                foreach ($images as $image) {
+                    $imageId = $finder->addImage($image);
+                    $finder->addSelectedImageResult($imageId);
+                }
+
+                $this->setFinder($finder);
+
+                return $this->redirect($this->generateUrl('slideshow_add_images'));
+            }
+        }
+    }
+
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+
+    /**
+     * Get the Finder object for the current session
+     * or make a new one.
+     *
+     * @return Berkman\SlideshowBundle\Entity\Finder
+     */
+    private function getFinder()
+    {
+        $finder = $this->getRequest()->getSession()->get('finder');
+        if (!$finder) {
+            $finder = new Finder();
+            $this->setFinder($finder);
+        }
+
+        return $finder;
+    }
+
+    /**
+     * Assign some Finder object to the current session
+     *
+     * @param Berkman\SlideshowBundle\Entity\Finder $finder
+     */
+    private function setFinder(Finder $finder)
+    {
+        $this->getRequest()->getSession()->set('finder', $finder);
     }
 }

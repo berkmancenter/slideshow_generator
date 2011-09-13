@@ -13,9 +13,26 @@
         "{{ repo.id }}",{{ repo.importFormat }}
     </p>
     {% endfor %}
-	<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(import_form) }}>
-		{{ form_widget(import_form) }}
+	<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
+		{{ form_widget(master_form) }}
         <button type="submit">Import</button>
 	</form>
+</div>
+<h2>Repository Importers</h2>
+<div class="centered lightWrap">
+    {% for repo_id, import_form in import_forms %}     
+        {% for repo in repos %}
+            {% if repo.id == repo_id %}
+            <h3>{{ repo.name }}</h3>
+            <p>
+                    {{ repo.getFetcher.importInstructions }}
+            </p>
+            {% endif %}
+        {% endfor %}
+        <form action="{{ path('repo_import', { 'id': repo_id }) }}" method="post" {{ form_enctype(import_form) }}>
+            {{ form_widget(import_form) }}
+            <input type="submit" value="Import" />
+        </form>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -28,3 +28,8 @@ repo_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BerkmanSlideshowBundle:Repo:delete" }
     requirements: { _method: post }
+
+repo_import:
+    pattern:  /{id}/import
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:import" }
+    requirements: { _method: post }

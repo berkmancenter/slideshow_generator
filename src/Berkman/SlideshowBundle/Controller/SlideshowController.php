@@ -348,16 +348,22 @@ class SlideshowController extends Controller
     public function importAction()
     {
 		$request = $this->getRequest();
-        $form = $this->createForm(new ImportType());
+        $masterForm = $this->createForm(new ImportType());
 		$em = $this->getDoctrine()->getEntityManager();
         $images = array();
+        $importForms = array();
         $finder = $this->getFinder();
         $repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findAll();
+        foreach ($repos as $repo) {
+            if ($repo->hasCustomImporter()) {
+                $importForms[$repo->getId()] = $this->createForm(new ImportType())->createView();
+            }
+        }
 
         if ('POST' == $request->getMethod()) {
-            $form->bindRequest($request);
-            if ($form->isValid()) {
-                $file = $form['attachment']->getData();
+            $masterForm->bindRequest($request);
+            if ($masterForm->isValid()) {
+                $file = $masterForm['attachment']->getData();
                 $file = $file->openFile();
                 $file->setFlags(\SplFileObject::READ_CSV);
                 foreach ($file as $row) {
@@ -376,7 +382,8 @@ class SlideshowController extends Controller
         }
 
         return $this->render('BerkmanSlideshowBundle:Slideshow:import.html.twig', array(
-            'import_form' => $form->createView(),
+            'master_form' => $masterForm->createView(),
+            'import_forms' => $importForms,
             'repos' => $repos
         ));
 

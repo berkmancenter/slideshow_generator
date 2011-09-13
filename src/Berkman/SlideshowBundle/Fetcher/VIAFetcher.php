@@ -4,7 +4,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherInterface {
+class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherInterface, ImportFetcherInterface {
 
 	/*
 	 * id_1 = recordId
@@ -154,7 +154,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 		return $metadata;
 	}
 
-    public function fetchImagePublicness(Entity\Image $image)
+    public function isImagePublic(Entity\Image $image)
     {
         $public = false;
         $xpath = $this->fetchXpath($this->fillUrl(self::METADATA_URL_PATTERN, $image));
@@ -166,7 +166,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
         return $public;
     }
 
-    public function fetchCollectionPublicness(Entity\Collection $collection)
+    public function isCollectionPublic(Entity\Collection $collection)
     {
         $recordId = $collection->getId1();
         $collectionUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
@@ -305,5 +305,55 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
     public function getImportFormat()
     {
         return '"Record URL"';
+    }
+
+    public function getImagesFromImport(\SPLFileObject $file)
+    {
+        $fileContent = '';
+        $images = array();
+        while (!$file->eof()) {
+            $fileContent .= $file->fgets();
+        }
+
+		$doc = new \DOMDocument();
+        $doc->recover = true;
+		libxml_use_internal_errors(true);
+		$doc->loadXML($fileContent);
+		$xpath = new \DOMXPath($doc);
+        $xpath->registerNamespace('ns', 'http://hul.harvard.edu/ois/xml/xsd/via/newvia_export.xsd');
+        $records = $xpath->query('//ns:record');
+        foreach ($records as $record) {
+            $viaId = null;
+            $componentId = null;
+            $restricted = false;
+            $viaNode = $xpath->query('.//ns:via_id', $record)->item(0);
+            if ($viaNode) {
+                $viaId = $viaNode->textContent;
+            }
+            $imageLinkNode = $xpath->query('.//ns:imagelink', $record)->item(0);
+            if ($imageLinkNode) {
+                $componentId = substr($imageLinkNode->textContent, strpos($imageLinkNode->textContent, ':', 5) + 1);
+            }
+            $restrictedNode = $xpath->query('.//ns:restricted_image', $record)->item(0);
+            if ($restrictedNode) {
+                $restricted = ($restrictedNode->textContent == 'true') ? true : false;
+            }
+            if (isset($viaId, $componentId) && !$restricted) {
+                $images[] = $this->importImage(array(str_replace(array('{id-1}', '{id-2}'), array($viaId, $componentId), self::RECORD_URL_PATTERN)));
+                error_log(str_replace(array('{id-1}', '{id-2}'), array($viaId, $componentId), self::RECORD_URL_PATTERN));
+            }
+        }
+
+        return $images;
+    }
+
+    public function getImportInstructions()
+    {
+        return 'Download your portfolio from VIA, extract the contents from the ZIP file, and upload your Transformed_records.xml';
+    }
+
+    public function hasCustomImporter()
+    {
+        return true;
     }
 }
