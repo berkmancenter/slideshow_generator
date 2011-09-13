@@ -18,17 +18,17 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
      * The unitId corresponds to the id of the unit in the finding aid
      */
     
+    const RESULTS_PER_PAGE      = 25;
+
     const SEARCH_URL_PATTERN    = 'http://webservices.lib.harvard.edu/rest/hollis/search/mods/?curpage={page}&q=eadid:*+{keyword}&add_ref=612';
     const RECORD_URL_PATTERN    = 'http://oasis.lib.harvard.edu/oasis/deliver/deepLink?_collection=oasis&uniqueId={id-1}';
     const METADATA_URL_PATTERN  = 'http://oasis.lib.harvard.edu/oasis/ead2002/schema/{id-1}';
     const IMAGE_URL_PATTERN     = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=2400&height=2400';
     const THUMBNAIL_URL_PATTERN = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=150&height=150&usethumb=y';
 
-    const FINDING_AID_XML_URL_PATTERN    = 'http://oasis.lib.harvard.edu/oasis/ead2002/schema/{finding-aid-id}';
-    const PAGED_OBJECT_URL_PATTERN       = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=n&treeaction=expand&printThumbnails=true';
+    const FINDING_AID_XML_URL_PATTERN            = 'http://oasis.lib.harvard.edu/oasis/ead2002/schema/{finding-aid-id}';
+    const PAGED_OBJECT_URL_PATTERN               = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=n&treeaction=expand&printThumbnails=true';
     const PAGED_OBJECT_RELATED_LINKS_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/links/{paged-object-id}';
-
-    const RESULTS_PER_PAGE = 25;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Repo $repo
@@ -78,10 +78,9 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
      */
     public function fetchResults($keyword, $page)
     {
-        $results = array();
+        $results      = array();
         $totalResults = 0;
-
-        $searchUrl = str_replace(
+        $searchUrl    = str_replace(
             array('{keyword}', '{page}'),
             array(urlencode($keyword), $page), 
             self::SEARCH_URL_PATTERN
@@ -97,11 +96,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         $noteNodes = $xpath->query('//note[@xlink:href]');
 
         foreach ($noteNodes as $noteNode) {
-            $findingAidId = '';
-            $hollisId = '';
+            $findingAidId = null;
+            $hollisId     = null;
 
             // Get the finding aid
-            $findingAidId = substr($noteNode->getAttribute('xlink:href'), -8);
+            $findingAidId    = substr($noteNode->getAttribute('xlink:href'), -8);
             $findingAidXpath = $this->fetchFindingAidXpath($findingAidId);
 
             $hollisNode = $findingAidXpath->document->getElementsByTagName('eadid')->item(0);
@@ -113,14 +112,15 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             $findingAidResult = $this->fetchFindingAidResults($collection, 0, 1);
             if (isset($findingAidResult['results'][0])) {
                 $result = $findingAidResult['results'][0];
-                if ($result instanceof Image) {
+                if ($result instanceof Entity\Image) {
                     $collection->addImages($result);
+                    $results[] = $collection;
                 }
-                elseif ($result instanceof Collection) {
-                    $collection->addImages($result->getCoverImage());
+                elseif ($result instanceof Entity\Collection) {
+                    $collection->addImages($result->getCover());
+                    $results[] = $collection;
                 }
             }
-            $results[] = $collection;
         }
 
         return array('results' => $results, 'totalResults' => $totalResults);
@@ -135,20 +135,24 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
     public function fetchImageMetadata(Entity\Image $image)
     {
         $metadata = array();
-        $fields = array(
-            'Title' => './/ns:unittitle',
+        $fields   = array(
+            'Title'   => './/ns:unittitle',
             'Creator' => '//ns:origination[@label="creator"]',
-            'Date' => './/ns:unitdate',
-            'Notes' => './/ns:note'
+            'Date'    => './/ns:unitdate',
+            'Notes'   => './/ns:note'
         );
-        $imageId = $image->getId3();
-        $unitId  = $image->getId4();
-        $pageId  = $image->getId5();
+        $findingAidId = $image->getId1();
+        $hollisId     = $image->getId2();
+        $imageId      = $image->getId3();
+        $unitId       = $image->getId4();
+        $pageId       = $image->getId5();
+        $nrsId        = $image->getId6();
 
-        $metadataUrl = $this->fillUrl(self::METADATA_URL_PATTERN, $image);
-        $xpath = $this->fetchXpath($metadataUrl);
-        $xpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
-        if (!empty($pageId) || !empty($imageId)) {
+        $xpath = $this->fetchFindingAidXpath($findingAidId);
+        $query = '//ns:dao[contains(@xlink:href,"' . $nrsId . '")]|//ns:daoloc[contains(@xlink:href,"' . $nrsId . '")]';
+        $resourceNode  = $xpath->query($query)->item(0);
+        $containerNode = $xpath->query('preceding::ns:did[1]', $resourceNode)->item(0);                   
+        /*if (!empty($pageId) || !empty($imageId)) {
             $links = $xpath->query('//ns:dao[@xlink:href]|//ns:daoloc[@xlink:href]');
             foreach ($links as $link) {
                 $url = $link->getAttribute('xlink:href');
@@ -176,10 +180,10 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             if ($recordContainer) {
                 $recordContainer = $recordContainer->parentNode->parentNode;
             }
-        }
-        if ($recordContainer) {
+        }*/
+        if ($containerNode) {
             foreach ($fields as $name => $query) {
-                $node = $xpath->query($query, $recordContainer)->item(0);
+                $node = $xpath->query($query, $containerNode)->item(0);
                 if ($node) {
                     $metadata[$name] = preg_replace('/\s+/', ' ', $node->textContent);
                 }
@@ -189,9 +193,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         return $metadata;
     }
 
-    public function fetchImagePublicness(Entity\Image $image)
+    public function isImagePublic(Entity\Image $image)
     {
-
+        $matches  = array();
+        $imageUrl = $image->getImageUrl();
+        return !$this->isRedirect($imageUrl);
     }
 
     /**
@@ -245,19 +251,27 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             }
         }
         elseif ($collection->getId1() == 'pagedObject') {
-            $relatedLinksUrl = str_replace('{paged-object-id}', $findingAidId, self::PAGED_OBJECT_RELATED_LINKS_URL_PATTERN);
-            $relatedLinksXpath = $this->fetchXpath($relatedLinksUrl);
-            $relatedLinksXpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+            $objectUrl = str_replace('{paged-object-id}', $findingAidId, self::PAGED_OBJECT_URL_PATTERN);
+            $xpath = $this->fetchXpath($objectUrl);
+            $xpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+            $citationNode = $xpath->query('//ns:div[@class="citationDiv"]')->item(0);
+            if ($citationNode) {
+                $metadata['Title'] = $citationNode->textContent;
+            }
         }
 
         return $metadata;
     }
 
-    public function fetchCollectionPublicness(Entity\Collection $collection)
+    public function isCollectionPublic(Entity\Collection $collection)
     {
         if ($collection->getId1() == 'findingAid') {
+            return TRUE;
         }
         elseif ($collection->getId1() == 'pagedObject') {
+            $findingAidId = $collection->getId2();
+            $objectUrl = str_replace('{paged-object-id}', $findingAidId, self::PAGED_OBJECT_URL_PATTERN);
+            return !$this->isRedirect($objectUrl);
         }
     }
 
@@ -303,21 +317,13 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             $unitId = $unitNode->textContent;
         }
 
-        $imageNrsUrl = $imageLinkNode->getAttribute('xlink:href');
-        preg_match(
-           '!http://nrs.harvard.edu/urn-3:(\.\:\w)*!',
-            $imageNrsUrl,
-            $matches
-        ); 
-        if (isset($matches[1])) {
-            $nrsId = $matches[1];
-        }
+        $nrsId = $this->getNrsId($imageLinkNode->getAttribute('xlink:href'));
         
         if ($this->isImage($resourceUrl)) {
-            $matches = array();
-            preg_match(str_replace('\{id\-3\}', '(\d)*', preg_quote(self::IMAGE_URL_PATTERN)), $matches);
-            $imageId = $matches[1];
-            $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId, null, $nrsId);
+            $imageId = $this->getImageId($this->fetchUrlFromNrs($resourceUrl));
+            if (isset($findingAidId, $hollisId, $imageId, $unitId, $nrsId)) {
+                $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId, null, $nrsId);
+            }
         }
         elseif ($this->isDocument($resourceUrl)) {
             $pageId = array();
@@ -336,11 +342,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             $imageNode = $xpath->query('//ns:img[contains(@src, "ids.lib.harvard.edu")]')->item(0);
 
             if (!empty($imageNode)) {
-                $imageId = array();
-                preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\D.*!', $imageNode->getAttribute('src'), $imageId);
-                if (isset($imageId[1])) {
-                    $imageId = $imageId[1];
-                }
+                $imageId = $this->getImageId($imageNode->getAttribute('src'));
             }
 
             if (!empty($pageId) && !empty($imageId)) {
@@ -367,11 +369,6 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         $numResults = $endIndex - $startIndex + 1;
         $page = floor($startIndex / (self::RESULTS_PER_PAGE)) + 1;
 
-        // Get the Hollis ID and the OASIS ID of the paged object (shouldn't I already know the OASIS ID?)
-        $relatedLinksUrl = str_replace('{paged-object-id}', $findingAidId, self::PAGED_OBJECT_RELATED_LINKS_URL_PATTERN);
-        $relatedLinksXpath = $this->fetchXpath($relatedLinksUrl);
-        $relatedLinksXpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
-
         // Get the images in the paged object
         $objectUrl = str_replace('{paged-object-id}', $findingAidId, self::PAGED_OBJECT_URL_PATTERN);
         $xpath = $this->fetchXpath($objectUrl);
@@ -392,16 +389,15 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
 
             $thumbnail = $xpath->query('.//ns:img[@class="thumbLinks"]', $link)->item(0);
             if ($thumbnail) {
-                preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d+)\D.*!', $thumbnail->getAttribute('src'), $imageId);
-                if (isset($imageId[1])) {
-                    $imageId = $imageId[1];
-                }
+                $imageId = $this->getImageId($thumbnail->getAttribute('src'));
             }
 
             // Add the image if it has all the required IDs (why isn't there both a thumbnail and full image id?)
-            if (!empty($hollisId) && !empty($findingAidId) && !empty($pageId) && !empty($imageId)) {
-                $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $collection->getId3(), $pageId);
-                $results[] = $image;
+            if (isset($findingAidId, $hollisId, $imageId, $pageId)) {
+                $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, null, $pageId, null);
+                if ($this->isImagePublic($image)) {
+                    $results[] = $image;
+                }
             }
         }
 
@@ -425,9 +421,9 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         // Find the links in the finding aid
         $imageLinkNodes = $findingAidXpath->query('//ns:dao|//ns:daoloc');
         foreach ($imageLinkNodes as $imageLinkNode) {
-            $imageId = '';
-            $unitId = '';
-            $nrsId = '';
+            $imageId = null;
+            $unitId = null;
+            $resourceMatches = array();
             
             if (count($results) == $numResults) {
                 break;
@@ -440,42 +436,36 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
             }
 
             // Get the NRS Id so we can do better metadata fetching
-            $imageNrsUrl = $imageLinkNode->getAttribute('xlink:href');
-            preg_match(
-               '!http://nrs.harvard.edu/urn-3:(\.\:\w)*!',
-                $imageNrsUrl,
-                $matches
-            ); 
-            if (isset($matches[1])) {
-                $nrsId = $matches[1];
-            }
+            $nrsId = $this->getNrsId($imageLinkNode->getAttribute('xlink:href'));
 
             $imageUrl = $this->fetchUrlFromNrs($imageLinkNode->getAttribute('xlink:href'));
-            $resourceLink = array();
 
             if ($this->isImage($imageUrl)) {
-                preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d*)\D*!', $imageUrl, $resourceLink);
-                if (isset($resourceLink[1])) {
-                    $imageId = $resourceLink[1];
-                    $results[] = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId, null, $nrsId);
+                $imageId = $this->getImageId($imageUrl);
+                if (isset($findingAidId, $hollisId, $imageId, $unitId, $nrsId)) {
+                    $image = new Entity\Image($this->getRepo(), $findingAidId, $hollisId, $imageId, $unitId, null, $nrsId);
+                    if ($this->isImagePublic($image)) {
+                        $results[] = $image;
+                    }
                 }
             }
-
-            if ($this->isDocument($imageUrl)) {
-                preg_match('!http://pds\.lib\.harvard\.edu/pds/view/(\d*)(\D*)!', $imageUrl, $resourceLink);
-                // If this is redirecting to a paged document (and not a page within the document)
+            elseif ($this->isDocument($imageUrl)) {
+                preg_match('!http://pds\.lib\.harvard\.edu/pds/view/(\d*)(\D*)!', $imageUrl, $resourceMatches);
 
                 /* I don't want to add pages as images to the results because a finding aid can point to both a collection
                  * and all the sub-images in a collection. If I added both the collection and the images, we'd end up with
                  * a bunch of redundant results
                  */ 
-                if (isset($resourceLink[1]) && (empty($resourceLink[2]) || strpos($resourceLink[2], 'n=') === false)) {
-                    $pagedObjectId = $resourceLink[1];
+                // If this is redirecting to a paged document (and not a page within the document)
+                if (isset($resourceMatches[1]) && (empty($resourceMatches[2]) || strpos($resourceMatches[2], 'n=') === false)) {
+                    $pagedObjectId = $resourceMatches[1];
                     $imageCollection = new Entity\Collection($this->getRepo(), 'pagedObject', $pagedObjectId, $unitId);
-                    $collectionResult = $this->fetchCollectionResults($imageCollection, 0, 1);
-                    if (!empty($collectionResult['results'])) {
-                        $imageCollection->addImages($collectionResult['results'][0]);
-                        $results[] = $imageCollection;
+                    if ($this->isCollectionPublic($imageCollection)) {
+                        $collectionResult = $this->fetchCollectionResults($imageCollection, 0, 1);
+                        if (!empty($collectionResult['results'])) {
+                            $imageCollection->addImages($collectionResult['results'][0]);
+                            $results[] = $imageCollection;
+                        }
                     }
                 }
             }
@@ -529,5 +519,50 @@ class OASISFetcher extends Fetcher implements FetcherInterface, CollectionFetche
         $findingAidXpath = $this->fetchXpath($findingAidUrl);
         $findingAidXpath->registerNamespace('ns', 'urn:isbn:1-931666-22-9');
         return $findingAidXpath;
+    }
+
+    private function getNrsId($url)
+    {
+        $matches = array();
+        $nrsId = null;
+        preg_match(
+           '!http://nrs\.harvard\.edu/urn\-3:([\.\:\w]*)!',
+            $url,
+            $matches
+        ); 
+        if (isset($matches[1])) {
+            $nrsId = $matches[1];
+        }
+        return $nrsId;
+    }
+
+    private function getImageId($url)
+    {
+        $matches = array();
+        $imageId = null;
+        preg_match('!http://ids\.lib\.harvard\.edu/ids/view/(\d*)\D*!', $url, $matches);
+        if (isset($matches[1])) {
+            $imageId = $matches[1];
+        }
+
+        return $imageId;
+    }
+
+    private function isRedirect($url)
+    {
+        $curl     = curl_init($url);
+        curl_setopt_array($curl, array(
+            CURLOPT_NOBODY         => true,
+            CURLOPT_HEADER         => true,
+            CURLOPT_RETURNTRANSFER => true
+        ));
+        $response = curl_exec($curl);
+
+        return strpos($response, 'HTTP/1.1 302') !== false;
+    }
+
+    public function hasCustomImporter()
+    {
+        return false;
     }
 }
