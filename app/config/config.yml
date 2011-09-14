@@ -66,3 +66,10 @@ fos_user:
     encoder:
         iterations: 5000
         encode_as_base64: true
+    from_email:
+        address: admin@example.com
+        sender_name: Spectacle Admin
+    registration:
+        confirmation:
+            enabled: true
+            

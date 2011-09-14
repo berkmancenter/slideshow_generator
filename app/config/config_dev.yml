@@ -1,6 +1,11 @@
 imports:
     - { resource: config.yml }
 
+swiftmailer:
+    transport: gmail
+    username: %gmail_username%
+    password: %gmail_password%
+
 framework:
     router:   { resource: "%kernel.root_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }

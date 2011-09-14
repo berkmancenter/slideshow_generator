@@ -1,22 +1,25 @@
 {% extends "BerkmanSlideshowBundle::layout.html.twig" %}
 
 {% block body %}
-<div class="lightWrap">
 {% if error %}
-    <div>{{ error }}</div>
+    <div class="flash error">{{ error }}</div>
 {% endif %}
+
+<h2>Login</h2>
+<div class="lightWrap">
 
 <form action="{{ path("fos_user_security_check") }}" method="post">
     <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+    <input type="text" id="username" name="_username" value="{{ last_username }}" /><br />
 
     <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="password" id="password" name="_password" />
+    <input type="password" id="password" name="_password" /><br />
 
     <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+    <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label><br />
 
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
 </form>
+<a href="{{ path('fos_user_resetting_request') }}">Forgot your password?</a>
 </div>
 {% endblock body %}

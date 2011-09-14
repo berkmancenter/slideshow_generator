@@ -1,7 +1,12 @@
 {% extends "BerkmanSlideshowBundle::layout.html.twig" %}
 
 {% block body %}
-
-    {{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}
-
+    <h2>Registration Confirmed</h2>
+    <div class="centered lightWrap">
+    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+    {% if app.session is not empty %}
+        {% set targetUrl = app.session.get('_security.target_path') %}
+        {% if targetUrl is not empty %}<p><a class="buttoned" href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
+    {% endif %}
+    </div>
 {% endblock body %}

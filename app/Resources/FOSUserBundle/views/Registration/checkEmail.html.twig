@@ -1,1 +1,8 @@
-{{ 'registration.check_email'|trans({'%email%': user.email}, 'FOSUserBundle') }}
+{% extends "BerkmanSlideshowBundle::layout.html.twig" %}
+
+{% block body %}
+    <h2>Check Your Email</h2>
+    <div class="centered lightWrap">
+    <p>{{ 'registration.check_email'|trans({'%email%': user.email}, 'FOSUserBundle') }}</p>
+    </div>
+{% endblock body %}

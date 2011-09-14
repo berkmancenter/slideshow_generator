@@ -49,7 +49,7 @@
 			{% if app.session and app.session.flashes is not empty %}
 			{% for flashType, flash in app.session.flashes %}
 			<div class="flash {{ flashType }}">
-				{{ flash }}
+                {{ flash|trans({}, 'FOSUserBundle') }}
 			</div>
 			{% endfor %}
 			{% endif %}

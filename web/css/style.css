@@ -109,7 +109,7 @@ p {
 .flash {
     text-align: center;
 }
-.notice {
+.notice, .fos_user_success {
     background-color: #D0F0C0;
 }
 .error {
@@ -119,7 +119,7 @@ p {
 	font-size: 18px;
 	font-family: 'Cardo';
 }
-input[type=text], input[type=number], input[type=password] {
+input[type=text], input[type=number], input[type=password], input[type=email] {
 	font-size: 24px;
 	border: 3px solid #F07830;
 	border-radius: 10px;
