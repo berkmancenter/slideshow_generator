@@ -28,8 +28,9 @@ security:
         # Slideshow permission stuff
         - { path: ^/slideshow/(new|create|edit|update|delete|addImage), role: IS_AUTHENTICATED_REMEMBERED }
         # Repo permission stuff
-        - { path: ^/repo/\w*/(edit|update|delete), role: ROLE_ADMIN }
+        - { path: ^/repo/\w*/(edit|update|delete|show), role: ROLE_ADMIN }
         - { path: ^/repo/(new|create), role: ROLE_ADMIN }
+        - { path: ^/repo/?$, role: ROLE_ADMIN }
         - { path: ^/repo/\w*/import, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
     acl:
