@@ -3,7 +3,7 @@
     var opts = {
         bufferDist: 50,
         velocityConst: 1.8,
-        deadZoneWidth: 150,
+        deadZoneWidth: '35%',
         changeCursor: false
     };
 
@@ -18,11 +18,16 @@
                 if (!opts.container) {
                     opts.container = $list.parent();
                 }
-                else if (!opts.container.jquery) {
+                
+                if (!opts.container.jquery) {
                     $container = $(opts.container);
                 }
                 else {
                     $container = opts.container;
+                }
+
+                if (typeof opts.deadZoneWidth == 'string' && opts.deadZoneWidth.charAt(opts.deadZoneWidth.length-1) == '%') {
+                    opts.deadZoneWidth = $container.width() * parseInt(opts.deadZoneWidth) / 100;
                 }
 
                 $container.bind({
@@ -50,7 +55,7 @@
                                 //Probably should do this with a step function instead
                                 $list.stop(true).animate(
                                     { left: (velocity < 0) ? maxLeft : minLeft },
-                                    { duration: time * 1000, easing: 'linear' }
+                                    { duration: time * 1000, easing: 'linear', queue: false }
                                 );
                             }
                         }
