@@ -6,9 +6,6 @@
  * Brownish: #493736, 5C4A49;F07830
  * Red: #7B3B3B, 8C4A4A 781800
  */
-body, html {
-	height: 100%;
-}
 body {
 	background-color: #781800;
 	background-color: #6587A8;
@@ -165,7 +162,7 @@ a:visited, a:active {
 	margin: 5px 5px 10px;
 }
 .image-block li {
-	width: 200px;
+	width: 240px;
 	overflow: hidden;
 	border-radius: 20px;
 	text-align: center;
@@ -201,6 +198,7 @@ a:visited, a:active {
 .metadata {
 	font-size: 16px;
 	text-align: left;
+    white-space: normal;
 }
 .metadata dd {
 	font-size: 13px;
@@ -220,7 +218,22 @@ a:visited, a:active {
 #slideshow_tools .buttoned, #slideshow_tools button {
 	margin: 0 10px 0 0;
 }
+#embed_wrap {
+    float: right;
+    vertical-align: middle;
+}
+#embed_text {
+    vertical-align: top;
+}
 #embed_code {
-	height: 60px;
+	height: 35px;
 	width: 450px;
+}
+#slide_container {
+    /*white-space: nowrap;
+    overflow-x: hidden;
+    border-radius: 20px;
+    padding: 20px;
+    height: 600px;
+    border: 2px dotted white;*/
 }

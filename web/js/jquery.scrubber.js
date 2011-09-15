@@ -30,17 +30,30 @@
                     opts.deadZoneWidth = $container.width() * parseInt(opts.deadZoneWidth) / 100;
                 }
 
+                opts.maxLeft = $list.offset().left - $container.offset().left;
+
+                $list.css({
+                    position: 'absolute',
+                    left: opts.maxLeft
+                });
+
+                $container.css({
+                    position: 'relative'
+                });
+
                 $container.bind({
                     mousemove: function(e) {
                         if ($list.width() > $container.width() && Math.abs($list.data('startX') - e.pageX) > opts.bufferDist) {
                             var pxFromCenter = e.pageX - (parseInt($container.offset().left) + parseInt($container.width() / 2)),
+                                // There has GOT to be a better way to do this
+                                pxFromDeadZone = (pxFromCenter >= 0) ? Math.max(0, pxFromCenter - opts.deadZoneWidth / 2) : Math.min(0, pxFromCenter + opts.deadZoneWidth / 2),
                                 minLeft = - ($list.width() - $container.width()),
-                                maxLeft = 0,
-                                velocity = pxFromCenter * opts.velocityConst,
+                                maxLeft = opts.maxLeft,
+                                velocity = pxFromDeadZone * opts.velocityConst,
                                 distance = (velocity < 0) ? parseInt($list.css('left')) : -minLeft + parseInt($list.css('left')),
                                 time = (distance / velocity).toFixed(2);
                             $list.data('startX', e.pageX);
-                            if (Math.abs(pxFromCenter) <= parseInt(opts.deadZoneWidth / 2)) {
+                            if (velocity == 0) {
                                 $list.stop(true);
                                 if (opts.changeCursor) {
                                     $container.css({ cursor: 'auto' });
@@ -49,7 +62,7 @@
                             else {
                                 if (opts.changeCursor) {
                                     $container.css({
-                                        cursor: (pxFromCenter > 0) ? 'e-resize' : 'w-resize'
+                                        cursor: (pxFromDeadZone > 0) ? 'e-resize' : 'w-resize'
                                     });
                                 }
                                 //Probably should do this with a step function instead
