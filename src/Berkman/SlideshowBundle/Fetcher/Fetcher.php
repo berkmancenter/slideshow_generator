@@ -19,9 +19,11 @@ class Fetcher {
 		libxml_use_internal_errors(true);
 
 		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => true, 
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 10
+        ));
 		$response = curl_exec($curl);
 		if (!$response) {
 			throw new \ErrorException($url . ' did not return a valid response.');
