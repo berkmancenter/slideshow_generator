@@ -5,23 +5,35 @@
 <h2>{{ entity.name }} by {{ entity.person.username }}</h2>
 <div class="lightWrap">
 	<div id="slideshow_tools">
+		<div id="embed_wrap">
+			<span id="embed_text">Embed Code:</span>
+			<textarea id="embed_code" readonly="readonly">
+	{{- '<iframe src="' ~ url('slideshow_slideshow', { 'id' : entity.id }) ~ '" width="400" height="300" frameborder="0"></iframe>' -}} 
+			</textarea>
+		</div>
 		<a class="buttoned" href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">Start Slideshow</a>
-		{% if app.user and app.user.id == entity.person.id %}
+		{% if canEdit %}
 		<a class="buttoned" href="{{ path('slideshow_edit', { 'id': entity.id }) }}">Edit</a>
+        {% endif %}
+        {% if canDelete %}
 		<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
 			{{ form_widget(delete_form) }}
 			<button type="submit">Delete</button>
 		</form>
 		{% endif %}
-		<div>
-			<span>Embed Code:</span>
-			<textarea id="embed_code" readonly="readonly">
-	{{- '<iframe src="' ~ url('slideshow_slideshow', { 'id' : entity.id }) ~ '" width="400" height="300" frameborder="0"></iframe>' -}} 
-			</textarea>
-		</div>
 	</div>
     {% if images is defined %}
-    {{ macros.show_images(images, 'show_slideshow_slides') }}
+    {{ macros.show_images(images, 'show_slideshow_slides', 'slide_container') }}
     {% endif %}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% javascripts 'js/jquery.scrubber.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script>
+//$('#show_slideshow_slides').scrubber();
+</script>
 {% endblock %}

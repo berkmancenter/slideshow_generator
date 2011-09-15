@@ -1,4 +1,7 @@
-{% macro show_images(images, id, checkbox_text) %}
+{% macro show_images(images, id, container_id, checkbox_text) %}
+    {% if container_id is not empty %}
+    <div id="{{ container_id }}">
+    {% endif %}
     <ol id="{{ id|default('show_images') }}" class="centered image-block">
         {% for image in images %}
             <li>
@@ -17,9 +20,15 @@
             </li>
         {% endfor %}
     </ol>
+    {% if container_id is not empty %}
+    </div>
+    {% endif %}
 {% endmacro %}
 
-{% macro show_collections(collections, id, checkbox_text) %}
+{% macro show_collections(collections, id, container_id, checkbox_text) %}
+    {% if container_id is not empty %}
+    <div id="{{ container_id }}">
+    {% endif %}
     <ol id="{{ id|default('show_collections') }}" class="centered image-block">
         {% for collection in collections %}
             <li>
@@ -41,4 +50,7 @@
             </li>
         {% endfor %}
     </ol>
+    {% if container_id is not empty %}
+    </div>
+    {% endif %}
 {% endmacro %}

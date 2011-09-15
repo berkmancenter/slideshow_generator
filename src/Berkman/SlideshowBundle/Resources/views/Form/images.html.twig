@@ -1,14 +1,16 @@
 {% block _slideshow_slides_row %}
 {% spaceless %}
         <h3>Images</h3>
-        <ol {{ block('widget_container_attributes') }}>
-        {% for child in form %}
-			<li class="image">
-            {{ form_widget(child) }}
-            {{ image_label(child) }}
-			</li>
-        {% endfor %}
-        </ol>
+        <div id="slideshow_container">
+            <ol {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <li class="image">
+                {{ form_widget(child) }}
+                {{ image_label(child) }}
+                </li>
+            {% endfor %}
+            </ol>
+        </div>
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
 
