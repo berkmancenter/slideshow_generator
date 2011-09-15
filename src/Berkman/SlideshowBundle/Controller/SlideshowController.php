@@ -16,6 +16,7 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Slideshow controller.
@@ -31,6 +32,7 @@ class SlideshowController extends Controller
      */
     public function showAction($id)
     {
+        $response = new Response();
         $em = $this->getDoctrine()->getEntityManager();
 
         $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
@@ -39,17 +41,44 @@ class SlideshowController extends Controller
             throw $this->createNotFoundException('Unable to find Slideshow entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $images = array();
-        foreach ($entity->getSlides() as $slide) {
-            $images[] = $slide->getImage();
+        $args = array(
+            'entity'    => $entity,
+            'canEdit'   => false,
+            'canDelete' => false
+        );
+
+        $securityContext = $this->get('security.context');
+        if  ($securityContext->isGranted('EDIT', $entity) === true) {
+            $args['canEdit'] = true;
         }
 
-        return $this->render('BerkmanSlideshowBundle:Slideshow:show.html.twig', array(
-            'entity'      => $entity,
-            'images'      => $images,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        // TODO: Fix so that it doesn't cache if a user is logged in.
+        // TODO: Not that.  Do ESI.
+
+        if ($securityContext->isGranted('DELETE', $entity) === true) {
+            $deleteForm = $this->createDeleteForm($id);
+            $args['canDelete'] = true;
+            $args['delete_form'] = $deleteForm->createView();
+        }
+
+        if ($args['canEdit'] === false && $args['canDelete'] === false) {
+            $updatedAt = $entity->getUpdated();
+            $response->setLastModified($updatedAt);
+        }
+
+        if ($response->isNotModified($this->getRequest())) {
+
+            return $response;
+        } 
+        else {
+            // This is stupid
+            $images = array();
+            foreach ($entity->getSlides() as $slide) {
+                $images[] = $slide->getImage();
+            }
+            $args['images'] = $images;
+            return $this->render('BerkmanSlideshowBundle:Slideshow:show.html.twig', $args, $response);
+        }
     }
 
 	/**
@@ -61,6 +90,8 @@ class SlideshowController extends Controller
 	public function slideshowAction($id)
 	{
         $em = $this->getDoctrine()->getEntityManager();
+        $response = new Response();
+        $response->setPublic();
 
         $slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
 
@@ -68,9 +99,19 @@ class SlideshowController extends Controller
             throw $this->createNotFoundException('Unable to find Slideshow.');
         }
 
-        return $this->render('BerkmanSlideshowBundle:Slideshow:slideshow.html.twig', array(
-            'slideshow'      => $slideshow,
-        ));
+        $updatedAt = $slideshow->getUpdated();
+        $response->setLastModified($updatedAt);
+
+        if ($response->isNotModified($this->getRequest())) {
+            return $response;
+        }
+        else {
+            return $this->render(
+                'BerkmanSlideshowBundle:Slideshow:slideshow.html.twig',
+                array('slideshow' => $slideshow),
+                $response
+            );
+        }
 	}
 
     /**
