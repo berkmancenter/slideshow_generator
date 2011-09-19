@@ -4,51 +4,86 @@ namespace Berkman\SlideshowBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class SlideshowControllerTest extends WebTestCase
+class DefaultControllerTest extends WebTestCase
 {
-    /*
     public function testCompleteScenario()
     {
         // Create a new client to browse the application
-        $client = static::createClient();
+        $client = $this->createClient();
+        $client->followRedirects();
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/slideshow/');
+        $crawler = $client->request('GET', '/');
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
+        $form = $crawler->selectButton('Search')->form(array(
+            'finder[keyword]'  => 'kitten',
+            'finder[repos][VIA]' => true
+        ));
+
+        $client->submit($form);
+
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->getCrawler();
+
+        $this->assertTrue($crawler->filter('h2:contains("images for \\\"kitten\\\"")')->count() > 0);
+
+        $form = $crawler->selectButton('Finish')->form(array(
+            'images[0]' => true,
+            'images[1]' => true,
+            'images[2]' => true,
+            'collections[6]' => true 
+        ));
+
+        $client->submit($form);
+
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->getCrawler();
+        $this->assertTrue($crawler->filter('h2:contains("Login")')->count() > 0);
+
+        $form = $crawler->selectButton('Login')->form(array(
+            '_username' => 'justin',
+            '_password' => 'password'
+        ));
+
+        $client->submit($form);
+
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->getCrawler();
+        $this->assertTrue($crawler->filter('h2:contains("Your images")')->count() > 0);
+
         $form = $crawler->selectButton('Create')->form(array(
-            'slideshow[field_name]'  => 'Test',
-            // ... other fields to fill
+            'slideshow[name]' => 'Kittens',
         ));
 
         $client->submit($form);
-        $crawler = $client->followRedirect();
 
-        // Check data in the show view
-        $this->assertTrue($crawler->filter('td:contains("Test")')->count() > 0);
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->getCrawler();
+        $this->assertTrue($crawler->filter('div:contains("New slideshow \\\"Kittens\\\" created")')->count() > 0);
+        $this->assertTrue($crawler->filter('h2:contains("Kittens by justin")')->count() > 0);
 
-        // Edit the entity
         $crawler = $client->click($crawler->selectLink('Edit')->link());
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $this->assertTrue($crawler->filter('h2:contains("Edit Slideshow")')->count() > 0);
 
-        $form = $crawler->selectButton('Edit')->form(array(
-            'slideshow[field_name]'  => 'Foo',
-            // ... other fields to fill
+        $form = $crawler->selectButton('Update')->form(array(
+            'slideshow[always_show_info]' => true
         ));
 
         $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->getCrawler();
+        $this->assertTrue($crawler->filter('div:contains("Slideshow \\\"Kittens\\\" successfully updated.")')->count() > 0);
 
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertTrue($crawler->filter('[value="Foo"]')->count() > 0);
+        $crawler = $client->click($crawler->selectLink('Start Slideshow')->link());
+        $this->assertTrue($crawler->filter('title:contains("Kittens")')->count() > 0);
+        $crawler = $client->back();
 
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
+        $form = $crawler->selectButton('Delete')->form();
+        $client->submit($form);
 
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        $crawler = $client->getCrawler();
+        $this->assertTrue($crawler->filter('div:contains("Slideshow \\\"Kittens\\\" successfully deleted.")')->count() > 0);
     }
-    */
 }
