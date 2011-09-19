@@ -197,6 +197,7 @@ class SlideshowController extends Controller
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
+        $slideOrder = array();
 
         $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
 
@@ -210,11 +211,16 @@ class SlideshowController extends Controller
 			throw new AccessDeniedException();
 		}
 
+        foreach ($entity->getSlides() as $slide) {
+            $slideOrder[] = $slide->getImage()->getId();
+        }
+
         $editForm = $this->createForm(new SlideshowType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BerkmanSlideshowBundle:Slideshow:edit.html.twig', array(
             'entity'      => $entity,
+            'slide_order' => implode(',',$slideOrder),
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
