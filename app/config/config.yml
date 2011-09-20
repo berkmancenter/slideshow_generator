@@ -16,6 +16,7 @@ framework:
     session:
         default_locale: %locale%
         auto_start:     true
+    esi:             { enabled: true }
 
 # Twig Configuration
 twig:

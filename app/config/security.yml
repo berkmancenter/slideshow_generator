@@ -32,6 +32,7 @@ security:
         - { path: ^/repo/(new|create), role: ROLE_ADMIN }
         - { path: ^/repo/?$, role: ROLE_ADMIN }
         - { path: ^/repo/\w*/import, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_internal, ip: 127.0.0.1, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
     acl:
         connection: default

@@ -1,5 +1,4 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
-{% import "BerkmanSlideshowBundle::macros.html.twig" as macros %}
 
 {% block body %}
 <h2>{{ entity.name }} by {{ entity.person.username }}</h2>
@@ -22,18 +21,6 @@
 		</form>
 		{% endif %}
 	</div>
-    {% if images is defined %}
-    {{ macros.show_images(images, 'show_slideshow_slides', 'slide_container') }}
-    {% endif %}
+    {% render 'BerkmanSlideshowBundle:Slideshow:slideTiles' with { 'id': entity.id }, { 'standalone' : true } %}
 </div>
-{% endblock %}
-
-{% block javascripts %}
-{{ parent() }}
-{% javascripts 'js/jquery.scrubber.js' %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
-<script>
-//$('#show_slideshow_slides').scrubber();
-</script>
 {% endblock %}

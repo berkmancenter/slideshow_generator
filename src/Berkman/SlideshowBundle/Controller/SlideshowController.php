@@ -32,7 +32,6 @@ class SlideshowController extends Controller
      */
     public function showAction($id)
     {
-        $response = new Response();
         $em = $this->getDoctrine()->getEntityManager();
 
         $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
@@ -48,12 +47,10 @@ class SlideshowController extends Controller
         );
 
         $securityContext = $this->get('security.context');
+
         if  ($securityContext->isGranted('EDIT', $entity) === true) {
             $args['canEdit'] = true;
         }
-
-        // TODO: Fix so that it doesn't cache if a user is logged in.
-        // TODO: Not that.  Do ESI.
 
         if ($securityContext->isGranted('DELETE', $entity) === true) {
             $deleteForm = $this->createDeleteForm($id);
@@ -61,23 +58,39 @@ class SlideshowController extends Controller
             $args['delete_form'] = $deleteForm->createView();
         }
 
-        if ($args['canEdit'] === false && $args['canDelete'] === false) {
-            $updatedAt = $entity->getUpdated();
-            $response->setLastModified($updatedAt);
+        return $this->render('BerkmanSlideshowBundle:Slideshow:show.html.twig', $args);
+    }
+
+    public function slideTilesAction($id)
+    {
+        $response = new Response();
+        $response->setPublic();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Slideshow entity.');
         }
+
+        $updatedAt = $entity->getUpdated();
+        $response->setLastModified($updatedAt);
+        $response->setETag(md5($updatedAt->format('U')));
 
         if ($response->isNotModified($this->getRequest())) {
 
             return $response;
         } 
         else {
-            // This is stupid
             $images = array();
             foreach ($entity->getSlides() as $slide) {
                 $images[] = $slide->getImage();
             }
-            $args['images'] = $images;
-            return $this->render('BerkmanSlideshowBundle:Slideshow:show.html.twig', $args, $response);
+            return $this->render(
+                'BerkmanSlideshowBundle:Slideshow:slideTiles.html.twig',
+                array('images' => $images),
+                $response
+            );
         }
     }
 
@@ -374,6 +387,7 @@ class SlideshowController extends Controller
                         $newImage->setFromRepo($em->find('BerkmanSlideshowBundle:Repo', $image->getFromRepo()->getId()));
 						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
+                        $slideshow->setUpdated(new \DateTime('now'));
 
 						$em->persist($slideshow);
 						$flashMessage = count($images) . ' slides added to slideshow "' . $slideshow->getName() . '"';

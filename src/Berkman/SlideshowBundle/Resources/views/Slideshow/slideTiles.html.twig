@@ -1,0 +1,5 @@
+{% import "BerkmanSlideshowBundle::macros.html.twig" as macros %}
+
+{% if images is defined %}
+{{ macros.show_images(images, 'show_slideshow_slides', 'slide_container') }}
+{% endif %}
