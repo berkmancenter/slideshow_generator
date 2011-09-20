@@ -97,9 +97,9 @@ class Repo
 	 * @param int $startIndex
 	 * @param int $endIndex
 	 */
-	public function fetchResults($keyword, $page)
+	public function fetchResults($keyword, $startIndex, $count)
 	{
-		return $this->getFetcher()->fetchResults($keyword, $page);
+		return $this->getFetcher()->fetchResults($keyword, $startIndex, $count);
 	}
     /**
      * @var datetime $created

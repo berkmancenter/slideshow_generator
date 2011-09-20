@@ -12,21 +12,24 @@ class Fetcher {
 	 * @param string $url
 	 * @return DOMXPath $xpath
 	 */
-	protected function fetchXpath($url)
+	protected function fetchXpath($url, $followRedirects = false)
 	{
 		$doc = new \DOMDocument();
         $doc->recover = true;
 		libxml_use_internal_errors(true);
-
-		$curl = curl_init($url);
-        curl_setopt_array($curl, array(
+        $curlOpts = array(
             CURLOPT_RETURNTRANSFER => true, 
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT => 10
-        ));
+        );
+        if ($followRedirects) {
+            $curlOpts[CURLOPT_FOLLOWLOCATION] = true;
+        }
+		$curl = curl_init($url);
+        curl_setopt_array($curl, $curlOpts);
 		$response = curl_exec($curl);
 		if (!$response) {
-			throw new \ErrorException($url . ' did not return a valid response.');
+			throw new \ErrorException($url . ' did not return a valid response. (' . curl_error($curl) . ')');
 		}
 		$doc->loadXML($response);
 		$xpath = new \DOMXPath($doc);

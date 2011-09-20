@@ -10,7 +10,7 @@ interface FetcherInterface {
 	public function getImageUrl(Entity\Image $image);
 	public function getThumbnailUrl(Entity\Image $image);
 	public function getRecordUrl(Entity\Image $image);
-	public function fetchResults($keyword, $page);
+	public function fetchResults($keyword, $startIndex, $count);
 	public function fetchImageMetadata(Entity\Image $image);
     public function isImagePublic(Entity\Image $image);
     public function importImage(array $args);

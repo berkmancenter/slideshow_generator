@@ -56,7 +56,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 	 * @param int $endIndex
 	 * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
 	 */
-	public function fetchResults($keyword, $page)
+	public function fetchResults($keyword, $startIndex, $count)
 	{
 		$results = array();
 		$totalResults = 0;

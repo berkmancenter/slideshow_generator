@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Finder
 {
+    const RESULTS_PER_PAGE      = 25;
     /**
      * @var integer $id
      */
@@ -427,9 +428,11 @@ class Finder
         $imageResults      = array();
         $collectionResults = array();
 		$totalResults      = 0;
+        $resultsPerRepo    = floor($this->getResultsPerPage() / count($this->repos));
+		$reposFirstIndex   = $page * $resultsPerRepo - $resultsPerRepo;
 
 		foreach ($this->repos as $repo) {
-            $searchResults = $repo->fetchResults($keyword, $page);
+            $searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $resultsPerRepo);
             array_splice($results, count($results), 0, $searchResults['results']);
 			$totalResults += $searchResults['totalResults'];
 		}
