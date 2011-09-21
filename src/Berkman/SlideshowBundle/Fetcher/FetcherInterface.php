@@ -12,7 +12,6 @@ interface FetcherInterface {
 	public function getRecordUrl(Entity\Image $image);
 	public function fetchResults($keyword, $startIndex, $count);
 	public function fetchImageMetadata(Entity\Image $image);
-    public function isImagePublic(Entity\Image $image);
     public function importImage(array $args);
     public function getImportFormat();
     public function hasCustomImporter();
