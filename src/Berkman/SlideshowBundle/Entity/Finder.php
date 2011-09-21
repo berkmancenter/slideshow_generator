@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Finder
 {
-    const RESULTS_PER_PAGE      = 25;
+    const RESULTS_PER_PAGE = 25;
+
     /**
      * @var integer $id
      */
@@ -24,6 +25,11 @@ class Finder
      * @var integer $current_page
      */
     private $current_page;
+
+    /**
+     * @var integer $results_per_page
+     */
+    private $results_per_page;
 
     /**
      * @var integer $total_results
@@ -67,15 +73,16 @@ class Finder
 
     public function __construct($repos = null)
     {
-        $this->images = array();
-        $this->collections = array();
-        $this->current_image_results = array();
+        $this->images                     = array();
+        $this->collections                = array();
+        $this->current_image_results      = array();
         $this->current_collection_results = array();
-        $this->selected_image_results = array();
-		if ($repos) {
-			$this->repos = $repos;
+        $this->selected_image_results     = array();
+        $this->results_per_page           = self::RESULTS_PER_PAGE;
+		$this->current_page               = 1;
+		if (isset($repos)) {
+			$this->repos                  = $repos;
 		}
-		$this->setCurrentPage(1);
     }
     
     /**
@@ -86,11 +93,6 @@ class Finder
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getResultsPerPage()
-    {
-        return 25;
     }
 
     /**
@@ -131,6 +133,30 @@ class Finder
     public function getCurrentPage()
     {
         return $this->current_page;
+    }
+
+    /**
+     * Set results_per_page
+     *
+     * @param integer $results_per_page
+     */
+    public function setResultsPerPage($resultsPerPage)
+    {
+        $this->results_per_page = $resultsPerPage;
+    }
+
+    /**
+     * Get results_per_page
+     *
+     * @return integer 
+     */
+    public function getResultsPerPage()
+    {
+        if ($this->results_per_page < 1) {
+            return self::RESULTS_PER_PAGE;
+        }
+
+        return $this->results_per_page;
     }
 
     /**
@@ -428,8 +454,9 @@ class Finder
         $imageResults      = array();
         $collectionResults = array();
 		$totalResults      = 0;
-        $resultsPerRepo    = floor($this->getResultsPerPage() / count($this->repos));
-		$reposFirstIndex   = $page * $resultsPerRepo - $resultsPerRepo;
+        $numOfRepos        = count($this->repos);
+        $resultsPerRepo    = floor($this->getResultsPerPage() / $numOfRepos);
+		$reposFirstIndex   = $resultsPerRepo * ($page - 1);
 
 		foreach ($this->repos as $repo) {
             $searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $resultsPerRepo);
@@ -449,7 +476,7 @@ class Finder
 		$this->setCurrentCollectionResults($collectionResults);
 
         $this->setCurrentPage($page);
-        $this->setTotalPages(floor($totalResults / $this->getResultsPerPage()));
+        $this->setTotalPages(ceil($totalResults / $this->getResultsPerPage()));
 		$this->setTotalResults($totalResults);
 
 		return array('results' => $results, 'totalResults' => $totalResults);
