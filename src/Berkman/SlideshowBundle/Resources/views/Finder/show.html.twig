@@ -10,6 +10,13 @@
 <div class="lightWrap">
 <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
     {# form_widget(form) #}
+
+    {% if images|length > 0 or collections|length > 0 %}
+        {% javascripts 'js/finder.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script>var ajaxUrl = "{{ path('finder_submit') }}";</script>
+    {% endif %}
     
     {% if images|length > 0 %}
     <h3>Images</h3>

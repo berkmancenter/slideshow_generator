@@ -5,24 +5,26 @@
     <ol id="{{ id|default('show_images') }}" class="centered image-block">
         {% for image in images %}
             <li>
-                {% if checkbox_text is not empty %}
-                <div class="image-buttons">
-                <label for="image_{{ image.id }}">{{ checkbox_text }}</label>
-                <input type="checkbox" name="images[{{ image.id }}]" id="image_{{ image.id }}" value="{{ image.id }}"/>
-                </div>
-                {% endif %}
                 <a href="{{ image.recordUrl }}" target="_blank"><img src="{{ image.thumbnailUrl }}"/></a>
                 <dl class="metadata">
                     {% for key,value in image.metadata %}
                     <dt>{{ key }}</dt><dd>{{ value }}</dd>
                     {% endfor %}
                 </dl>
+
+                {% if checkbox_text is not empty %}
+                <div class="image-buttons">
+                    <label for="image_{{ image.id }}">{{ checkbox_text }}</label>
+                    <input type="checkbox" name="images[{{ image.id }}]" id="image_{{ image.id }}" value="{{ image.id }}"/>
+                </div>
+                {% endif %}
             </li>
         {% endfor %}
     </ol>
     {% if container_id is not empty %}
     </div>
     {% endif %}
+
 {% endmacro %}
 
 {% macro show_collections(collections, id, container_id, checkbox_text) %}
@@ -32,12 +34,6 @@
     <ol id="{{ id|default('show_collections') }}" class="centered image-block">
         {% for collection in collections %}
             <li>
-                {% if checkbox_text is defined %}
-                <div class="collection-buttons">
-                <label for="collection_{{ collection.id }}">{{ checkbox_text }}</label>
-                <input type="checkbox" name="collections[{{ collection.id }}]" id="collection_{{ collection.id }}" value="{{ collection.id }}"/>
-                </div>
-                {% endif %}
                 <a href="{{ path('finder_collection', { 'collectionId': collection.id }) }}">
                     <img src="{{ collection.cover.thumbnailUrl }}"/>
                 </a>
@@ -46,6 +42,12 @@
                     <dt>{{ key }}</dt><dd>{{ value }}</dd>
                     {% endfor %}
                 </dl>
+                {% if checkbox_text is defined %}
+                <div class="collection-buttons">
+                    <label for="collection_{{ collection.id }}">{{ checkbox_text }}</label>
+                    <input type="checkbox" name="collections[{{ collection.id }}]" id="collection_{{ collection.id }}" value="{{ collection.id }}"/>
+                </div>
+                {% endif %}
                 <button type="submit" name="action" value="{{ collection.id }}">View Collection</button>
             </li>
         {% endfor %}

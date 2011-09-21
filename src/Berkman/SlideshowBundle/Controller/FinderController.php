@@ -160,6 +160,12 @@ class FinderController extends Controller
 
         $this->setFinder($finder);
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('BerkmanSlideshowBundle:Finder:addImages.json.twig', array(
+                'finderImages' => count($finder->getSelectedImageResults())
+            ));
+        }
+
         $repoIds = array();
         $repos = $finder->getRepos();
         foreach ($repos as $repo) {

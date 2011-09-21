@@ -13,6 +13,12 @@
 		{% endstylesheets %}
 		{% endblock %}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+		{% block javascripts %}
+		{% javascripts 'js/jquery-1.6.2.js' %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% endblock %}
     </head>
     <body>
 		<div id="wrapper">
@@ -23,7 +29,7 @@
 					<div>
                         {% if app.session and app.session.get('finder') and app.session.get('finder').selectedImageResults|length > 0 %}
                         <a href="{{ path('slideshow_add_images') }}">
-                        {{ app.session.get('finder').selectedImageResults|length }} images
+                            <span id="image-count">{{ app.session.get('finder').selectedImageResults|length }}</span> images
                         </a>
                         {% endif %}
 
@@ -61,10 +67,5 @@
 			</div>
 			{% endblock %}
 		</div>
-		{% block javascripts %}
-		{% javascripts 'js/jquery-1.6.2.js' %}
-		<script type="text/javascript" src="{{ asset_url }}"></script>
-		{% endjavascripts %}
-		{% endblock %}
     </body>
 </html>
