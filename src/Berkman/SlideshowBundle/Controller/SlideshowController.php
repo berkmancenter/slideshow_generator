@@ -343,7 +343,7 @@ class SlideshowController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl('slideshow'));
+        return $this->redirect($this->generateUrl('BerkmanSlideshowBundle_homepage'));
     }
 
 	/**
@@ -396,7 +396,7 @@ class SlideshowController extends Controller
 				}
                 $request->getSession()->remove('finder');
 				$em->flush();
-				$response = $this->redirect($this->generateUrl('slideshow'));
+				$response = $this->redirect($this->generateUrl('BerkmanSlideshowBundle_homepage'));
 			}
 		}
 
