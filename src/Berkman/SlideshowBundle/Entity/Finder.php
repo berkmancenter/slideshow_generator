@@ -230,7 +230,12 @@ class Finder
      */
     public function getRepos()
     {
-        return new ArrayCollection($this->repos);
+        if ($this->repos instanceof ArrayCollection) {
+            return $this->repos;
+        }
+        else {
+            return new ArrayCollection($this->repos);
+        }
     }
 
     /**
