@@ -41,6 +41,20 @@
                     {% for key,value in collection.metadata %}
                     <dt>{{ key }}</dt><dd>{{ value }}</dd>
                     {% endfor %}
+                    <dt>Contents</dt>
+                    <dd>
+                        {% set numImages = collection.images|length %}
+                        {% set numCollections = collection.children|length %} 
+                        {% if numImages > 0 %}
+                            {{ numImages }} images
+                        {% endif %}
+                        {% if numImages > 0 and numCollections > 0 %}
+                            and
+                        {% endif %}
+                        {% if numCollections > 0 %}
+                            {{ numCollections }} collections
+                        {% endif %}
+                    </dd>
                 </dl>
                 {% if checkbox_text is defined %}
                 <div class="collection-buttons">
