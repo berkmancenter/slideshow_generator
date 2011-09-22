@@ -15,7 +15,12 @@
         {% javascripts 'js/finder.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        <script>var ajaxUrl = "{{ path('finder_submit') }}";</script>
+        <script>
+            var ajaxUrl  = "{{ path('finder_submit') }}",
+            {% image 'images/loading.gif' %}
+                loadingImage = $('<img style="border:0" src="{{ asset_url }}" alt="Loading" />');
+            {% endimage %}
+        </script>
     {% endif %}
     
     {% if images|length > 0 %}

@@ -10,10 +10,14 @@ $(function() {
         $(buttonClass).click(function(e) {
             e.preventDefault();
             var id = $(e.target).attr('value');
-            $.post(
-                ajaxUrl,
-                valueId + '[' + id + ']=' + id,
-                function(data) {
+            $(e.target).html(loadingImage);
+            $.ajax({
+                url: ajaxUrl,
+                data: valueId + '[' + id + ']=' + id,
+                error: function(jqXHR) {
+                    $(e.target).html('Error');
+                },
+                success: function(data) {
                     $('#image-cart').show();
                     $('#image-count').html(data);
                     $(e.target).css({
@@ -21,8 +25,9 @@ $(function() {
                         'boxShadow':'0px 0px 7px #6587A8',
                         'borderColor':'#6587A8'
                     }).html('Added');
-                }
-            );
+                },
+                type: 'POST'
+            });
         });
     }
     addClickHandler('.addCollection', 'collections');
