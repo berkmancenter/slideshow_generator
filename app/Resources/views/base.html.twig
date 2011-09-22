@@ -28,10 +28,15 @@
 					{% block utility %}
 					<div>
                         {% if app.session and app.session.get('finder') and app.session.get('finder').selectedImageResults|length > 0 %}
-                        <a href="{{ path('slideshow_add_images') }}">
-                            <span id="image-count">{{ app.session.get('finder').selectedImageResults|length }}</span> images
-                        </a>
+                            {% set display = "" %}
+                            {% set count = app.session.get('finder').selectedImageResults|length %}
+                        {% else %}
+                            {% set display = "display:none;" %}
+                            {% set count = 0 %}
                         {% endif %}
+                        <span id="image-cart" style="{{ display }}">
+                            <a href="{{ path('slideshow_add_images') }}"><span id="image-count">{{ count }}</span> images</a> &mdash;
+                        </span>
 
 						{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 							{% set username %}
@@ -44,7 +49,7 @@
 								{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
 							</a>
 						{% else %}
-							<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a> | 
+							<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a> |
 							<a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
 						{% endif %}
 					</div>
