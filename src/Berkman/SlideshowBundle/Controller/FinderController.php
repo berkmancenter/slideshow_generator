@@ -28,33 +28,16 @@ class FinderController extends Controller
      */
     public function indexAction()
     {
-        $request    = $this->getRequest();
-		$finder     = new Entity\Finder;
-        $finderForm = $this->createForm(new FinderType(), $finder);
-
-        if ('POST' === $request->getMethod()) {
-            $finderForm->bindRequest($request);
-
-            if ($finderForm->isValid()) {
-				$repoIds = array();
-				$repos = $finder->getRepos();
-				foreach ($repos as $repo) {
-					$repoIds[] = $repo->getId();
-				}
-
-				return $this->redirect($this->generateUrl('finder_show', array(
-					'repos'   => implode('_', $repoIds),
-					'keyword' => $finder->getKeyword(),
-					'page'    => 1
-				)));
-            }
-        }
-		else {
-			return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
-				'finderForm'  => $finderForm->createView()
-			));
-		}
-
+		$em         = $this->getDoctrine()->getEntityManager();
+        $repos      = $em->getRepository('BerkmanSlideshowBundle:Repo')->findAll();
+		$finder     = new Entity\Finder($repos);
+		$slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
+        $form = $this->createForm(new FinderType(), $finder);
+		
+		return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
+			'slideshows' => $slideshows,
+			'finderForm'   => $form->createView()
+		));
     }
 
     /**
@@ -70,7 +53,7 @@ class FinderController extends Controller
      */
     public function showAction($repos, $keyword, $page = 1)
     {
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getdoctrine()->getentitymanager();
 		$repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findBy(array(
 			'id' => explode('_', $repos)
 		));
