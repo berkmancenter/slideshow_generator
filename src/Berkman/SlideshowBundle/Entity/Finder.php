@@ -3,6 +3,7 @@
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Berkman\SlideshowBundle\Entity\Finder
@@ -229,7 +230,7 @@ class Finder
      */
     public function getRepos()
     {
-        return $this->repos;
+        return new ArrayCollection($this->repos);
     }
 
     /**
