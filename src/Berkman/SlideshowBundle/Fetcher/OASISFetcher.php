@@ -173,6 +173,11 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }   
 
+    public function getQRCodeUrl(Entity\Image $image)
+    {
+        return $this->getRecordUrl($image);
+    }
+
     public function importImage(array $args)
     {
         $resourceUrl = $args[0];

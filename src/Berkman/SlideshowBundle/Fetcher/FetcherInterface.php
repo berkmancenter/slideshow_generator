@@ -10,6 +10,7 @@ interface FetcherInterface {
 	public function getImageUrl(Entity\Image $image);
 	public function getThumbnailUrl(Entity\Image $image);
 	public function getRecordUrl(Entity\Image $image);
+    public function getQRCodeUrl(Entity\Image $image);
 	public function fetchResults($keyword, $startIndex, $count);
 	public function fetchImageMetadata(Entity\Image $image);
     public function importImage(array $args);
