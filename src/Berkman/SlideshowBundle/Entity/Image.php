@@ -275,6 +275,11 @@ class Image
 		return $this->getFromRepo()->getFetcher()->getRecordUrl($this);
 	}	
 
+    public function getQRCodeUrl()
+    {
+        return $this->getFromRepo()->getFetcher()->getQRCodeUrl($this);
+    }
+
     /**
      * Set public
      *

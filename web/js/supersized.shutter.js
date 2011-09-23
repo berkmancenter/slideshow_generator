@@ -298,7 +298,7 @@
 			}
 		    
             if (api.options.show_qr_code) {
-                var qrCodeUrl = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=' + encodeURIComponent(api.getField('url'));
+                var qrCodeUrl = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=' + encodeURIComponent(api.getField('qrCodeUrl'));
                 $(vars.qr_code_img).attr('src', qrCodeUrl);
             }
 		    

@@ -77,6 +77,7 @@
 						image: '{{ slide.image.imageUrl|raw }}',
                         thumb: '{{ slide.image.thumbnailUrl|raw }}',
 						url: '{{ slide.image.recordUrl|raw }}',
+                        qrCodeUrl: '{{ slide.image.qrCodeUrl|raw }}',
 						metadata: {
 							{% for key, value in slide.image.metadata %}
 							'{{ key }}': '{{- value -}}' {{ not loop.last ? ',' : '' }}

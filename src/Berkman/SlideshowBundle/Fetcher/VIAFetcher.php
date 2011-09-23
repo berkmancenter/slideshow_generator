@@ -20,7 +20,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 	const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/mods/via/{id-3}';
 	const IMAGE_URL_PATTERN     = 'http://nrs.harvard.edu/urn-3:{id-5}?width=2400&height=2400';
 	const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-6}';
-    const QR_CODE_URL_PATTERN   = 'http://http://m.harvard.edu/libraries/detail?id=viaid%3A{id-1}';
+    const QR_CODE_URL_PATTERN   = 'http://m.harvard.edu/libraries/detail?id=viaid%3A{id-1}';
 
 	/**
 	 * @var Berkman\SlideshowBundle\Entity\Repo $repo
