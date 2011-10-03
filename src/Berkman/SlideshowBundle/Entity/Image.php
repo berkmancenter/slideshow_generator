@@ -242,7 +242,11 @@ class Image
 
 	public function getMetadata()
 	{
-		return $this->getFromRepo()->getFetcher()->fetchImageMetadata($this);
+        try {
+            return $this->getFromRepo()->getFetcher()->fetchImageMetadata($this);
+        } catch (\Exception $e) {
+            return null;
+        }
 	}
 
 	/**

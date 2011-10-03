@@ -424,6 +424,7 @@ class SlideshowController extends Controller
         if ('POST' == $request->getMethod()) {
             $masterForm->bindRequest($request);
             if ($masterForm->isValid()) {
+                $failed = 0;
                 $file = $masterForm['attachment']->getData();
                 $file = $file->openFile();
                 $file->setFlags(\SplFileObject::READ_CSV);
@@ -432,10 +433,17 @@ class SlideshowController extends Controller
                         $repo = $row[0];
                         $args = array_slice($row, 1);
                         $repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($repo);
-                        $imageId = $finder->addImage($repo->getFetcher()->importImage($args));
+                        try {
+                            $images = $repo->getFetcher()->importImage($args);
+                        } catch (\ErrorException $e) {
+                            $failed++;
+                            continue;
+                        }
+                        $imageId = $finder->addImage();
                         $finder->addSelectedImageResult($imageId);
                     }
                 }
+                error_debug('Failed: ' . $failed);
                 $this->setFinder($finder);
 
                 return $this->redirect($this->generateUrl('slideshow_add_images'));

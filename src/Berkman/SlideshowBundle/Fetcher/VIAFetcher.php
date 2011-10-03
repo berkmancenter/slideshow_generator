@@ -323,6 +323,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
     {
         $fileContent = '';
         $images = array();
+        $failed = 0;
         while (!$file->eof()) {
             $fileContent .= $file->fgets();
         }
@@ -351,8 +352,12 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
                 $restricted = ($restrictedNode->textContent == 'true') ? true : false;
             }
             if (isset($viaId, $componentId) && !$restricted) {
-                $images[] = $this->importImage(array(str_replace(array('{id-1}', '{id-2}'), array($viaId, $componentId), self::RECORD_URL_PATTERN)));
-                error_log(str_replace(array('{id-1}', '{id-2}'), array($viaId, $componentId), self::RECORD_URL_PATTERN));
+                try { 
+                    $images[] = $this->importImage(array(str_replace(array('{id-1}', '{id-2}'), array($viaId, $componentId), self::RECORD_URL_PATTERN)));
+                } catch (\ErrorException $e) {
+                    $failed++;
+                    continue;
+                }
             }
         }
 
