@@ -33,3 +33,7 @@ repo_import:
     pattern:  /{id}/import
     defaults: { _controller: "BerkmanSlideshowBundle:Repo:import" }
     requirements: { _method: post }
+
+repo_import_progress:
+    pattern:  /progress
+    defaults: { _controller: "BerkmanSlideshowBundle:Repo:getProgress" }

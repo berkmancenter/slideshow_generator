@@ -319,8 +319,9 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
         return '"Record URL"';
     }
 
-    public function getImagesFromImport(\SPLFileObject $file)
+    public function getImagesFromImport(Entity\Batch $batch)
     {
+        $file = $batch->getFile();
         $fileContent = '';
         $images = array();
         $failed = 0;
@@ -335,7 +336,11 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
 		$xpath = new \DOMXPath($doc);
         $xpath->registerNamespace('ns', 'http://hul.harvard.edu/ois/xml/xsd/via/newvia_export.xsd');
         $records = $xpath->query('//ns:record');
+        $totalRecords = $records->length;
+        $count = 0;
         foreach ($records as $record) {
+            $batch->setProgress(round($count / $totalRecords * 100));
+            $count++;
             $viaId = null;
             $componentId = null;
             $restricted = false;

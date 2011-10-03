@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berkman\SlideshowBundle\Entity\Repo;
 use Berkman\SlideshowBundle\Entity\Finder;
+use Berkman\SlideshowBundle\Entity\Batch;
 use Berkman\SlideshowBundle\Form\RepoType;
 use Berkman\SlideshowBundle\Form\ImportType;
 
@@ -192,6 +193,14 @@ class RepoController extends Controller
         return $this->redirect($this->generateUrl('repo'));
     }
 
+    public function getProgressAction()
+    {
+        $session = $this->getRequest()->getSession();
+        return $this->render('BerkmanSlideshowBundle:Repo:progress.json.twig', array(
+            'progress' => $session->get('progress')
+        ));
+    }
+
     public function importAction($id)
     {
 		$request = $this->getRequest();
@@ -209,7 +218,8 @@ class RepoController extends Controller
                 $file = $importForm['attachment']->getData();
 
                 $file = $file->openFile();
-                $images = $repo->getFetcher()->getImagesFromImport($file);
+                $batch = new Batch($file, $request->getSession());
+                $images = $repo->getFetcher()->getImagesFromImport($batch);
 
                 foreach ($images as $image) {
                     $imageId = $finder->addImage($image);
