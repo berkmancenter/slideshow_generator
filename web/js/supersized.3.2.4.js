@@ -141,7 +141,30 @@
             }
             
             /*-----Load initial set of images-----*/
+
+            function loadImage(i) {
+                var cacheImage = document.createElement('img');
+                cacheImage.src = base.options.slides[i].image;
+                vars.cache.push(cacheImage);
+                $(cacheImage).load(function() {
+                    if (i < base.options.slides.length - 1) {
+                        loadImage(i + 1);
+                    }
+                });
+            }
     
+            loadImage(0);
+            
+            var slideCurrent= base.el+' li:eq('+vars.current_slide+')';
+            var img = $('<img src="'+api.getField('image')+'"/>');
+            imageLink = (api.getField('url')) ? "href='" + api.getField('url') + "'" : "";
+            img.appendTo(slideCurrent).wrap('<a ' + imageLink + linkTarget + '></a>').parent().parent().addClass('image-loading activeslide');
+            img.load(function(){
+                base._origDim($(this), function() { base.resizeNow(); });
+                base.launch();
+                if( typeof theme != 'undefined' && typeof theme._init == "function" ) theme._init();    // Load Theme
+            });
+
             if (base.options.slides.length > 1){
                 // Set previous image
                 vars.current_slide - 1 < 0  ? loadPrev = base.options.slides.length - 1 : loadPrev = vars.current_slide - 1;    // If slide is 1, load last slide as previous
@@ -158,19 +181,6 @@
                 // Slideshow turned off if there is only one slide
                 base.options.slideshow = 0;
             }
-            
-            // Set current image
-            imageLink = (api.getField('url')) ? "href='" + api.getField('url') + "'" : "";
-            var img = $('<img src="'+api.getField('image')+'"/>');
-            
-            var slideCurrent= base.el+' li:eq('+vars.current_slide+')';
-            img.appendTo(slideCurrent).wrap('<a ' + imageLink + linkTarget + '></a>').parent().parent().addClass('image-loading activeslide');
-            
-            img.load(function(){
-                base._origDim($(this), function() { base.resizeNow(); });
-                base.launch();
-                if( typeof theme != 'undefined' && typeof theme._init == "function" ) theme._init();    // Load Theme
-            });
             
             if (base.options.slides.length > 1){
                 // Set next image
@@ -929,7 +939,8 @@
         hover_pause             :   false,      // If slideshow is paused from hover
         slideshow_interval      :   false,      // Stores slideshow timer                   
         update_images           :   false,      // Trigger to update images after slide jump
-        options                 :   {}          // Stores assembled options list
+        options                 :   {},         // Stores assembled options list
+        cache                   :   []
         
     };
     
