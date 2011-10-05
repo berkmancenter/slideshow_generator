@@ -26,7 +26,6 @@ class LoadTestRepos implements FixtureInterface
         $oasis->setCreated(new \DateTime('now'));
         $oasis->setUpdated(new \DateTime('now'));
         
-
 		$manager->persist($via);
         $manager->persist($oasis);
 
@@ -49,7 +48,7 @@ class LoadTestRepos implements FixtureInterface
         $manager->persist($user);
 
         $slideshow = new Slideshow();
-        $slideshow->setName('Wilson, Ernest Henry | China, 1908-ish');
+        $slideshow->setName('Wilson, Ernest Henry | China');
 
         $images = array (
           array (
@@ -781,60 +780,6 @@ class LoadTestRepos implements FixtureInterface
              'ARB.JPLIB:590712',
              'ARB.JPLIB:590712?height=150&width=150',
           ),
-          array (
-            $oasis,
-             'hou00121',
-             '008679228',
-             '14353878',
-             '(706.1) ',
-             NULL,
-             NULL,
-          ),
-          array (
-            $oasis,
-             'hou00121',
-             '008679228',
-             '28534575',
-             '(706.1) ',
-             NULL,
-             NULL,
-          ),
-          array (
-            $oasis,
-             'hou00121',
-             '008679228',
-             '24470718',
-             '(706.1) ',
-             NULL,
-             NULL,
-          ),
-          array (
-            $oasis,
-             'hou00121',
-             '008679228',
-             '22930565',
-             '(708) ',
-             NULL,
-             NULL,
-          ),
-          array (
-            $oasis,
-             'hou01535',
-             '000602034',
-             '14298417',
-             '(1) ',
-             NULL,
-             NULL,
-          ),
-          array (
-            $oasis,
-             'hou01426',
-             '009130099',
-             '8075795',
-             '(1)',
-             NULL,
-             NULL,
-          ),
         );
 
         foreach ($images as $image) {
@@ -849,6 +794,7 @@ class LoadTestRepos implements FixtureInterface
         $slideshow->setPerson($user);
         $slideshow->setCreated(new \DateTime('now'));
         $slideshow->setUpdated(new \DateTime('now'));
+        $slideshow->setPublished(true);
         $manager->persist($slideshow);
 
 		$manager->flush();
