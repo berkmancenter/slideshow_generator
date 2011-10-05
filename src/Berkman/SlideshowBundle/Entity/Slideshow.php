@@ -186,6 +186,7 @@ class Slideshow
 		$this->always_show_info = false;
 		$this->display_controls = false;
         $this->show_qr_code = true;
+        $this->published = true;
         $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -311,5 +312,30 @@ class Slideshow
     public function getDescription()
     {
         return $this->description;
+    }
+    /**
+     * @var datetime $published
+     */
+    private $published;
+
+
+    /**
+     * Set published
+     *
+     * @param datetime $published
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+    }
+
+    /**
+     * Get published
+     *
+     * @return datetime 
+     */
+    public function getPublished()
+    {
+        return $this->published;
     }
 }

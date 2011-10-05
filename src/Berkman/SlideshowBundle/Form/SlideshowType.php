@@ -17,6 +17,7 @@ class SlideshowType extends AbstractType
             ->add('always_show_info', 'checkbox', array('required' => false))
 			->add('display_controls', 'checkbox', array('required' => false))
 			->add('show_qr_code', 'checkbox', array('required' => false))
+            ->add('published', 'checkbox', array('required' => false))
 		;
 
 		if ($builder->getData()->getId()) {

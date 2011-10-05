@@ -12,6 +12,7 @@
 	<h2>Browse Slideshows</h2>
 	<div id="slideshows" class="centered lightWrap">
 		{% for slideshow in slideshows %}
+        {% if slideshow.published %}
 		<div class="slideshow">
 			<a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
 				{% if slideshow.slides[0] is defined %}
@@ -20,6 +21,7 @@
 				{% endif %}
 			</a>
 		</div>
+        {% endif %}
 		{% endfor %}
 	</div>
 </div>

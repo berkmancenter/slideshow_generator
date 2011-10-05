@@ -24,6 +24,8 @@ Berkman\SlideshowBundle\Entity\Slideshow:
       type: datetime
     updated:
       type: datetime
+    published:
+      type: boolean
   manyToOne:
     person:
       targetEntity: Person
