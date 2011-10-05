@@ -9,6 +9,9 @@ Berkman\SlideshowBundle\Entity\Slideshow:
     name:
       type: string
       nullable: true
+    description:
+      type: text
+      nullable: true
     slide_delay:
       type: smallint
     always_show_info:

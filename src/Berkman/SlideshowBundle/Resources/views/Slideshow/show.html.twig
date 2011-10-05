@@ -21,6 +21,9 @@
 		</form>
 		{% endif %}
 	</div>
+    {% if entity.description is not empty %}
+    <div id="description">Description: {{ entity.description }}</div>
+    {% endif %}
     {% render 'BerkmanSlideshowBundle:Slideshow:slideTiles' with { 'id': entity.id }, { 'standalone' : true } %}
 </div>
 {% endblock %}

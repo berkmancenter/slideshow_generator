@@ -12,6 +12,7 @@ class SlideshowType extends AbstractType
 	{
         $builder
             ->add('name', null, array('label' => 'Slideshow Name'))
+            ->add('description')
             ->add('slide_delay', null, array('label' => 'Slide Delay (seconds)'))
             ->add('always_show_info', 'checkbox', array('required' => false))
 			->add('display_controls', 'checkbox', array('required' => false))
