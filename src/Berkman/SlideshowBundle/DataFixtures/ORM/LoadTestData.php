@@ -26,14 +26,15 @@ class LoadTestCatalogs implements FixtureInterface
         $oasis->setCreated(new \DateTime('now'));
         $oasis->setUpdated(new \DateTime('now'));
         
-        $oasis = new Catalog();
-        $oasis->setId('TED');
-        $oasis->setName('Templated Databases');
-        $oasis->setCreated(new \DateTime('now'));
-        $oasis->setUpdated(new \DateTime('now'));
+        $ted = new Catalog();
+        $ted->setId('TED');
+        $ted->setName('Templated Databases');
+        $ted->setCreated(new \DateTime('now'));
+        $ted->setUpdated(new \DateTime('now'));
 
 		$manager->persist($via);
         $manager->persist($oasis);
+        $manager->persist($ted);
 
         // create a user
         $user = new Person();
