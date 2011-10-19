@@ -1,17 +1,17 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>Repo creation</h2>
+<h2>Catalog creation</h2>
 
 <div class="lightWrap">
-<form action="{{ path('repo_create') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('catalog_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <button type="submit">Create</button>
 </form>
 
 <ul class="record_actions">
     <li>
-        <a href="{{ path('repo') }}">
+        <a href="{{ path('catalog') }}">
             Back to the list
         </a>
     </li>

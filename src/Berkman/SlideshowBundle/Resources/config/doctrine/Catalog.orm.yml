@@ -1,4 +1,4 @@
-Berkman\SlideshowBundle\Entity\Repo:
+Berkman\SlideshowBundle\Entity\Catalog:
   type: entity
   id:
     id:

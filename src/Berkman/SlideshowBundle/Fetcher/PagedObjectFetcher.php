@@ -7,7 +7,7 @@ use Berkman\SlideshowBundle\Entity;
 /**
  * What do I want to happen here?
  *
- * This is a somewhat special object - it doesn't count as a repo, but the other repos
+ * This is a somewhat special object - it doesn't count as a catalog, but the other catalogs
  * can use it to parse their results, and it speaks with the same interface
  *
  * It should receive a paged-object id
@@ -15,7 +15,7 @@ use Berkman\SlideshowBundle\Entity;
  * It should return an image (the "cover" image) plus a URL
  * The URL should point to a resource that contains all the images from a paged-object
  *
- * URL: /find/{repos}/{keyword}/{paged-object-id}
+ * URL: /find/{catalogs}/{keyword}/{paged-object-id}
  *
  * It should use the same view as search results, but it should be clear that
  * the user is looking at sub results rather than regular results, and they
@@ -41,28 +41,28 @@ class PagedObjectFetcher extends Fetcher implements FetcherInterface {
 	const RESULTS_PER_PAGE = 25;
 
 	/**
-	 * @var Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 */
-	private $repo;
+	private $catalog;
 
 	/**
-	 * Construct the fetcher and associate with repo
+	 * Construct the fetcher and associate with catalog
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 */
-	public function __construct(Entity\Repo $repo)
+	public function __construct(Entity\Catalog $catalog)
 	{
-		$this->repo = $repo;
+		$this->catalog = $catalog;
 	}
 
 	/**
-	 * Get the repository associated with this fetcher
+	 * Get the catalogsitory associated with this fetcher
 	 *
-	 * @return Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 */
-	public function getRepo()
+	public function getCatalog()
 	{
-		return $this->repo;
+		return $this->catalog;
 	}
 
 	/**

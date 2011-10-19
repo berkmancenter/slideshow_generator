@@ -3,24 +3,24 @@
 namespace Berkman\SlideshowBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Berkman\SlideshowBundle\Entity\Repo;
+use Berkman\SlideshowBundle\Entity\Catalog;
 use Berkman\SlideshowBundle\Entity\Person;
 use Berkman\SlideshowBundle\Entity\Slideshow;
 use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Entity\Image;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
-class LoadTestRepos implements FixtureInterface
+class LoadTestCatalogs implements FixtureInterface
 {
 	public function load($manager)
 	{
-		$via = new Repo();
+		$via = new Catalog();
 		$via->setId('VIA');
 		$via->setName('Visual Information Access');
         $via->setCreated(new \DateTime('now'));
         $via->setUpdated(new \DateTime('now'));
 
-        $oasis = new Repo();
+        $oasis = new Catalog();
         $oasis->setId('OASIS');
         $oasis->setName('Online Archival Search Information System');
         $oasis->setCreated(new \DateTime('now'));

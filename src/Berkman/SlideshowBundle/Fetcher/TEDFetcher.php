@@ -6,7 +6,7 @@ use Berkman\SlideshowBundle\Entity;
 class TEDFetcher extends Fetcher implements FetcherInterface {
 
     /*
-     * id-1 = repoI - e.g. mcz
+     * id-1 = catalogI - e.g. mcz
      * id-2 = nrsId - e.g. FMUS.MCZ:2005-562425 
      * id-3 = recordId - e.g. ARC 209-130
      *
@@ -26,28 +26,28 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
     const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-2}?width=150&height=150&usethumb=y';
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Repo $repo
+     * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    private $repo;
+    private $catalog;
 
     /**
-     * Construct the fetcher and associate with repo
+     * Construct the fetcher and associate with catalog
      *
-     * @param Berkman\SlideshowBundle\Entity\Repo $repo
+     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    public function __construct(Entity\Repo $repo)
+    public function __construct(Entity\Catalog $catalog)
     {
-        $this->repo = $repo;
+        $this->catalog = $catalog;
     }
 
     /**
-     * Get the repository associated with this fetcher
+     * Get the catalogsitory associated with this fetcher
      *
-     * @return Berkman\SlideshowBundle\Entity\Repo $repo
+     * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    public function getRepo()
+    public function getCatalog()
     {
-        return $this->repo;
+        return $this->catalog;
     }
 
     /**
@@ -207,7 +207,7 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
         $image        = null;
 
         // Get the finding aid id
-        $repoId = $this->getNodeContent($xpath, 'repositorycode', $contextNode);
+        $catalogId = $this->getNodeContent($xpath, 'catalogsitorycode', $contextNode);
         
         $recordId = $this->getNodeContent($xpath, 'recordid', $contextNode);
 
@@ -219,7 +219,7 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
 
         // If it's an image, create it and add it to results
         if ($type == 'ids') {
-                $image = new Entity\Image($this->getRepo(), $repoId, $nrsId, $recordId);
+                $image = new Entity\Image($this->getCatalog(), $catalogId, $nrsId, $recordId);
         }
 
         if (isset($image)) {

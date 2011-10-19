@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Berkman\SlideshowBundle\Fetcher as Fetcher;
 
 /**
- * Berkman\SlideshowBundle\Entity\Repo
+ * Berkman\SlideshowBundle\Entity\Catalog
  */
-class Repo
+class Catalog
 {
     /**
      * @var string $id
@@ -67,7 +67,7 @@ class Repo
     }
 
 	/**
-	 * Get the fetcher object associated with this repo
+	 * Get the fetcher object associated with this catalog
 	 *
 	 */
 	public function getFetcher()
@@ -91,7 +91,7 @@ class Repo
 	}
 
 	/**
-	 * Get search results from this repo
+	 * Get search results from this catalog
 	 *
 	 * @param string $keyword
 	 * @param int $startIndex

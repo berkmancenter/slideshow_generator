@@ -50,22 +50,22 @@ class Image
     private $public;
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Repo
+     * @var Berkman\SlideshowBundle\Entity\Catalog
      */
-    private $from_repo;
+    private $from_catalog;
 
 	/**
 	 * Construct an image from its parts
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 * @param string $id1
 	 * @param string $id2
 	 * @param string $id3
 	 * @param string $id4
 	 */
-	public function __construct(Repo $fromRepo, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
+	public function __construct(Catalog $fromCatalog, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
 	{
-		$this->setFromRepo($fromRepo);
+		$this->setFromCatalog($fromCatalog);
 		$this->setId1($id1);
 		$this->setId2($id2);
 		$this->setId3($id3);
@@ -215,23 +215,23 @@ class Image
     }
 
     /**
-     * Set from_repo
+     * Set from_catalog
      *
-     * @param Berkman\SlideshowBundle\Entity\Repo $fromRepo
+     * @param Berkman\SlideshowBundle\Entity\Catalog $fromCatalog
      */
-    public function setFromRepo(\Berkman\SlideshowBundle\Entity\Repo $fromRepo)
+    public function setFromCatalog(\Berkman\SlideshowBundle\Entity\Catalog $fromCatalog)
     {
-        $this->from_repo = $fromRepo;
+        $this->from_catalog = $fromCatalog;
     }
 
     /**
-     * Get from_repo
+     * Get from_catalog
      *
-     * @return Berkman\SlideshowBundle\Entity\Repo $fromRepo
+     * @return Berkman\SlideshowBundle\Entity\Catalog $fromCatalog
      */
-    public function getFromRepo()
+    public function getFromCatalog()
     {
-        return $this->from_repo;
+        return $this->from_catalog;
     }
 
 	/**
@@ -243,7 +243,7 @@ class Image
 	public function getMetadata()
 	{
         try {
-            return $this->getFromRepo()->getFetcher()->fetchImageMetadata($this);
+            return $this->getFromCatalog()->getFetcher()->fetchImageMetadata($this);
         } catch (\Exception $e) {
             return null;
         }
@@ -256,7 +256,7 @@ class Image
 	 */
 	public function getImageUrl()
 	{
-		return $this->getFromRepo()->getFetcher()->getImageUrl($this);
+		return $this->getFromCatalog()->getFetcher()->getImageUrl($this);
 	}
 
 	/**
@@ -266,7 +266,7 @@ class Image
 	 */
 	public function getThumbnailUrl()
 	{
-		return $this->getFromRepo()->getFetcher()->getThumbnailUrl($this);
+		return $this->getFromCatalog()->getFetcher()->getThumbnailUrl($this);
 	}
 
 	/**
@@ -276,12 +276,12 @@ class Image
 	 */
 	public function getRecordUrl()
 	{
-		return $this->getFromRepo()->getFetcher()->getRecordUrl($this);
+		return $this->getFromCatalog()->getFetcher()->getRecordUrl($this);
 	}	
 
     public function getQRCodeUrl()
     {
-        return $this->getFromRepo()->getFetcher()->getQRCodeUrl($this);
+        return $this->getFromCatalog()->getFetcher()->getQRCodeUrl($this);
     }
 
     /**
@@ -302,7 +302,7 @@ class Image
     public function isPublic()
     {
         if (!isset($this->public)) {
-            $this->public = $this->getFromRepo()->getFetcher()->isImagePublic($this);
+            $this->public = $this->getFromCatalog()->getFetcher()->isImagePublic($this);
         }
         return $this->public;
     }

@@ -1,7 +1,7 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>Repo list</h2>
+<h2>Catalog list</h2>
 
 <div class="lightWrap">
 <table class="records_list">
@@ -15,15 +15,15 @@
     <tbody>
     {% for entity in entities %}
         <tr>
-            <td><a href="{{ path('repo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td><a href="{{ path('catalog_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{{ entity.name }}</td>
             <td>
                 <ul>
                     <li>
-                        <a href="{{ path('repo_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('catalog_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('repo_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('catalog_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
             </td>
@@ -34,7 +34,7 @@
 
 <ul>
     <li>
-        <a href="{{ path('repo_new') }}">
+        <a href="{{ path('catalog_new') }}">
             Create a new entry
         </a>
     </li>

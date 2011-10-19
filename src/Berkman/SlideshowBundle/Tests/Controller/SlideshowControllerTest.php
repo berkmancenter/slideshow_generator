@@ -18,7 +18,7 @@ class DefaultControllerTest extends WebTestCase
         // Fill in the form and submit it
         $form = $crawler->selectButton('Search')->form(array(
             'finder[keyword]'  => 'kitten',
-            'finder[repos][VIA]' => true
+            'finder[catalogs][VIA]' => true
         ));
 
         $client->submit($form);

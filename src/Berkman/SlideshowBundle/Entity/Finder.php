@@ -53,9 +53,9 @@ class Finder
     private $collections;
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Repo
+     * @var Berkman\SlideshowBundle\Entity\Catalog
      */
-    private $repos;
+    private $catalogs;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Image
@@ -72,7 +72,7 @@ class Finder
      */
     private $selected_image_results;
 
-    public function __construct($repos = null)
+    public function __construct($catalogs = null)
     {
         $this->images                     = array();
         $this->collections                = array();
@@ -81,8 +81,8 @@ class Finder
         $this->selected_image_results     = array();
         $this->results_per_page           = self::RESULTS_PER_PAGE;
 		$this->current_page               = 1;
-		if (isset($repos)) {
-			$this->repos                  = $repos;
+		if (isset($catalogs)) {
+			$this->catalogs                  = $catalogs;
 		}
     }
     
@@ -201,40 +201,40 @@ class Finder
     }
 
     /**
-     * Add repos
+     * Add catalogs
      *
-     * @param Berkman\SlideshowBundle\Entity\Repo $repos
+     * @param Berkman\SlideshowBundle\Entity\Catalog $catalogs
      */
-    public function addRepos(\Berkman\SlideshowBundle\Entity\Repo $repos)
+    public function addCatalogs(\Berkman\SlideshowBundle\Entity\Catalog $catalogs)
     {
-        $this->repos[] = $repos;
+        $this->catalogs[] = $catalogs;
     }
 
     /**
-     * Set repos
+     * Set catalogs
      *
-     * @param array $repos
+     * @param array $catalogs
      */
-    public function setRepos($repos)
+    public function setCatalogs($catalogs)
     {
-        if ($repos instanceof Repo) {
-            $repos = array($repos);
+        if ($catalogs instanceof Catalog) {
+            $catalogs = array($catalogs);
         }
-        $this->repos = $repos;
+        $this->catalogs = $catalogs;
     }
 
     /**
-     * Get repos
+     * Get catalogs
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getRepos()
+    public function getCatalogs()
     {
-        if ($this->repos instanceof ArrayCollection) {
-            return $this->repos;
+        if ($this->catalogs instanceof ArrayCollection) {
+            return $this->catalogs;
         }
         else {
-            return new ArrayCollection($this->repos);
+            return new ArrayCollection($this->catalogs);
         }
     }
 
@@ -460,12 +460,12 @@ class Finder
         $imageResults      = array();
         $collectionResults = array();
 		$totalResults      = 0;
-        $numOfRepos        = count($this->repos);
-        $resultsPerRepo    = floor($this->getResultsPerPage() / $numOfRepos);
-		$reposFirstIndex   = $resultsPerRepo * ($page - 1);
+        $numOfCatalogs        = count($this->catalogs);
+        $resultsPerCatalog    = floor($this->getResultsPerPage() / $numOfCatalogs);
+		$catalogsFirstIndex   = $resultsPerCatalog * ($page - 1);
 
-		foreach ($this->repos as $repo) {
-            $searchResults = $repo->fetchResults($keyword, $reposFirstIndex, $resultsPerRepo);
+		foreach ($this->catalogs as $catalog) {
+            $searchResults = $catalog->fetchResults($keyword, $catalogsFirstIndex, $resultsPerCatalog);
             array_splice($results, count($results), 0, $searchResults['results']);
 			$totalResults += $searchResults['totalResults'];
 		}
@@ -507,7 +507,7 @@ class Finder
 			$totalResults = count($collection->getImages());
 		}
 		else {
-			$searchResults = $collection->getRepo()->getFetcher()->fetchCollectionResults($collection, $firstIndex, $lastIndex);
+			$searchResults = $collection->getCatalog()->getFetcher()->fetchCollectionResults($collection, $firstIndex, $lastIndex);
 			$results = $searchResults['results'];
 			$totalResults = $searchResults['totalResults'];
 		}

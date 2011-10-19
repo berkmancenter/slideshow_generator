@@ -1,0 +1,39 @@
+catalog:
+    pattern:  /
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:index" }
+
+catalog_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:show" }
+
+catalog_new:
+    pattern:  /new
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:new" }
+
+catalog_create:
+    pattern:  /create
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:create" }
+    requirements: { _method: post }
+
+catalog_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:edit" }
+
+catalog_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:update" }
+    requirements: { _method: post }
+
+catalog_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:delete" }
+    requirements: { _method: post }
+
+catalog_import:
+    pattern:  /{id}/import
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:import" }
+    requirements: { _method: post }
+
+catalog_import_progress:
+    pattern:  /progress
+    defaults: { _controller: "BerkmanSlideshowBundle:Catalog:getProgress" }

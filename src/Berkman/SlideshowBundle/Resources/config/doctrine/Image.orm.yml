@@ -27,5 +27,5 @@ Berkman\SlideshowBundle\Entity\Image:
       type: boolean
       nullable: TRUE
   manyToOne:
-    from_repo:
-      targetEntity: Repo
+    from_catalog:
+      targetEntity: Catalog

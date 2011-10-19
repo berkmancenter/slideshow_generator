@@ -23,28 +23,28 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
     const QR_CODE_URL_PATTERN   = 'http://m.harvard.edu/libraries/detail?id=viaid%3A{id-1}';
 
 	/**
-	 * @var Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 */
-	private $repo;
+	private $catalog;
 
 	/**
-	 * Construct the fetcher and associate with repo
+	 * Construct the fetcher and associate with catalog
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 */
-	public function __construct(Entity\Repo $repo)
+	public function __construct(Entity\Catalog $catalog)
 	{
-		$this->repo = $repo;
+		$this->catalog = $catalog;
 	}
 
 	/**
-	 * Get the repository associated with this fetcher
+	 * Get the catalogsitory associated with this fetcher
 	 *
-	 * @return Berkman\SlideshowBundle\Entity\Repo $repo
+	 * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
 	 */
-	public function getRepo()
+	public function getCatalog()
 	{
-		return $this->repo;
+		return $this->catalog;
 	}
 
 	/**
@@ -98,7 +98,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
                     $componentId = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
                     $imageId = $componentId;
                     $image = new Entity\Image(
-                        $this->getRepo(),
+                        $this->getCatalog(),
                         $recordId,
                         $componentId,
                         $metadataId,
@@ -110,7 +110,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
                         $results[] = $image;
                     } 
                     else {
-                        $imageCollection = new Entity\Collection($this->getRepo(), $recordId);
+                        $imageCollection = new Entity\Collection($this->getCatalog(), $recordId);
                         $imageCollection->addImages($image);
                         if ($imageCollection->isPublic()) {
                             $results[] = $imageCollection;
@@ -267,7 +267,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
                     $metadataSubId = $recordIdentifier->textContent;
                     if (!empty($thumbnailId)) {
                         $results[] = new Entity\Image(
-                            $this->getRepo(),
+                            $this->getCatalog(),
                             $recordId,
                             $componentId,
                             $metadataId,
@@ -303,7 +303,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
         $thumbnailUrl = $xpath->query('.//img', $container)->item(0)->getAttribute('src');
         $thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
         $image = new Entity\Image(
-            $this->getRepo(),
+            $this->getCatalog(),
             $recordId,
             $componentId,
             $metadataId,

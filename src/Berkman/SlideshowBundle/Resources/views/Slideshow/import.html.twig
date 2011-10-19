@@ -7,10 +7,10 @@
     <p>
         Upload a CSV document with formats as follows:
     </p>
-    {% for repo in repos %}
+    {% for catalog in catalogs %}
     <p>
-        For the {{ repo.name }} repository:<br />
-        "{{ repo.id }}",{{ repo.importFormat }}
+        For the {{ catalog.name }} catalogsitory:<br />
+        "{{ catalog.id }}",{{ catalog.importFormat }}
     </p>
     {% endfor %}
 	<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
@@ -20,16 +20,16 @@
 </div>
 <h2>Repository Importers</h2>
 <div class="centered lightWrap">
-    {% for repo_id, import_form in import_forms %}     
-        {% for repo in repos %}
-            {% if repo.id == repo_id %}
-            <h3>{{ repo.name }}</h3>
+    {% for catalog_id, import_form in import_forms %}     
+        {% for catalog in catalogs %}
+            {% if catalog.id == catalog_id %}
+            <h3>{{ catalog.name }}</h3>
             <p>
-                    {{ repo.getFetcher.importInstructions }}
+                    {{ catalog.getFetcher.importInstructions }}
             </p>
             {% endif %}
         {% endfor %}
-        <form action="{{ path('repo_import', { 'id': repo_id }) }}" method="post" {{ form_enctype(import_form) }}>
+        <form action="{{ path('catalog_import', { 'id': catalog_id }) }}" method="post" {{ form_enctype(import_form) }}>
             {{ form_widget(import_form) }}
             <input type="submit" value="Import" />
         </form>

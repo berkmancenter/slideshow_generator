@@ -29,28 +29,28 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
     const PAGED_OBJECT_URL_PATTERN           = 'http://nrs.harvard.edu/urn-3:{id-2}?op=t';
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Repo $repo
+     * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    private $repo;
+    private $catalog;
 
     /**
-     * Construct the fetcher and associate with repo
+     * Construct the fetcher and associate with catalog
      *
-     * @param Berkman\SlideshowBundle\Entity\Repo $repo
+     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    public function __construct(Entity\Repo $repo)
+    public function __construct(Entity\Catalog $catalog)
     {
-        $this->repo = $repo;
+        $this->catalog = $catalog;
     }
 
     /**
-     * Get the repository associated with this fetcher
+     * Get the catalogsitory associated with this fetcher
      *
-     * @return Berkman\SlideshowBundle\Entity\Repo $repo
+     * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    public function getRepo()
+    public function getCatalog()
     {
-        return $this->repo;
+        return $this->catalog;
     }
 
     /**
@@ -244,7 +244,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
 
         // If it's an image, create it and add it to results
         if ($type == 'ids') {
-                $image = new Entity\Image($this->getRepo(), $findingAidId, $nrsId);
+                $image = new Entity\Image($this->getCatalog(), $findingAidId, $nrsId);
         }
         // If it's a paged-object, we need to get the actual ID, as there doesn't appear to be
         // an NRS link directly to the image
@@ -264,7 +264,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
             }
 
             if (isset($imageId)) {
-                $image = new Entity\Image($this->getRepo(), $findingAidId, $nrsId, $imageId);
+                $image = new Entity\Image($this->getCatalog(), $findingAidId, $nrsId, $imageId);
             }
         }
 

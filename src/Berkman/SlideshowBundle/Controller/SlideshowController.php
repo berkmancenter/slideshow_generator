@@ -168,7 +168,7 @@ class SlideshowController extends Controller
                     $images = $finder->getSelectedImageResults();
 					foreach ($images as $image) {
                         $newImage = clone $image;
-                        $newImage->setFromRepo($em->find('BerkmanSlideshowBundle:Repo', $image->getFromRepo()->getId()));
+                        $newImage->setFromCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getFromCatalog()->getId()));
 						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
 					}
@@ -271,19 +271,19 @@ class SlideshowController extends Controller
             $editForm->bindRequest($request);
 
             if ($editForm->isValid()) {
-				$slideRepo = $em->getRepository('BerkmanSlideshowBundle:Slide');
+				$slideCatalog = $em->getRepository('BerkmanSlideshowBundle:Slide');
 				$newSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
 				$slideIdsToRemove = array_diff($oldSlideIds, $newSlideIds);
 
 				if ($slideIdsToRemove) {
-					$slidesToRemove = $slideRepo->findById($slideIdsToRemove);
+					$slidesToRemove = $slideCatalog->findById($slideIdsToRemove);
 					foreach ($slidesToRemove as $slide) {
 						$em->remove($slide);
 					}
 				}
 
 				foreach (explode(',', $request->get('slide_order')) as $position => $slideId) {
-					$slide = $slideRepo->find($slideId);
+					$slide = $slideCatalog->find($slideId);
 					$slide->setPosition($position + 1);
 					$em->persist($slide);
 				}
@@ -384,7 +384,7 @@ class SlideshowController extends Controller
 							throw new AccessDeniedException();
 						}
                         $newImage = clone $image;
-                        $newImage->setFromRepo($em->find('BerkmanSlideshowBundle:Repo', $image->getFromRepo()->getId()));
+                        $newImage->setFromCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getFromCatalog()->getId()));
 						$slide = new Slide($newImage);
 						$slideshow->addSlide($slide);
                         $slideshow->setUpdated(new \DateTime('now'));
@@ -414,10 +414,10 @@ class SlideshowController extends Controller
         $images = array();
         $importForms = array();
         $finder = $this->getFinder();
-        $repos = $em->getRepository('BerkmanSlideshowBundle:Repo')->findAll();
-        foreach ($repos as $repo) {
-            if ($repo->hasCustomImporter()) {
-                $importForms[$repo->getId()] = $this->createForm(new ImportType())->createView();
+        $catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findAll();
+        foreach ($catalogs as $catalog) {
+            if ($catalog->hasCustomImporter()) {
+                $importForms[$catalog->getId()] = $this->createForm(new ImportType())->createView();
             }
         }
 
@@ -430,11 +430,11 @@ class SlideshowController extends Controller
                 $file->setFlags(\SplFileObject::READ_CSV);
                 foreach ($file as $row) {
                     if (isset($row[1])) {
-                        $repo = $row[0];
+                        $catalog = $row[0];
                         $args = array_slice($row, 1);
-                        $repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($repo);
+                        $catalog = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($catalog);
                         try {
-                            $images = $repo->getFetcher()->importImage($args);
+                            $images = $catalog->getFetcher()->importImage($args);
                         } catch (\ErrorException $e) {
                             $failed++;
                             continue;
@@ -453,7 +453,7 @@ class SlideshowController extends Controller
         return $this->render('BerkmanSlideshowBundle:Slideshow:import.html.twig', array(
             'master_form' => $masterForm->createView(),
             'import_forms' => $importForms,
-            'repos' => $repos
+            'catalogs' => $catalogs
         ));
 
     }

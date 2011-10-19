@@ -116,7 +116,7 @@ class Fetcher {
 
 			if (!empty($hollisId) && !empty($pageId) && !empty($imageId)) {
 				error_log('hollis id: '.$hollisId.' - page id: '.$pageId.' - image id: '.$imageId);
-				$images[] = new Entity\Image($this->getRepo(), $hollisId, $pageId, $imageId);
+				$images[] = new Entity\Image($this->getCatalog(), $hollisId, $pageId, $imageId);
 			}
 		}
 

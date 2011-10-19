@@ -7,7 +7,7 @@ finder_collection:
     defaults: { _controller: "BerkmanSlideshowBundle:Finder:showCollection", page: 1 }
 
 finder_show:
-    pattern:  /{repos}/{keyword}/{page}
+    pattern:  /{catalogs}/{keyword}/{page}
     defaults: { _controller: "BerkmanSlideshowBundle:Finder:show", page: 1 }
 
 finder_submit:

@@ -4,79 +4,79 @@ namespace Berkman\SlideshowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Berkman\SlideshowBundle\Entity\Repo;
+use Berkman\SlideshowBundle\Entity\Catalog;
 use Berkman\SlideshowBundle\Entity\Finder;
 use Berkman\SlideshowBundle\Entity\Batch;
-use Berkman\SlideshowBundle\Form\RepoType;
+use Berkman\SlideshowBundle\Form\CatalogType;
 use Berkman\SlideshowBundle\Form\ImportType;
 
 /**
- * Repo controller.
+ * Catalog controller.
  *
  */
-class RepoController extends Controller
+class CatalogController extends Controller
 {
     /**
-     * Lists all Repo entities.
+     * Lists all Catalog entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entities = $em->getRepository('BerkmanSlideshowBundle:Repo')->findAll();
+        $entities = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findAll();
 
-        return $this->render('BerkmanSlideshowBundle:Repo:index.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:index.html.twig', array(
             'entities' => $entities
         ));
     }
 
     /**
-     * Finders and displays a Repo entity.
+     * Finders and displays a Catalog entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
+        $entity = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Repo entity.');
+            throw $this->createNotFoundException('Unable to find Catalog entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BerkmanSlideshowBundle:Repo:show.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to create a new Repo entity.
+     * Displays a form to create a new Catalog entity.
      *
      */
     public function newAction()
     {
-        $entity = new Repo();
-        $form   = $this->createForm(new RepoType(), $entity);
+        $entity = new Catalog();
+        $form   = $this->createForm(new CatalogType(), $entity);
 
-        return $this->render('BerkmanSlideshowBundle:Repo:new.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
         ));
     }
 
     /**
-     * Creates a new Repo entity.
+     * Creates a new Catalog entity.
      *
      */
     public function createAction()
     {
-        $entity  = new Repo();
+        $entity  = new Catalog();
         $request = $this->getRequest();
-        $form    = $this->createForm(new RepoType(), $entity);
+        $form    = $this->createForm(new CatalogType(), $entity);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
@@ -87,37 +87,37 @@ class RepoController extends Controller
                 $entity->setUpdated(new \DateTime('now'));
                 $em->persist($entity);
                 $em->flush();
-                $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully created.');
+                $request->getSession()->setFlash('notice', 'Catalog "' . $entity->getName() . '" was successfully created.');
 
-                return $this->redirect($this->generateUrl('repo_show', array('id' => $entity->getId())));
+                return $this->redirect($this->generateUrl('catalog_show', array('id' => $entity->getId())));
                 
             }
         }
 
-        return $this->render('BerkmanSlideshowBundle:Repo:new.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
         ));
     }
 
     /**
-     * Displays a form to edit an existing Repo entity.
+     * Displays a form to edit an existing Catalog entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
+        $entity = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Repo entity.');
+            throw $this->createNotFoundException('Unable to find Catalog entity.');
         }
 
-        $editForm = $this->createForm(new RepoType(), $entity);
+        $editForm = $this->createForm(new CatalogType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BerkmanSlideshowBundle:Repo:edit.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -125,20 +125,20 @@ class RepoController extends Controller
     }
 
     /**
-     * Edits an existing Repo entity.
+     * Edits an existing Catalog entity.
      *
      */
     public function updateAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
+        $entity = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Repo entity.');
+            throw $this->createNotFoundException('Unable to find Catalog entity.');
         }
 
-        $editForm   = $this->createForm(new RepoType(), $entity);
+        $editForm   = $this->createForm(new CatalogType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         $request = $this->getRequest();
@@ -151,13 +151,13 @@ class RepoController extends Controller
                 $entity->setUpdated(new \DateTime('now'));
                 $em->persist($entity);
                 $em->flush();
-                $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully updated.');
+                $request->getSession()->setFlash('notice', 'Catalog "' . $entity->getName() . '" was successfully updated.');
 
-                return $this->redirect($this->generateUrl('repo_edit', array('id' => $id)));
+                return $this->redirect($this->generateUrl('catalog_edit', array('id' => $id)));
             }
         }
 
-        return $this->render('BerkmanSlideshowBundle:Repo:edit.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -165,7 +165,7 @@ class RepoController extends Controller
     }
 
     /**
-     * Deletes a Repo entity.
+     * Deletes a Catalog entity.
      *
      */
     public function deleteAction($id)
@@ -178,25 +178,25 @@ class RepoController extends Controller
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
-                $entity = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
+                $entity = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($id);
 
                 if (!$entity) {
-                    throw $this->createNotFoundException('Unable to find Repo entity.');
+                    throw $this->createNotFoundException('Unable to find Catalog entity.');
                 }
 
                 $em->remove($entity);
                 $em->flush();
-                $request->getSession()->setFlash('notice', 'Repo "' . $entity->getName() . '" was successfully deleted.');
+                $request->getSession()->setFlash('notice', 'Catalog "' . $entity->getName() . '" was successfully deleted.');
             }
         }
 
-        return $this->redirect($this->generateUrl('repo'));
+        return $this->redirect($this->generateUrl('catalog'));
     }
 
     public function getProgressAction()
     {
         $session = $this->getRequest()->getSession();
-        return $this->render('BerkmanSlideshowBundle:Repo:progress.json.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Catalog:progress.json.twig', array(
             'progress' => $session->get('progress')
         ));
     }
@@ -207,9 +207,9 @@ class RepoController extends Controller
         if ('POST' === $request->getMethod()) {
             $finder = $this->getFinder();
             $em = $this->getDoctrine()->getEntityManager();
-            $repo = $em->getRepository('BerkmanSlideshowBundle:Repo')->find($id);
-            if (!$repo) {
-                throw $this->createNotFoundException('Unable to find Repo entity.');
+            $catalog = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($id);
+            if (!$catalog) {
+                throw $this->createNotFoundException('Unable to find Catalog entity.');
             }
 
             $importForm = $this->createForm(new ImportType());
@@ -219,7 +219,7 @@ class RepoController extends Controller
 
                 $file = $file->openFile();
                 $batch = new Batch($file, $request->getSession());
-                $images = $repo->getFetcher()->getImagesFromImport($batch);
+                $images = $catalog->getFetcher()->getImagesFromImport($batch);
 
                 foreach ($images as $image) {
                     $imageId = $finder->addImage($image);

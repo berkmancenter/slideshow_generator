@@ -30,9 +30,9 @@ class Collection
     private $children;
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Repo
+     * @var Berkman\SlideshowBundle\Entity\Catalog
      */
-    private $repo;
+    private $catalog;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Collection
@@ -49,9 +49,9 @@ class Collection
      */
     private $public;
 
-    public function __construct(Repo $repo, $id1, $id2 = null, $id3 = null, $id4 = null)
+    public function __construct(Catalog $catalog, $id1, $id2 = null, $id3 = null, $id4 = null)
     {
-        $this->setRepo($repo);
+        $this->setCatalog($catalog);
         $this->setId1($id1);
         if ($id2) {
             $this->setId2($id2);
@@ -147,23 +147,23 @@ class Collection
     }
 
     /**
-     * Set repo
+     * Set catalog
      *
-     * @param Berkman\SlideshowBundle\Entity\Repo $repo
+     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    public function setRepo(\Berkman\SlideshowBundle\Entity\Repo $repo)
+    public function setCatalog(\Berkman\SlideshowBundle\Entity\Catalog $catalog)
     {
-        $this->repo = $repo;
+        $this->catalog = $catalog;
     }
 
     /**
-     * Get repo
+     * Get catalog
      *
-     * @return Berkman\SlideshowBundle\Entity\Repo 
+     * @return Berkman\SlideshowBundle\Entity\Catalog 
      */
-    public function getRepo()
+    public function getCatalog()
     {
-        return $this->repo;
+        return $this->catalog;
     }
 
     /**
@@ -205,7 +205,7 @@ class Collection
     {
         if ($this->images->count() < 2) {
             $images = new \Doctrine\Common\Collections\ArrayCollection();
-            $results = $this->getRepo()->getFetcher()->fetchCollectionResults($this, 0, 100);
+            $results = $this->getCatalog()->getFetcher()->fetchCollectionResults($this, 0, 100);
             foreach ($results['results'] as $result) {
                 if ($result instanceof Image) {
                     $images[] = $result;
@@ -244,7 +244,7 @@ class Collection
 
     public function getMetadata()
     {
-        return $this->repo->getFetcher()->fetchCollectionMetadata($this);
+        return $this->catalog->getFetcher()->fetchCollectionMetadata($this);
     }
 
     /**
@@ -306,7 +306,7 @@ class Collection
     public function isPublic()
     {
         if (!isset($this->public)) {
-            $this->public = $this->getRepo()->getFetcher()->isCollectionPublic($this);
+            $this->public = $this->getCatalog()->getFetcher()->isCollectionPublic($this);
         }
         return $this->public;
     }

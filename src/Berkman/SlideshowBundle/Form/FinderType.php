@@ -11,8 +11,8 @@ class FinderType extends AbstractType
     {
         $builder
 			->add('keyword')
-			->add('repos', 'entity', array(
-					'class' => 'Berkman\\SlideshowBundle\\Entity\\Repo',
+			->add('catalogs', 'entity', array(
+					'class' => 'Berkman\\SlideshowBundle\\Entity\\Catalog',
 					'property' => 'name',
 					'multiple' => true,
 					'expanded' => true
