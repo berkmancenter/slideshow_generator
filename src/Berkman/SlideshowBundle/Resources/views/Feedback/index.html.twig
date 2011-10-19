@@ -1,0 +1,12 @@
+{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+
+{% block body %}
+<div>
+    <h2>Feedback</h2>
+    <div class="lightWrap">
+        <form action="{{ path('BerkmanSlideshowBundle_feedback') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div><button type="submit">Send</button></div>
+    </div>
+</div>
+{% endblock %}
