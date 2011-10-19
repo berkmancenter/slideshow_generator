@@ -4,7 +4,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherInterface, ImportFetcherInterface {
+class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherInterface, ImportFetcherInterface {
 
 	/*
 	 * id_1 = recordId
@@ -110,10 +110,10 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
                         $results[] = $image;
                     } 
                     else {
-                        $imageCollection = new Entity\Collection($this->getCatalog(), $recordId);
-                        $imageCollection->addImages($image);
-                        if ($imageCollection->isPublic()) {
-                            $results[] = $imageCollection;
+                        $imageGroup = new Entity\ImageGroup($this->getCatalog(), $recordId);
+                        $imageGroup->addImages($image);
+                        if ($imageGroup->isPublic()) {
+                            $results[] = $imageGroup;
                         }
                     }
                 }
@@ -173,11 +173,11 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
         return $public;
     }
 
-    public function isCollectionPublic(Entity\Collection $collection)
+    public function isImageGroupPublic(Entity\ImageGroup $imageGroup)
     {
-        $recordId = $collection->getId1();
-        $collectionUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
-        $xpath = $this->fetchXpath($collectionUrl);
+        $recordId = $imageGroup->getId1();
+        $imageGroupUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
+        $xpath = $this->fetchXpath($imageGroupUrl);
 		$xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
         $publicImages = $xpath->query(".//mods:url[@displayLabel='Full Image'][@note='unrestricted']");
         return $publicImages->length > 0;
@@ -222,34 +222,34 @@ class VIAFetcher extends Fetcher implements FetcherInterface, CollectionFetcherI
     }
 
 	/**
-	 * Get the name of an image collection
+	 * Get the name of an image imageGroup
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\Collection $collection
+	 * @param Berkman\SlideshowBundle\Entity\ImageGroup $imageGroup
 	 * @return string $name
 	 */
-	public function fetchCollectionMetadata(Entity\Collection $collection)
+	public function fetchImageGroupMetadata(Entity\ImageGroup $imageGroup)
 	{
-        $coverImage = $collection->getCover();
+        $coverImage = $imageGroup->getCover();
         return $coverImage->getMetadata();
 	}
 
 	/**
-	 * Fetch the results from an image collection
+	 * Fetch the results from an image imageGroup
 	 *
-	 * @param Berkman\SlideshowBundle\Entity\Collection $collection
+	 * @param Berkman\SlideshowBundle\Entity\ImageGroup $imageGroup
 	 * @return array
 	 */
-	public function fetchCollectionResults(Entity\Collection $collection, $startIndex = null, $endIndex = null)
+	public function fetchImageGroupResults(Entity\ImageGroup $imageGroup, $startIndex = null, $endIndex = null)
 	{
         $results = array();
-		$recordId = $collection->getId1();
+		$recordId = $imageGroup->getId1();
 		$metadataId = $recordId;
         if (isset($startIndex, $endIndex)) {
             $numResults = $endIndex - $startIndex + 1;
         }
-        $collectionUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
+        $imageGroupUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
 
-		$imageXpath = $this->fetchXpath($collectionUrl);
+		$imageXpath = $this->fetchXpath($imageGroupUrl);
 		$imageXpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
 		$constituents = $imageXpath->query("//mods:location");
 		foreach ($constituents as $constituent) {

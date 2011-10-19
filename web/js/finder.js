@@ -2,8 +2,8 @@ $(function() {
     $('.image-buttons').each(function() {
         $(this).replaceWith('<a href="#" class="buttoned addImage" value="' + $(this).find('input').val() + '">Add</a>');
     });
-    $('.collection-buttons').each(function() {
-        $(this).replaceWith('<a href="#" class="buttoned addCollection" value="' + $(this).find('input').val() + '">Add</a>');
+    $('.imageGroup-buttons').each(function() {
+        $(this).replaceWith('<a href="#" class="buttoned addImageGroup" value="' + $(this).find('input').val() + '">Add</a>');
     });
 
     function addClickHandler(buttonClass, valueId) {
@@ -30,6 +30,6 @@ $(function() {
             });
         });
     }
-    addClickHandler('.addCollection', 'collections');
+    addClickHandler('.addImageGroup', 'imageGroups');
     addClickHandler('.addImage', 'images');
 });

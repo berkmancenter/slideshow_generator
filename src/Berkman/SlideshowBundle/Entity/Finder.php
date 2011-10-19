@@ -48,9 +48,9 @@ class Finder
     private $images;
 
     /**
-     * @var array $collections
+     * @var array $imageGroups
      */
-    private $collections;
+    private $imageGroups;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Catalog
@@ -63,9 +63,9 @@ class Finder
     private $current_image_results;
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Collection
+     * @var Berkman\SlideshowBundle\Entity\ImageGroup
      */
-    private $current_collection_results;
+    private $current_imageGroup_results;
 
     /**
      * @var Berkman\SlideshowBundle\Entity\Image
@@ -75,9 +75,9 @@ class Finder
     public function __construct($catalogs = null)
     {
         $this->images                     = array();
-        $this->collections                = array();
+        $this->imageGroups                = array();
         $this->current_image_results      = array();
-        $this->current_collection_results = array();
+        $this->current_imageGroup_results = array();
         $this->selected_image_results     = array();
         $this->results_per_page           = self::RESULTS_PER_PAGE;
 		$this->current_page               = 1;
@@ -289,53 +289,53 @@ class Finder
     }
 
     /**
-     * Get collection by id
+     * Get imageGroup by id
      *
      * @param integer $id
-     * @return Berkman\SlideshowBundle\Entity\Collection
+     * @return Berkman\SlideshowBundle\Entity\ImageGroup
      */
-    public function getCollection($id)
+    public function getImageGroup($id)
     {
-        foreach($this->getCollections() as $collection) {
-            if ($collection->getId() == $id)
-                return $collection;
+        foreach($this->getImageGroups() as $imageGroup) {
+            if ($imageGroup->getId() == $id)
+                return $imageGroup;
         }
     }
 
     /**
-     * Add collection
+     * Add imageGroup
      *
-     * @param Berkman\SlideshowBundle\Entity\Collection
-     * @return integer $collectionId
+     * @param Berkman\SlideshowBundle\Entity\ImageGroup
+     * @return integer $imageGroupId
      */
-    public function addCollection(Collection $collection)
+    public function addImageGroup(ImageGroup $imageGroup)
     {
-        $collectionId = $collection->getId();
-        if (empty($collectionId)) {
-            $collection->setId(count($this->collections));
+        $imageGroupId = $imageGroup->getId();
+        if (empty($imageGroupId)) {
+            $imageGroup->setId(count($this->imageGroups));
         }
-        $this->collections[] = $collection;
-        return $collection->getId();
+        $this->imageGroups[] = $imageGroup;
+        return $imageGroup->getId();
     }
 
     /**
-     * Set collections
+     * Set imageGroups
      *
-     * @param array $collections
+     * @param array $imageGroups
      */
-    public function setCollections($collections)
+    public function setImageGroups($imageGroups)
     {
-        $this->collections = $collections;
+        $this->imageGroups = $imageGroups;
     }
 
     /**
      * Get images
      *
-     * @return array $collections
+     * @return array $imageGroups
      */
-    public function getCollections()
+    public function getImageGroups()
     {
-        return $this->collections;
+        return $this->imageGroups;
     }
 
     /**
@@ -373,37 +373,37 @@ class Finder
     }
 
     /**
-     * Get current_collection_results
+     * Get current_imageGroup_results
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getCurrentCollectionResults()
+    public function getCurrentImageGroupResults()
     {
-        $collectionResults = array();
-        foreach ($this->current_collection_results as $collectionId) {
-            $collectionResults[] = $this->getCollection($collectionId);
+        $imageGroupResults = array();
+        foreach ($this->current_imageGroup_results as $imageGroupId) {
+            $imageGroupResults[] = $this->getImageGroup($imageGroupId);
         }
-        return $collectionResults;
+        return $imageGroupResults;
     }
 
     /**
-     * Add current_collection_results
+     * Add current_imageGroup_results
      *
-     * @param integer $collectionId
+     * @param integer $imageGroupId
      */
-    public function addCurrentCollectionResult($collectionId)
+    public function addCurrentImageGroupResult($imageGroupId)
     {
-        $this->current_collection_results[] = $collectionId;
+        $this->current_imageGroup_results[] = $imageGroupId;
     }
 
     /**
-     * Set current_collection_results
+     * Set current_imageGroup_results
      *
-     * @param integer $currentCollectionResults
+     * @param integer $currentImageGroupResults
      */
-    public function setCurrentCollectionResults($currentCollectionResults)
+    public function setCurrentImageGroupResults($currentImageGroupResults)
     {
-        $this->current_collection_results = $currentCollectionResults;
+        $this->current_imageGroup_results = $currentImageGroupResults;
     }
 
     /**
@@ -458,7 +458,7 @@ class Finder
 		}
 		$results           = array();
         $imageResults      = array();
-        $collectionResults = array();
+        $imageGroupResults = array();
 		$totalResults      = 0;
         $numOfCatalogs        = count($this->catalogs);
         $resultsPerCatalog    = floor($this->getResultsPerPage() / $numOfCatalogs);
@@ -474,12 +474,12 @@ class Finder
             if ($result instanceof Image) {
                 $imageResults[] = $this->addImage($result);
             }
-            elseif ($result instanceof Collection) {
-                $collectionResults[] = $this->addCollection($result);
+            elseif ($result instanceof ImageGroup) {
+                $imageGroupResults[] = $this->addImageGroup($result);
             }
         }
 		$this->setCurrentImageResults($imageResults);
-		$this->setCurrentCollectionResults($collectionResults);
+		$this->setCurrentImageGroupResults($imageGroupResults);
 
         $this->setCurrentPage($page);
         $this->setTotalPages(ceil($totalResults / $this->getResultsPerPage()));
@@ -489,25 +489,25 @@ class Finder
 	}
 
     /**
-     * Get results given a collection and page
+     * Get results given a imageGroup and page
      *
      * @return array $results
      */
-	public function findCollectionResults($collection, $page = null)
+	public function findImageGroupResults($imageGroup, $page = null)
 	{
 		$results           = array();
         $imageResults      = array();
-        $collectionResults = array();
+        $imageGroupResults = array();
 		$totalResults      = 0;
 		$firstIndex        = $page * $this->getResultsPerPage() - $this->getResultsPerPage();
 		$lastIndex         = $firstIndex + $this->getResultsPerPage() - 1;
 
-		if (count($collection->getImages()) > 1) {
-			$results = array_slice($collection->getImages()->toArray(), $firstIndex, $lastIndex - $firstIndex);
-			$totalResults = count($collection->getImages());
+		if (count($imageGroup->getImages()) > 1) {
+			$results = array_slice($imageGroup->getImages()->toArray(), $firstIndex, $lastIndex - $firstIndex);
+			$totalResults = count($imageGroup->getImages());
 		}
 		else {
-			$searchResults = $collection->getCatalog()->getFetcher()->fetchCollectionResults($collection, $firstIndex, $lastIndex);
+			$searchResults = $imageGroup->getCatalog()->getFetcher()->fetchImageGroupResults($imageGroup, $firstIndex, $lastIndex);
 			$results = $searchResults['results'];
 			$totalResults = $searchResults['totalResults'];
 		}
@@ -516,12 +516,12 @@ class Finder
             if ($result instanceof Image) {
                 $imageResults[] = $this->addImage($result);
             }
-            elseif ($result instanceof Collection) {
-                $collectionResults[] = $this->addCollection($result);
+            elseif ($result instanceof ImageGroup) {
+                $imageGroupResults[] = $this->addImageGroup($result);
             }
         }
 		$this->setCurrentImageResults($imageResults);
-		$this->setCurrentCollectionResults($collectionResults);
+		$this->setCurrentImageGroupResults($imageGroupResults);
 		$this->setTotalResults($totalResults);
 
 		return array('results' => $results, 'totalResults' => $totalResults);

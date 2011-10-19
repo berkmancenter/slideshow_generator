@@ -20,7 +20,7 @@ class OASISFetcher extends Fetcher implements FetcherInterface {
      */
     
     const SEARCH_URL_PATTERN    = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=text:{keyword}+accesslevel:public+type:pds%20OR%20ids&start={start-index}&rows={count}';
-    const RECORD_URL_PATTERN    = 'http://oasis.lib.harvard.edu/oasis/deliver/deepLink?_collection=oasis&uniqueId={id-1}';
+    const RECORD_URL_PATTERN    = 'http://oasis.lib.harvard.edu/oasis/deliver/deepLink?_imageGroup=oasis&uniqueId={id-1}';
     const METADATA_URL_PATTERN  = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=accesslevel:public+type:pds%20OR%20ids+nrsid:%22{id-2}%22';
     const IMAGE_URL_PATTERN     = 'http://nrs.harvard.edu/urn-3:{id-2}?width=2400&height=2400';
     const IDS_IMAGE_URL_PATTERN     = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=2400&height=2400';

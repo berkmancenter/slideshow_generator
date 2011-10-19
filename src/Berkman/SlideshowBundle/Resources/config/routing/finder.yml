@@ -2,9 +2,9 @@ finder_index:
     pattern: /
     defaults: { _controller: "BerkmanSlideshowBundle:Finder:index" }
 
-finder_collection:
-    pattern: /collection/{collectionId}/{page}
-    defaults: { _controller: "BerkmanSlideshowBundle:Finder:showCollection", page: 1 }
+finder_imageGroup:
+    pattern: /imageGroup/{imageGroupId}/{page}
+    defaults: { _controller: "BerkmanSlideshowBundle:Finder:showImageGroup", page: 1 }
 
 finder_show:
     pattern:  /{catalogs}/{keyword}/{page}

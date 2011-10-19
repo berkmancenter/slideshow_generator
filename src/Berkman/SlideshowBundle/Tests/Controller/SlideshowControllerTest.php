@@ -32,7 +32,7 @@ class DefaultControllerTest extends WebTestCase
             'images[0]' => true,
             'images[1]' => true,
             'images[2]' => true,
-            'collections[6]' => true 
+            'imageGroups[6]' => true 
         ));
 
         $client->submit($form);

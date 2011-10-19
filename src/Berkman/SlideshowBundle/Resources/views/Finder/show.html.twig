@@ -11,7 +11,7 @@
 <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
     {# form_widget(form) #}
 
-    {% if images|length > 0 or collections|length > 0 %}
+    {% if images|length > 0 or imageGroups|length > 0 %}
         {% javascripts 'js/finder.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -28,18 +28,18 @@
     {{ macros.show_images(images, 'show_finderresults_images', 'slide_container', 'Add to slideshow') }}
     {% endif %}
 
-    {% if collections|length > 0 %}
-    <h3>Collections</h3>
-    {{ macros.show_collections(collections, 'show_finderresults_collections', 'slide_container', 'Add to slideshow') }}
+    {% if imageGroups|length > 0 %}
+    <h3>Image Groups</h3>
+    {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
     {% endif %}
-        {% if showing == 'collection' and referrer is defined %}
+        {% if showing == 'imageGroup' and referrer is defined %}
         <input type="submit" name="action" value="Back" />
         <input type="hidden" name="referrer" value="{{ referrer }}" />
         {% endif %}
-		{% if finder.currentPage > 1 and showing != 'collection' %}
+		{% if finder.currentPage > 1 and showing != 'imageGroup' %}
 		<input type="submit" name="action" value="Previous Page" />
 		{% endif %}
-        {% if finder.currentPage < finder.totalPages and showing != 'collection' %}
+        {% if finder.currentPage < finder.totalPages and showing != 'imageGroup' %}
 		<input type="submit" name="action" value="Next Page" />
         {% endif %}
         <input type="submit" name="action" value="Finish" />

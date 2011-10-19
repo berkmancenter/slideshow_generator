@@ -27,42 +27,42 @@
 
 {% endmacro %}
 
-{% macro show_collections(collections, id, container_id, checkbox_text) %}
+{% macro show_imageGroups(imageGroups, id, container_id, checkbox_text) %}
     {% if container_id is not empty %}
     <div id="{{ container_id }}">
     {% endif %}
-    <ol id="{{ id|default('show_collections') }}" class="centered image-block">
-        {% for collection in collections %}
+    <ol id="{{ id|default('show_imageGroups') }}" class="centered image-block">
+        {% for imageGroup in imageGroups %}
             <li>
-                <a href="{{ path('finder_collection', { 'collectionId': collection.id }) }}">
-                    <img src="{{ collection.cover.thumbnailUrl }}"/>
+                <a href="{{ path('finder_imageGroup', { 'imageGroupId': imageGroup.id }) }}">
+                    <img src="{{ imageGroup.cover.thumbnailUrl }}"/>
                 </a>
                 <dl class="metadata">
-                    {% for key,value in collection.metadata %}
+                    {% for key,value in imageGroup.metadata %}
                     <dt>{{ key }}</dt><dd>{{ value }}</dd>
                     {% endfor %}
                     <dt>Contents</dt>
                     <dd>
-                        {% set numImages = collection.images|length %}
-                        {% set numCollections = collection.children|length %} 
+                        {% set numImages = imageGroup.images|length %}
+                        {% set numImageGroups = imageGroup.children|length %} 
                         {% if numImages > 0 %}
                             {{ numImages }} images
                         {% endif %}
-                        {% if numImages > 0 and numCollections > 0 %}
+                        {% if numImages > 0 and numImageGroups > 0 %}
                             and
                         {% endif %}
-                        {% if numCollections > 0 %}
-                            {{ numCollections }} collections
+                        {% if numImageGroups > 0 %}
+                            {{ numImageGroups }} imageGroups
                         {% endif %}
                     </dd>
                 </dl>
                 {% if checkbox_text is defined %}
-                <div class="collection-buttons">
-                    <label for="collection_{{ collection.id }}">{{ checkbox_text }}</label>
-                    <input type="checkbox" name="collections[{{ collection.id }}]" id="collection_{{ collection.id }}" value="{{ collection.id }}"/>
+                <div class="imageGroup-buttons">
+                    <label for="imageGroup_{{ imageGroup.id }}">{{ checkbox_text }}</label>
+                    <input type="checkbox" name="imageGroups[{{ imageGroup.id }}]" id="imageGroup_{{ imageGroup.id }}" value="{{ imageGroup.id }}"/>
                 </div>
                 {% endif %}
-                <button type="submit" name="action" value="{{ collection.id }}">View Collection</button>
+                <button type="submit" name="action" value="{{ imageGroup.id }}">View Image Group</button>
             </li>
         {% endfor %}
     </ol>

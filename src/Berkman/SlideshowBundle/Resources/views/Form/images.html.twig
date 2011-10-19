@@ -14,9 +14,9 @@
 {% endspaceless %}
 {% endblock _slideshow_slides_row %}
 
-{% block _finderresults_imageCollections_row %}
+{% block _finderresults_imageGroups_row %}
 {% spaceless %}
-        <h3>Image Collections</h3>
+        <h3>Image Groups</h3>
         <ol {{ block('widget_container_attributes') }}>
         {% for child in form %}
             <li>
@@ -25,7 +25,7 @@
         {% endfor %}
         </ol>
 {% endspaceless %}
-{% endblock _finderresults_imageCollections_row %}
+{% endblock _finderresults_imageGroups_row %}
 
 {% block _finderresults_images_row %}
 {% spaceless %}

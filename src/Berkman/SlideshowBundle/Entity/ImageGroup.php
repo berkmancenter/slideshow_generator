@@ -5,9 +5,9 @@ namespace Berkman\SlideshowBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Berkman\SlideshowBundle\Entity\Collection
+ * Berkman\SlideshowBundle\Entity\ImageGroup
  */
-class Collection
+class ImageGroup
 {
     /**
      * @var integer $id
@@ -25,7 +25,7 @@ class Collection
     private $id_2;
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Collection
+     * @var Berkman\SlideshowBundle\Entity\ImageGroup
      */
     private $children;
 
@@ -35,7 +35,7 @@ class Collection
     private $catalog;
 
     /**
-     * @var Berkman\SlideshowBundle\Entity\Collection
+     * @var Berkman\SlideshowBundle\Entity\ImageGroup
      */
     private $parent;
 
@@ -129,9 +129,9 @@ class Collection
     /**
      * Add children
      *
-     * @param Berkman\SlideshowBundle\Entity\Collection $children
+     * @param Berkman\SlideshowBundle\Entity\ImageGroup $children
      */
-    public function addChildren(\Berkman\SlideshowBundle\Entity\Collection $children)
+    public function addChildren(\Berkman\SlideshowBundle\Entity\ImageGroup $children)
     {
         $this->children[] = $children;
     }
@@ -169,9 +169,9 @@ class Collection
     /**
      * Set parent
      *
-     * @param Berkman\SlideshowBundle\Entity\Collection $parent
+     * @param Berkman\SlideshowBundle\Entity\ImageGroup $parent
      */
-    public function setParent(\Berkman\SlideshowBundle\Entity\Collection $parent)
+    public function setParent(\Berkman\SlideshowBundle\Entity\ImageGroup $parent)
     {
         $this->parent = $parent;
     }
@@ -179,7 +179,7 @@ class Collection
     /**
      * Get parent
      *
-     * @return Berkman\SlideshowBundle\Entity\Collection 
+     * @return Berkman\SlideshowBundle\Entity\ImageGroup 
      */
     public function getParent()
     {
@@ -205,7 +205,7 @@ class Collection
     {
         if ($this->images->count() < 2) {
             $images = new \Doctrine\Common\Collections\ArrayCollection();
-            $results = $this->getCatalog()->getFetcher()->fetchCollectionResults($this, 0, 100);
+            $results = $this->getCatalog()->getFetcher()->fetchImageGroupResults($this, 0, 100);
             foreach ($results['results'] as $result) {
                 if ($result instanceof Image) {
                     $images[] = $result;
@@ -220,20 +220,20 @@ class Collection
     /**
      * Get all images i.e. include images in children
      *
-     * @param Berkman\SlideshowBundle\Entity\Collection $collection
+     * @param Berkman\SlideshowBundle\Entity\ImageGroup $imageGroup
      * @return array $images
      */
     public function getAllImages()
     {
         $images = $this->getImages();
-        foreach ($this->getChildren() as $collection) {
-            $images += $collection->getAllImages();
+        foreach ($this->getChildren() as $imageGroup) {
+            $images += $imageGroup->getAllImages();
         }
         return $images;
     }
 
 	/**
-	 * Get the cover image of this collection
+	 * Get the cover image of this imageGroup
 	 *
 	 * @return Berkman\SlideshowBundle\Entity\Image $image
 	 */
@@ -244,7 +244,7 @@ class Collection
 
     public function getMetadata()
     {
-        return $this->catalog->getFetcher()->fetchCollectionMetadata($this);
+        return $this->catalog->getFetcher()->fetchImageGroupMetadata($this);
     }
 
     /**
@@ -299,20 +299,20 @@ class Collection
     }
 
     /**
-     * Get publicness of a collection
+     * Get publicness of a imageGroup
      *
      * @return boolean
      */
     public function isPublic()
     {
         if (!isset($this->public)) {
-            $this->public = $this->getCatalog()->getFetcher()->isCollectionPublic($this);
+            $this->public = $this->getCatalog()->getFetcher()->isImageGroupPublic($this);
         }
         return $this->public;
     }
 
     /**
-     * Set publicness of a collection
+     * Set publicness of a imageGroup
      *
      * @param boolean $public
      */
