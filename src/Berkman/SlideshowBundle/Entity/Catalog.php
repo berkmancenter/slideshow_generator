@@ -95,12 +95,25 @@ class Catalog
 	 *
 	 * @param string $keyword
 	 * @param int $startIndex
-	 * @param int $endIndex
+	 * @param int $count
 	 */
 	public function fetchResults($keyword, $startIndex, $count)
 	{
 		return $this->getFetcher()->fetchResults($keyword, $startIndex, $count);
 	}
+
+	/**
+	 * Get image group results from this catalog
+	 *
+	 * @param string $keyword
+	 * @param int $startIndex
+	 * @param int $count
+	 */
+	public function fetchImageGroupResults($keyword, $startIndex, $count)
+	{
+		return $this->getFetcher()->fetchImageGroupResults($keyword, $startIndex, $count);
+	}
+
     /**
      * @var datetime $created
      */

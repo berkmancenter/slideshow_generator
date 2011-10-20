@@ -29,35 +29,35 @@ class FinderController extends Controller
     public function indexAction()
     {
         $request    = $this->getRequest();
-		$em         = $this->getDoctrine()->getEntityManager();
-		$catalogs      = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findAll();
-		$slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
-		$finder     = new Entity\Finder($catalogs);
+        $em         = $this->getDoctrine()->getEntityManager();
+        $catalogs   = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findAll();
+        $slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
+        $finder     = new Entity\Finder($catalogs);
         $finderForm = $this->createForm(new FinderType(), $finder);
-		
+        
         if ('POST' === $request->getMethod()) {
             $finderForm->bindRequest($request);
 
             if ($finderForm->isValid()) {
-				$catalogIds = array();
-				$catalogs = $finder->getCatalogs();
-				foreach ($catalogs as $catalog) {
-					$catalogIds[] = $catalog->getId();
-				}
+                $catalogIds = array();
+                $catalogs = $finder->getCatalogs();
+                foreach ($catalogs as $catalog) {
+                    $catalogIds[] = $catalog->getId();
+                }
 
-				return $this->redirect($this->generateUrl('finder_show', array(
-					'catalogs'   => implode('_', $catalogIds),
-					'keyword' => $finder->getKeyword(),
-					'page'    => 1
-				)));
+                return $this->redirect($this->generateUrl('finder_show', array(
+                    'catalogs'   => implode('_', $catalogIds),
+                    'keyword' => $finder->getKeyword(),
+                    'page'    => 1
+                )));
             }
         }
-		else {
-			return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
+        else {
+            return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
                 'slideshows' => $slideshows,
-				'finderForm'  => $finderForm->createView()
-			));
-		}
+                'finderForm'  => $finderForm->createView()
+            ));
+        }
 
     }
 
@@ -74,25 +74,25 @@ class FinderController extends Controller
      */
     public function showAction($catalogs, $keyword, $page = 1)
     {
-		$em = $this->getDoctrine()->getEntityManager();
-		$catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findBy(array(
-			'id' => explode('_', $catalogs)
-		));
-		if (!$catalogs) {
-			throw $this->createNotFoundException('Unable to find Catalogs.');
-		}
+        $em = $this->getDoctrine()->getEntityManager();
+        $catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findBy(array(
+            'id' => explode('_', $catalogs)
+        ));
+        if (!$catalogs) {
+            throw $this->createNotFoundException('Unable to find Catalogs.');
+        }
 
         $finder = $this->getFinder();
+        $finder->setHierarchyStack(array($this->getRequest()->getUri()));
         $finder->setCatalogs($catalogs);
-		$output = $finder->findResults($keyword, $page);
+        $output = $finder->findResults($keyword, $page);
 
         $this->setFinder($finder);
 
-		return $this->render('BerkmanSlideshowBundle:Finder:show.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Finder:show.html.twig', array(
             'finder'      => $finder,
             'images'      => $finder->getCurrentImageResults(),
             'imageGroups' => $finder->getCurrentImageGroupResults(),
-            'showing'     => 'results'
         ));
     }
 
@@ -107,23 +107,25 @@ class FinderController extends Controller
      */
     public function showImageGroupAction($imageGroupId, $page = 1)
     {
-		$em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getEntityManager();
         $finder = $this->getFinder();
+        if ($page == 1) {
+            $finder->pushHierarchyStack($this->getRequest()->getUri());
+        }
 
-		$imageGroup = $finder->getImageGroup($imageGroupId);
-		if (!$imageGroup) {
-			throw $this->createNotFoundException('Unable to find ImageGroup.');
-		}
+        $imageGroup = $finder->getImageGroup($imageGroupId);
+        if (!$imageGroup) {
+            throw $this->createNotFoundException('Unable to find imagegroup.');
+        }
 
-		$output = $finder->findImageGroupResults($imageGroup, $page);
+        $output = $finder->findImageGroupResults($imageGroup, $page);
         $this->setFinder($finder);
 
-		return $this->render('BerkmanSlideshowBundle:Finder:show.html.twig', array(
+        return $this->render('BerkmanSlideshowBundle:Finder:show.html.twig', array(
             'finder'      => $finder,
             'images'      => $finder->getCurrentImageResults(),
             'imageGroups' => $finder->getCurrentImageGroupResults(),
-            'showing'     => 'imageGroup',
-            'referrer'    => $_SERVER['HTTP_REFERER']
+            'imageGroupId'=> $imageGroupId
         ));
     }
 
@@ -138,31 +140,29 @@ class FinderController extends Controller
      * The selected images and imageGroup should be saved no matter the method
      *
      */
-	public function submitAction()
-	{
-		$request   = $this->getRequest();
+    public function submitAction()
+    {
+        $request   = $this->getRequest();
         $em        = $this->getDoctrine()->getEntityManager();
         $finder    = $this->getFinder();
-		$response  = $this->redirect($this->generateUrl('slideshow_add_images'));
+        $response  = $this->redirect($this->generateUrl('slideshow_add_images'));
 
-		$images = $request->get('images');
-		if (!empty($images)) {
+        $images = $request->get('images');
+        if (!empty($images)) {
             foreach ($images as $image_id) {
                 $finder->addSelectedImageResult($image_id); 
             }
-		}
+        }
 
-		$imageGroups = $request->get('imageGroups');
-		if (!empty($imageGroups)) {
+        $imageGroups = $request->get('imageGroups');
+        if (!empty($imageGroups)) {
             foreach ($imageGroups as $imageGroup_id) {
                 $images = $finder->getImageGroup($imageGroup_id)->getAllImages();
                 foreach ($images as $image) {
                     $finder->addSelectedImageResult($finder->addImage($image));
                 }
             }
-		}
-
-        $this->setFinder($finder);
+        }
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('BerkmanSlideshowBundle:Finder:addImages.json.twig', array(
@@ -176,17 +176,28 @@ class FinderController extends Controller
             $catalogIds[] = $catalog->getId();
         }
 
-		if (in_array($request->get('action'), array('Next Page', 'Previous Page'))) {
+        if (in_array($request->get('action'), array('Next Page', 'Previous Page'))) {
             $page = ($request->get('action') == 'Next Page') ?
                 $finder->getCurrentPage() + 1 : $finder->getCurrentPage() - 1;
-			$response = $this->redirect($this->generateUrl('finder_show', array(
-				'catalogs' => implode('_', $catalogIds),
-				'keyword' => $finder->getKeyword(),
-				'page' => $page
-			)));
-		}
+            //This would mean we're browsing an image group
+            if ($request->get('imageGroupId') != null) {
+                $response = $this->redirect($this->generateUrl('finder_imageGroup', array(
+                    'imageGroupId' => $request->get('imageGroupId'),
+                    'page' => $page
+                )));
+            }
+            else {
+                $response = $this->redirect($this->generateUrl('finder_show', array(
+                    'catalogs' => implode('_', $catalogIds),
+                    'keyword' => $finder->getKeyword(),
+                    'page' => $page
+                )));
+            }
+        }
         elseif ($request->get('action') == 'Back') {
-            $response = $this->redirect($request->get('referrer'));
+            $finder->popHierarchyStack();
+            $uri = $finder->popHierarchyStack();
+            $response = $this->redirect($uri);
         }
         elseif ($request->get('action') != 'Finish') {
             $response = $this->redirect($this->generateUrl('finder_imageGroup', array(
@@ -194,8 +205,10 @@ class FinderController extends Controller
             )));
         }
 
-		return $response;
-	}
+        $this->setFinder($finder);
+
+        return $response;
+    }
 
     /**
      * Get the Finder object for the current session

@@ -23,6 +23,11 @@ class Finder
     private $keyword;
 
     /**
+     * @var array $hierarchy_stack
+     */
+    private $hierarchy_stack;
+
+    /**
      * @var integer $current_page
      */
     private $current_page;
@@ -79,6 +84,7 @@ class Finder
         $this->current_image_results      = array();
         $this->current_imageGroup_results = array();
         $this->selected_image_results     = array();
+        $this->hierarchy_stack              = array();
         $this->results_per_page           = self::RESULTS_PER_PAGE;
 		$this->current_page               = 1;
 		if (isset($catalogs)) {
@@ -440,12 +446,32 @@ class Finder
         $this->selected_image_results = $selectedImageResults;
     }
 
+    public function getHierarchyStack()
+    {
+        return $this->hierarchy_stack;
+    }
+
+    public function setHierarchyStack(array $stack)
+    {
+        $this->hierarchy_stack = $stack;
+    }
+
+    public function pushHierarchyStack($uri)
+    {
+        $this->hierarchy_stack[] = $uri;
+    }
+
+    public function popHierarchyStack()
+    {
+        return array_pop($this->hierarchy_stack);
+    }
+
     /**
      * Get images given a keyword and page
      *
      * @return array $results
      */
-	public function findResults($keyword = null, $page = null)
+	public function findResults($keyword = null, $page = 1)
 	{
 		if (empty($keyword) && !empty($this->keyword)) {
 			$keyword = $this->keyword;
@@ -493,24 +519,17 @@ class Finder
      *
      * @return array $results
      */
-	public function findImageGroupResults($imageGroup, $page = null)
+	public function findImageGroupResults($imageGroup, $page = 1)
 	{
 		$results           = array();
         $imageResults      = array();
         $imageGroupResults = array();
 		$totalResults      = 0;
-		$firstIndex        = $page * $this->getResultsPerPage() - $this->getResultsPerPage();
-		$lastIndex         = $firstIndex + $this->getResultsPerPage() - 1;
+		$firstIndex        = $this->getResultsPerPage() * ($page - 1);
 
-		if (count($imageGroup->getImages()) > 1) {
-			$results = array_slice($imageGroup->getImages()->toArray(), $firstIndex, $lastIndex - $firstIndex);
-			$totalResults = count($imageGroup->getImages());
-		}
-		else {
-			$searchResults = $imageGroup->getCatalog()->getFetcher()->fetchImageGroupResults($imageGroup, $firstIndex, $lastIndex);
-			$results = $searchResults['results'];
-			$totalResults = $searchResults['totalResults'];
-		}
+        $searchResults = $imageGroup->getCatalog()->fetchImageGroupResults($imageGroup, $firstIndex, $this->getResultsPerPage());
+        $results = $searchResults['results'];
+        $totalResults = $searchResults['totalResults'];
 
         foreach ($results as $result) {
             if ($result instanceof Image) {
@@ -520,8 +539,10 @@ class Finder
                 $imageGroupResults[] = $this->addImageGroup($result);
             }
         }
+        $this->setCurrentPage($page);
 		$this->setCurrentImageResults($imageResults);
 		$this->setCurrentImageGroupResults($imageGroupResults);
+        $this->setTotalPages(ceil($totalResults / $this->getResultsPerPage()));
 		$this->setTotalResults($totalResults);
 
 		return array('results' => $results, 'totalResults' => $totalResults);
