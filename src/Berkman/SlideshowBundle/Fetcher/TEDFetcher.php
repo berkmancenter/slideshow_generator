@@ -207,7 +207,7 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
         $image        = null;
 
         // Get the finding aid id
-        $catalogId = $this->getNodeContent($xpath, 'catalogsitorycode', $contextNode);
+        $catalogId = $this->getNodeContent($xpath, 'repositorycode', $contextNode);
         
         $recordId = $this->getNodeContent($xpath, 'recordid', $contextNode);
 
