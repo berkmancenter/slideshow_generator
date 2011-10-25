@@ -1,38 +1,29 @@
-{% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
+<h3>Instructions</h3>
+<p>
+    Upload a CSV document with formats as follows:
+</p>
+{% for catalog in catalogs %}
+<p>
+    For the {{ catalog.name }} catalogsitory:<br />
+    "{{ catalog.id }}",{{ catalog.importFormat }}
+</p>
+{% endfor %}
+<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
+    {{ form_widget(master_form) }}
+    <button type="submit">Import</button>
+</form>
 
-{% block body %}
-<h2>Import Images</h2>
-<div class="centered lightWrap">
-    <h3>Instructions</h3>
-    <p>
-        Upload a CSV document with formats as follows:
-    </p>
+{% for catalog_id, import_form in import_forms %}     
     {% for catalog in catalogs %}
-    <p>
-        For the {{ catalog.name }} catalogsitory:<br />
-        "{{ catalog.id }}",{{ catalog.importFormat }}
-    </p>
+        {% if catalog.id == catalog_id %}
+        <h3>{{ catalog.name }}</h3>
+        <p>
+                {{ catalog.getFetcher.importInstructions }}
+        </p>
+        {% endif %}
     {% endfor %}
-	<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
-		{{ form_widget(master_form) }}
-        <button type="submit">Import</button>
-	</form>
-</div>
-<h2>Repository Importers</h2>
-<div class="centered lightWrap">
-    {% for catalog_id, import_form in import_forms %}     
-        {% for catalog in catalogs %}
-            {% if catalog.id == catalog_id %}
-            <h3>{{ catalog.name }}</h3>
-            <p>
-                    {{ catalog.getFetcher.importInstructions }}
-            </p>
-            {% endif %}
-        {% endfor %}
-        <form action="{{ path('catalog_import', { 'id': catalog_id }) }}" method="post" {{ form_enctype(import_form) }}>
-            {{ form_widget(import_form) }}
-            <input type="submit" value="Import" />
-        </form>
-    {% endfor %}
-</div>
-{% endblock %}
+    <form action="{{ path('catalog_import', { 'id': catalog_id }) }}" method="post" {{ form_enctype(import_form) }}>
+        {{ form_widget(import_form) }}
+        <input type="submit" value="Import" />
+    </form>
+{% endfor %}

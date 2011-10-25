@@ -3,19 +3,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-		<link href='http://fonts.googleapis.com/css?family=Cardo&v2' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Lato:400,900&v2' rel='stylesheet' type='text/css'>
 		{% block stylesheets %}
 		{% stylesheets  'css/reset.css'
-						'css/style.css'
-                        filter='cssrewrite' %}
+                        'css/jquery-ui-1.8.16.custom.css'
+                        'css/style.css' %}
 		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
 		{% endstylesheets %}
 		{% endblock %}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-
 		{% block javascripts %}
-		{% javascripts 'js/jquery-1.6.2.js' %}
+        {% javascripts 'js/jquery-1.6.2.js'
+                       'js/jquery-ui-1.8.16.custom.min.js' %}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
 		{% endblock %}
@@ -33,53 +31,53 @@
     <body>
 		<div id="wrapper">
 			<div id="header">
-				<a id="home-link" href="{{ path('BerkmanSlideshowBundle_homepage') }}"><h1>Slideshow Generator</h1></a>
-				<div id="utility">
-					{% block utility %}
-					<div>
-                        {% if app.session and app.session.get('finder') and app.session.get('finder').selectedImageResults|length > 0 %}
-                            {% set display = "" %}
-                            {% set count = app.session.get('finder').selectedImageResults|length %}
-                        {% else %}
-                            {% set display = "display:none;" %}
-                            {% set count = 0 %}
-                        {% endif %}
-                        <span id="image-cart" style="{{ display }}">
-                            <a href="{{ path('slideshow_add_images') }}"><span id="image-count">{{ count }}</span> images</a> &mdash;
-                        </span>
+                <div id="branding">
+                    {% image 'images/spectacle-logo.png' %}
+                    <img id="logo" src="{{ asset_url }}" title="Spectacle" width="46" height="46" />
+                    {% endimage %}
+                    <h1><a id="home-link" href="{{ path('BerkmanSlideshowBundle_homepage') }}">HARVARD SPECTACLE</a></h1>
+                    <div id="tagline">A SLIDESHOW MACHINE FOR HARVARD LIBRARY IMAGES</div>
+                </div>
 
-						{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-							{% set username %}
-								<a href="{{ path('fos_user_profile_show') }}">
-									{{ app.user.username }}
-								</a>
-							{% endset %}
-							{{ 'layout.logged_in_as'|trans({'%username%': username}, 'FOSUserBundle')|raw }} |
-							<a href="{{ path('fos_user_security_logout') }}">
-								{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-							</a>
-						{% else %}
-							<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a> |
-							<a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
-						{% endif %}
-					</div>
-					{% endblock %}
-				</div>
+				<div id="utility">
+                {% block utility %}
+                    {% if app.session and app.session.get('finder') and app.session.get('finder').selectedImageResults|length > 0 %}
+                        {% set display = "" %}
+                        {% set count = app.session.get('finder').selectedImageResults|length %}
+                    {% else %}
+                        {% set display = "display:none;" %}
+                        {% set count = 0 %}
+                    {% endif %}
+                    <span id="image-cart" style="{{ display }}">
+                        <a href="{{ path('slideshow_add_images') }}"><span id="image-count">{{ count }}</span> images</a> &mdash;
+                    </span>
+
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <a href="{{ path('fos_user_profile_show') }}">MY PROFILE</a> |
+                        <a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                    {% else %}
+                        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a> |
+                        <a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
+                    {% endif %}
+                    | <a href="{{ path('BerkmanSlideshowBundle_faqs') }}">FAQS</a>
+                {% endblock utility %}
+                </div>
 			</div>
 			
 			{% if app.session and app.session.flashes is not empty %}
-			{% for flashType, flash in app.session.flashes %}
-			<div class="flash {{ flashType }}">
-                {{ flash|trans({}, 'FOSUserBundle') }}
-			</div>
-			{% endfor %}
+                {% for flashType, flash in app.session.flashes %}
+                    <div class="flash {{ flashType }}">
+                        {{ flash|trans({}, 'FOSUserBundle') }}
+                    </div>
+                {% endfor %}
 			{% endif %}
 
 			{% block body %}{% endblock %}
+
 			{% block footer %}
-			<div id="footer">
-                &copy; 2011 - Presidents and Fellows of Harvard College - <a href="{{ path('BerkmanSlideshowBundle_feedback') }}">Feedback</a>
-			</div>
+                <div id="footer">
+                    &copy; 2011 - Presidents and Fellows of Harvard College - <a href="{{ path('BerkmanSlideshowBundle_feedback') }}">Feedback</a>
+                </div>
 			{% endblock %}
 		</div>
     </body>

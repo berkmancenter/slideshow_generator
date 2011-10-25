@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Berkman\SlideshowBundle\Entity;
 use Berkman\SlideshowBundle\Form\FinderType;
 use Berkman\SlideshowBundle\Form\FinderResultsType;
+use Berkman\SlideshowBundle\Form\ImportType;
 
 /**
  * Finder controller.
@@ -28,12 +29,19 @@ class FinderController extends Controller
      */
     public function indexAction()
     {
+        $importForms = array();
         $request    = $this->getRequest();
         $em         = $this->getDoctrine()->getEntityManager();
         $catalogs   = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findAll();
         $slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
         $finder     = new Entity\Finder($catalogs);
         $finderForm = $this->createForm(new FinderType(), $finder);
+        $masterForm = $this->createForm(new ImportType());
+        foreach ($catalogs as $catalog) {
+            if ($catalog->hasCustomImporter()) {
+                $importForms[$catalog->getId()] = $this->createForm(new ImportType())->createView();
+            }
+        }
         
         if ('POST' === $request->getMethod()) {
             $finderForm->bindRequest($request);
@@ -54,7 +62,10 @@ class FinderController extends Controller
         }
         else {
             return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
+                'catalogs' => $catalogs,
                 'slideshows' => $slideshows,
+                'master_form' => $masterForm->createView(),
+                'import_forms' => $importForms,
                 'finderForm'  => $finderForm->createView()
             ));
         }

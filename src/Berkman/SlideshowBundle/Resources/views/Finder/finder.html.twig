@@ -1,4 +1,12 @@
 <form action="{{ path('finder_index') }}" method="post" {{ form_enctype(finderForm) }}>
-    {{ form_widget(finderForm) }}
-    <button type="submit">Search</button>
+{{ form_errors(finderForm) }}
+
+<div>
+    {{ form_label(finderForm.keyword) }}
+    {{ form_errors(finderForm.keyword) }}
+    {{ form_widget(finderForm.keyword) }}
+    <button type="submit">SEARCH</button>
+</div>
+
+    {{ form_rest(finderForm) }}
 </form>

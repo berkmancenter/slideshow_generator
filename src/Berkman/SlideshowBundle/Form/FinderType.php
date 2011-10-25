@@ -10,7 +10,7 @@ class FinderType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-			->add('keyword')
+			->add('keyword', null, array( 'label' => 'Keyword'))
 			->add('catalogs', 'entity', array(
 					'class' => 'Berkman\\SlideshowBundle\\Entity\\Catalog',
 					'property' => 'name',

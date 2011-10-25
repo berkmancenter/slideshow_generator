@@ -1,29 +1,85 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<div>
-	<h2>Find Images or <a href="{{ path('slideshow_import') }}">Retrieve Images</a></h2>
-	<div id="finder" class="centered lightWrap">
-	{% include 'BerkmanSlideshowBundle:Finder:finder.html.twig' %}
-	</div>
-</div>
-{% if slideshows is not empty %}
-<div>
-	<h2>Browse Slideshows</h2>
-	<div id="slideshows" class="centered lightWrap">
-		{% for slideshow in slideshows %}
-        {% if slideshow.published %}
-		<div class="slideshow">
-			<a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
-				{% if slideshow.slides[0] is defined %}
-				<img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" /><br />
-				<span class="slideshowInfo">{{ slideshow.name }} by {{ slideshow.person.username }}</span>
-				{% endif %}
-			</a>
-		</div>
-        {% endif %}
-		{% endfor %}
-	</div>
-</div>
-{% endif %}
+    <div id="finder-tabs">
+        <ul>
+            <li><a href="#find-images">FIND IMAGES</a></li>
+            <li><a href="#retrieve-images">LIBRARY IMAGE RETRIEVE TOOL</a></li>
+        </ul>
+
+        <div id="find-images" class="centered">
+            {% include 'BerkmanSlideshowBundle:Finder:finder.html.twig' %}
+        </div>
+
+        <div id="retrieve-images">
+            {% include 'BerkmanSlideshowBundle:Slideshow:import.html.twig' %}
+        </div>
+    </div>
+
+    <div id="desc">
+        <p>
+            The Harvard Spectacle is allows you to find images from Harvard library and museum collections and incorporate them into an online slideshow.
+            Each image is linked to descriptive information about the image and the Harvard collection within which it resides.
+        </p>
+
+        <p>
+            All slideshows are accessible from a public gallery, and you may incorporate images from slideshows that others have created into one of your own.
+        </p>
+    </div>
+
+    <div id="slideshow-tabs">
+        <ul>
+            <li><a href="#slideshows">BROWSE SLIDESHOWS</a></li>
+            <li><a href="#my-slideshows">MY SLIDESHOWS</a></li>
+        </ul>
+
+        <div id="slideshows">
+            {% if slideshows is empty %}
+                No public slideshows exist!  Help us out and make one.  I suggest searching for &quot;kitten&quot;.
+            {% else %}
+            <ul class="slideshows">
+                {% for slideshow in slideshows %}
+                    {% if slideshow.published %}
+                    <li class="slideshow">
+                        <a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
+                            {% if slideshow.slides[0] is defined %}
+                            <img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" />
+                            <div class="slideshow-title">{{ slideshow.name }}</div>
+                            <div class="slideshow-author">by {{ slideshow.person.username }}</div>
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div id="my-slideshows">
+            {% if app.user.slideshows is defined and app.user.slideshows is not empty %}
+            <ul class="slideshows">
+                {% for slideshow in app.user.slideshows %}
+                <li class="slideshow">
+                    <a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
+                        {% if slideshow.slides[0] is defined %}
+                        <img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" />
+                        <div class="slideshow-title">{{ slideshow.name }}</div>
+                        <div class="slideshow-author">by {{ slideshow.person.username }}</div>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>Either you aren&apos;t logged in, or you don&apos;t have any slideshows yet.  Get on it.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 'js/finder-index.js' %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

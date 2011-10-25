@@ -3,21 +3,5 @@
     <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
     <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
 
-    {% if user.slideshows is not empty %}
-    <div id="slideshows">
-        <h3>Slideshows</h3>
-        {% for slideshow in user.slideshows %}
-		<div class="slideshow">
-			<a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
-				{% if slideshow.slides[0] is defined %}
-				<img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" /><br />
-				<span class="slideshowInfo">{{ slideshow.name }} by {{ slideshow.person.username }}</span>
-				{% endif %}
-			</a>
-		</div>
-        {% endfor %}
-    </div>
-    {% endif %}
-        
 	<a class="buttoned" href="{{ path('fos_user_profile_edit') }}">Edit Profile</a>
 </div>

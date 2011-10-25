@@ -17,3 +17,7 @@ BerkmanSlideshowBundle_feedback:
 BerkmanSlideshowBundle_homepage:
     pattern:  /
     defaults: { _controller: BerkmanSlideshowBundle:Finder:index }
+
+BerkmanSlideshowBundle_faqs: 
+    pattern: /faq
+    defaults: { _controller: BerkmanSlideshowBundle:Slideshow:faq }
