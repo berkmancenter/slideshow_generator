@@ -1,29 +1,44 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>{{ entity.name }} by {{ entity.person.username }}</h2>
-<div class="lightWrap">
-	<div id="slideshow_tools">
-		<div id="embed_wrap">
-			<span id="embed_text">Embed Code:</span>
-			<textarea id="embed_code" readonly="readonly">
-	{{- '<iframe src="' ~ url('slideshow_slideshow', { 'id' : entity.id }) ~ '" width="400" height="300" frameborder="0"></iframe>' -}} 
-			</textarea>
-		</div>
-		<a class="buttoned" href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">Start Slideshow</a>
-		{% if canEdit %}
-		<a class="buttoned" href="{{ path('slideshow_edit', { 'id': entity.id }) }}">Edit</a>
-        {% endif %}
-        {% if canDelete %}
-		<form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
-			{{ form_widget(delete_form) }}
-			<button type="submit">Delete</button>
-		</form>
-		{% endif %}
-	</div>
-    {% if entity.description is not empty %}
-    <div id="description">Description: {{ entity.description }}</div>
-    {% endif %}
-    {% render 'BerkmanSlideshowBundle:Slideshow:slideTiles' with { 'id': entity.id }, { 'standalone' : true } %}
-</div>
+    <div id="slideshow-tabs">
+        <ul>
+            <li><a href="#slideshow-container">Slideshow</a></li>
+        </ul>
+        <div id="slideshow-container">
+            <div id="slideshow-tools">
+                <div id="embed_wrap">
+                    <a id="slideshow-start-button" class="buttoned" href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">Start Slideshow</a>
+                    <span id="embed_text">Embed Code:</span>
+                    <textarea id="embed_code" readonly="readonly">
+                {{- '<iframe src="' ~ url('slideshow_slideshow', { 'id' : entity.id }) ~ '" width="400" height="300" frameborder="0"></iframe>' -}} 
+                    </textarea>
+                </div>
+                <h2 id="slideshow-title">{{ entity.name }}</h2>
+                <dl>
+                <dt>Creator:</dt><dd>{{ entity.person.username }}</dd>
+                {% if entity.description is not empty %}
+                    <dt>Description:</dt><dd>{{ entity.description }}</dd>
+                {% endif %}
+                </dl>
+                {% if canEdit %}
+                    <a class="buttoned" href="{{ path('slideshow_edit', { 'id': entity.id }) }}">Edit</a>
+                {% endif %}
+                {% if canDelete %}
+                    <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
+                        {{ form_widget(delete_form) }}
+                        <button type="submit">Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+            {% render 'BerkmanSlideshowBundle:Slideshow:slideTiles' with { 'id': entity.id }, { 'standalone' : true } %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 'js/slideshow-show.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

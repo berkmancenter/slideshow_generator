@@ -1,0 +1,3 @@
+$(function() {
+    $('#finder-tabs').tabs();
+});

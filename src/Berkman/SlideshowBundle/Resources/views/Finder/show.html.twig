@@ -7,35 +7,32 @@
 {{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
 </h2>
 
-<div class="lightWrap">
-<form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
-    {# form_widget(form) #}
-
-    {% if images|length > 0 or imageGroups|length > 0 %}
-        {% javascripts 'js/finder.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        <script>
-            var ajaxUrl  = "{{ path('finder_submit') }}",
-            {% image 'images/loading.gif' %}
-                loadingImage = $('<img style="border:0" src="{{ asset_url }}" alt="Loading" />');
-            {% endimage %}
-        </script>
-    {% endif %}
-    
-    {% if images|length > 0 %}
-    <h3>Images</h3>
-    {{ macros.show_images(images, 'show_finderresults_images', 'slide_container', 'Add to slideshow') }}
-    {% endif %}
-
-    {% if imageGroups|length > 0 %}
-    <h3>Image Groups</h3>
-    {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
-    {% endif %}
-        {% if imageGroupId is defined %}
-        <input type="submit" name="action" value="Back" />
-        <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
+<div id="finder-tabs">
+    <ul>
+        <li><a href="#image-container">IMAGE RESULTS</a></li>
+        {% if imageGroups|length > 0 %}
+        <li><a href="#image-group-container">IMAGE GROUP RESULTS</a></li>
         {% endif %}
+    </ul> 
+    <div id="image-container">
+        <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
+            {# form_widget(form) #}
+
+            {% if images|length > 0 or imageGroups|length > 0 %}
+                {% javascripts 'js/finder.js' %}
+                    <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
+                <script>
+                    var ajaxUrl  = "{{ path('finder_submit') }}",
+                    {% image 'images/loading.gif' %}
+                        loadingImage = $('<img style="border:0" src="{{ asset_url }}" alt="Loading" />');
+                    {% endimage %}
+                </script>
+            {% endif %}
+            
+            {% if images|length > 0 %}
+            {{ macros.show_images(images, 'show_finderresults_images', 'slide_container', 'Add to slideshow') }}
+            {% endif %}
 		{% if finder.currentPage > 1 %}
 		<input type="submit" name="action" value="Previous Page" />
 		{% endif %}
@@ -43,6 +40,25 @@
 		<input type="submit" name="action" value="Next Page" />
         {% endif %}
         <input type="submit" name="action" value="Finish" />
+    </div>
+
+    {% if imageGroups|length > 0 %}
+    <div id="image-group-container">
+    {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
+    {% endif %}
+        {% if imageGroupId is defined %}
+        <input type="submit" name="action" value="Back" />
+        <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
+        {% endif %}
+    </div>
 </form> 
 </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 'js/finder-show.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

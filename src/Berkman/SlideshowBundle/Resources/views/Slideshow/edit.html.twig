@@ -2,30 +2,33 @@
 
 {% form_theme edit_form 'BerkmanSlideshowBundle:Form:images.html.twig' %}
 {% block body %}
-<h2>Edit Slideshow</h2>
-
-<div class="centered lightWrap">
-    <form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        {{ form_widget(edit_form) }}
-        <input type="hidden" name="slide_order" value="{{ slide_order }}" id="slide_order" />
-        <button type="submit">Update</button>
-    </form>
-    <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
-        {{ form_widget(delete_form) }}
-        <a class="buttoned" href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">Start Slideshow</a>
-        <button type="submit">Delete</button>
-    </form>
+<div id="slideshow-tabs">
+    <ul>
+        <li><a href="#edit-container">EDIT SLIDESHOW</a></li>
+    </ul>
+    <div id="edit-container">
+        <a class="float-right buttoned" href="{{ path('slideshow_slideshow', { 'id': entity.id }) }}">Start Slideshow</a>
+        <form id="edit" action="{{ path('slideshow_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+            {{ form_widget(edit_form) }}
+            <input type="hidden" name="slide_order" value="{{ slide_order }}" id="slide_order" />
+            <button type="submit">Update</button>
+        </form>
+        <form action="{{ path('slideshow_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
-{% javascripts 'js/jquery-ui-1.8.14.custom.min.js'
-               'js/jquery.scrubber.js' %}
+{% javascripts 'js/jquery-ui-1.8.16.custom.min.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 <script type="text/javascript">
 $(function() {
+    $('#slideshow-tabs').tabs();
     $( "#slideshow_slides" ).sortable({
         placeholder: 'placeholder',
         start: function(event, ui) {

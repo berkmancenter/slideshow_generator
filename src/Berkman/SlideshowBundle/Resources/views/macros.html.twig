@@ -2,7 +2,7 @@
     {% if container_id is not empty %}
     <div id="{{ container_id }}">
     {% endif %}
-    <ol id="{{ id|default('show_images') }}" class="centered image-block">
+    <ol id="{{ id|default('show_images') }}" class="scrollable centered image-block">
         {% for image in images %}
             <li>
                 <a href="{{ image.recordUrl }}" target="_blank"><img src="{{ image.thumbnailUrl }}"/></a>
@@ -31,7 +31,7 @@
     {% if container_id is not empty %}
     <div id="{{ container_id }}">
     {% endif %}
-    <ol id="{{ id|default('show_imageGroups') }}" class="centered image-block">
+    <ol id="{{ id|default('show_imageGroups') }}" class="scrollable centered image-block">
         {% for imageGroup in imageGroups %}
             <li>
                 <a href="{{ path('finder_imageGroup', { 'imageGroupId': imageGroup.id }) }}">
