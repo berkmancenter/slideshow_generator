@@ -33,7 +33,7 @@
             <li><a href="#my-slideshows">MY SLIDESHOWS</a></li>
         </ul>
 
-        <div id="slideshows">
+        <div id="slideshows" class="centered">
             {% if slideshows is empty %}
                 No public slideshows exist!  Help us out and make one.  I suggest searching for &quot;kitten&quot;.
             {% else %}
@@ -55,7 +55,7 @@
             {% endif %}
         </div>
 
-        <div id="my-slideshows">
+        <div id="my-slideshows" class="centered">
             {% if app.user.slideshows is defined and app.user.slideshows is not empty %}
             <ul class="slideshows">
                 {% for slideshow in app.user.slideshows %}
