@@ -1,0 +1,3 @@
+$(function() {
+    $('#slideshow-tabs').tabs();
+});

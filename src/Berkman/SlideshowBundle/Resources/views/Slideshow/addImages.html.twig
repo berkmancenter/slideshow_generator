@@ -1,33 +1,46 @@
 {% extends 'BerkmanSlideshowBundle::layout.html.twig' %}
 
 {% block body %}
-{% if images %}
-<div>
-	<h2>Your images</h2>
-	<div class="lightWrap">
-	{% for image in images %}
-	<a href="{{ image.recordUrl }}" target="_blank"><img src="{{ image.thumbnailUrl }}" alt="{{ image.id }}" /></a>
-	{% endfor %}
-	</div>
+<div id="slideshow-tabs">
+    <ul>
+        <li><a href="#add-images-container">ADD IMAGES</a></li>
+    </ul>
+    <div id="add-images-container">
+        {% if images %}
+        <div>
+            <h2>Your images</h2>
+            <div class="lightWrap">
+            {% for image in images %}
+            <a href="{{ image.recordUrl }}" target="_blank"><img src="{{ image.thumbnailUrl }}" alt="{{ image.id }}" /></a>
+            {% endfor %}
+            </div>
+        </div>
+        {% if app.user and app.user.slideshows|length > 0 %}
+        <div>
+            <h2>Add images to existing slideshow</h2>
+            <div class="lightWrap">
+            <form method="post" action="{{ path('slideshow_add_images') }}" {{ form_enctype(addImagesForm) }}>
+                {{ form_widget(addImagesForm) }}
+                <button type="submit">Add</button>
+            </form>
+            </div>
+        </div>
+        {% endif %}
+        <div>
+            <h2>{{ app.user.slideshows|length > 0 ? 'Or, create' : 'Create'}} a new slideshow</h2>
+            <div class="lightWrap">
+            {% include 'BerkmanSlideshowBundle:Slideshow:newForm.html.twig' %}
+            </div>
+        </div>
+        {% else %}
+        <h2>You have no selected images</h2>
+        {% endif %}
+    </div>
 </div>
-{% if app.user and app.user.slideshows|length > 0 %}
-<div>
-	<h2>Add images to existing slideshow</h2>
-	<div class="lightWrap">
-	<form method="post" action="{{ path('slideshow_add_images') }}" {{ form_enctype(addImagesForm) }}>
-		{{ form_widget(addImagesForm) }}
-        <button type="submit">Add</button>
-	</form>
-	</div>
-</div>
-{% endif %}
-<div>
-	<h2>{{ app.user.slideshows|length > 0 ? 'Or, create' : 'Create'}} a new slideshow</h2>
-	<div class="lightWrap">
-	{% include 'BerkmanSlideshowBundle:Slideshow:newForm.html.twig' %}
-	</div>
-</div>
-{% else %}
-<h2>You have no selected images</h2>
-{% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 'js/slideshow-add-images.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

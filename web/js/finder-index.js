@@ -1,15 +1,21 @@
 $(function() {
     $('#finder-tabs').tabs();
     $('#slideshow-tabs').tabs();
-    $('#finder_catalogs').parent().hide();
-    $('#finder_keyword').attr('placeholder', 'Enter Keyword...').prev().remove();
-    /*var catalogs = $('#finder_catalogs').parent().detach();
+    var catalogs = $('#finder_catalogs').parent().hide();
+    $('#more-button').click(function() { $(catalogs).slideToggle(); });
     $('#finder_keyword').bind({
-        focusIn: function() {
-            $(this).parent().append(catalogs);
+        focusin: function() {
+           /*$(catalogs).css({
+                position: 'absolute',
+                left: $(this).offset().left,
+                top: $(this).offset().top + $(this).outerHeight(),
+                backgroundColor: 'white',
+                color: 'black'
+            });*/
+            /*$(catalogs).show();*/
         },
-        focusOut: function() {
-            $('#finder_catalogs').parent().detach();
+        focusout: function() {
+           //$('#finder_catalogs').parent().hide();
         }
-    }).prev().remove();*/
+    }).attr('placeholder', 'Enter Keyword...').prev().remove();
 });

@@ -291,3 +291,11 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 .float-right {
     float: right;
 }
+#add-images-container > div {
+    border-bottom: 1px dotted #cc0001;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+#add-images-container h2 {
+    margin-bottom: 10px;
+}
