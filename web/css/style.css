@@ -299,3 +299,6 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 #add-images-container h2 {
     margin-bottom: 10px;
 }
+#slideshows {
+    text-align:center;
+}
