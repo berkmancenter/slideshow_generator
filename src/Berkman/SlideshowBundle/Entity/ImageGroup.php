@@ -232,15 +232,15 @@ class ImageGroup
         return $images;
     }
 
-	/**
-	 * Get the cover image of this imageGroup
-	 *
-	 * @return Berkman\SlideshowBundle\Entity\Image $image
-	 */
-	public function getCover()
-	{
-		return $this->images[0];
-	}
+    /**
+     * Get the cover image of this imageGroup
+     *
+     * @return Berkman\SlideshowBundle\Entity\Image $image
+     */
+    public function getCover()
+    {
+        return $this->images[0];
+    }
 
     public function getMetadata()
     {

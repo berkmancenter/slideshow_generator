@@ -94,14 +94,14 @@ class SlideshowController extends Controller
         }
     }
 
-	/**
-	 * Displays the actual slideshow
+    /**
+     * Displays the actual slideshow
      *
      * @param integer $id  Slideshow id
      * @return Symfony Response
-	 */
-	public function slideshowAction($id)
-	{
+     */
+    public function slideshowAction($id)
+    {
         $em = $this->getDoctrine()->getEntityManager();
         $response = new Response();
         $response->setPublic();
@@ -125,7 +125,7 @@ class SlideshowController extends Controller
                 $response
             );
         }
-	}
+    }
 
     /**
      * Displays a form to create a new Slideshow entity.
@@ -159,37 +159,37 @@ class SlideshowController extends Controller
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
-				$user = $this->get('security.context')->getToken()->getUser();
-				$slideshow->setPerson($user);
+                $user = $this->get('security.context')->getToken()->getUser();
+                $slideshow->setPerson($user);
                 $slideshow->setCreated(new \DateTime('now'));
                 $finder = $this->getFinder();
 
                 if ($finder) {
                     $images = $finder->getSelectedImageResults();
-					foreach ($images as $image) {
+                    foreach ($images as $image) {
                         $newImage = clone $image;
                         $newImage->setFromCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getFromCatalog()->getId()));
-						$slide = new Slide($newImage);
-						$slideshow->addSlide($slide);
-					}
-					$request->getSession()->remove('finder');
-				}
+                        $slide = new Slide($newImage);
+                        $slideshow->addSlide($slide);
+                    }
+                    $request->getSession()->remove('finder');
+                }
                 $slideshow->setUpdated(new \DateTime('now'));
                 $em->persist($slideshow);
                 $em->flush();
                 $request->getSession()->setFlash('notice', 'New slideshow "' . $slideshow->getName() . '" created with ' . count($slideshow->getSlides()) . ' slides.');
 
-				 // creating the ACL
-				$aclProvider = $this->get('security.acl.provider');
-				$objectIdentity = ObjectIdentity::fromDomainObject($slideshow);
-				$acl = $aclProvider->createAcl($objectIdentity);
+                 // creating the ACL
+                $aclProvider = $this->get('security.acl.provider');
+                $objectIdentity = ObjectIdentity::fromDomainObject($slideshow);
+                $acl = $aclProvider->createAcl($objectIdentity);
 
-				// retrieving the security identity of the currently logged-in user
-				$securityIdentity = UserSecurityIdentity::fromAccount($user);
+                // retrieving the security identity of the currently logged-in user
+                $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
-				// grant owner access
-				$acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-				$aclProvider->updateAcl($acl);
+                // grant owner access
+                $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+                $aclProvider->updateAcl($acl);
 
                 return $this->redirect($this->generateUrl('slideshow_show', array('id' => $slideshow->getId())));
             }
@@ -218,11 +218,11 @@ class SlideshowController extends Controller
             throw $this->createNotFoundException('Unable to find Slideshow entity.');
         }
 
-		// check for edit access
-		if (false === $this->get('security.context')->isGranted('EDIT', $entity))
-		{
-			throw new AccessDeniedException();
-		}
+        // check for edit access
+        if (false === $this->get('security.context')->isGranted('EDIT', $entity))
+        {
+            throw new AccessDeniedException();
+        }
 
         foreach ($entity->getSlides() as $slide) {
             $slideOrder[] = $slide->getImage()->getId();
@@ -250,17 +250,17 @@ class SlideshowController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
 
-		$oldSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
+        $oldSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Slideshow entity.');
         }
 
-		// check for update access
-		if (false === $this->get('security.context')->isGranted('EDIT', $entity))
-		{
-			throw new AccessDeniedException();
-		}
+        // check for update access
+        if (false === $this->get('security.context')->isGranted('EDIT', $entity))
+        {
+            throw new AccessDeniedException();
+        }
 
         $editForm   = $this->createForm(new SlideshowType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
@@ -271,29 +271,29 @@ class SlideshowController extends Controller
             $editForm->bindRequest($request);
 
             if ($editForm->isValid()) {
-				$slideCatalog = $em->getRepository('BerkmanSlideshowBundle:Slide');
-				$newSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
-				$slideIdsToRemove = array_diff($oldSlideIds, $newSlideIds);
+                $slideCatalog = $em->getRepository('BerkmanSlideshowBundle:Slide');
+                $newSlideIds = $entity->getSlides()->map(function ($slide) { return $slide->getId(); })->toArray();
+                $slideIdsToRemove = array_diff($oldSlideIds, $newSlideIds);
 
-				if ($slideIdsToRemove) {
-					$slidesToRemove = $slideCatalog->findById($slideIdsToRemove);
-					foreach ($slidesToRemove as $slide) {
-						$em->remove($slide);
-					}
-				}
+                if ($slideIdsToRemove) {
+                    $slidesToRemove = $slideCatalog->findById($slideIdsToRemove);
+                    foreach ($slidesToRemove as $slide) {
+                        $em->remove($slide);
+                    }
+                }
 
-				foreach (explode(',', $request->get('slide_order')) as $position => $slideId) {
-					$slide = $slideCatalog->find($slideId);
-					$slide->setPosition($position + 1);
-					$em->persist($slide);
-				}
+                foreach (explode(',', $request->get('slide_order')) as $position => $slideId) {
+                    $slide = $slideCatalog->find($slideId);
+                    $slide->setPosition($position + 1);
+                    $em->persist($slide);
+                }
                 
                 $entity->setUpdated(new \DateTime('now'));
 
                 $em->persist($entity);
                 $em->flush();
 
-				$request->getSession()->setFlash('notice', 'Slideshow "' . $entity->getName() . '" successfully updated.');
+                $request->getSession()->setFlash('notice', 'Slideshow "' . $entity->getName() . '" successfully updated.');
 
                 return $this->redirect($this->generateUrl('slideshow_edit', array('id' => $id)));
             }
@@ -323,19 +323,19 @@ class SlideshowController extends Controller
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $entity = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($id);
-				$slides = $em->getRepository('BerkmanSlideshowBundle:Slide')->findBy(array(
-					'slideshow' => $id
-				));
+                $slides = $em->getRepository('BerkmanSlideshowBundle:Slide')->findBy(array(
+                    'slideshow' => $id
+                ));
 
                 if (!$entity) {
                     throw $this->createNotFoundException('Unable to find Slideshow entity.');
                 }
 
-				// check for delete access
-				if (false === $this->get('security.context')->isGranted('DELETE', $entity))
-				{
-					throw new AccessDeniedException();
-				}
+                // check for delete access
+                if (false === $this->get('security.context')->isGranted('DELETE', $entity))
+                {
+                    throw new AccessDeniedException();
+                }
 
                 $request->getSession()->setFlash('notice', 'Slideshow "' . $entity->getName() . '" successfully deleted.');
                 $em->remove($entity);
@@ -346,71 +346,71 @@ class SlideshowController extends Controller
         return $this->redirect($this->generateUrl('BerkmanSlideshowBundle_homepage'));
     }
 
-	/**
-	 * Add Images to a Slideshow
+    /**
+     * Add Images to a Slideshow
      *
      * @param integer The slideshow id to add images to
      * @return Symfony Response
-	 */
-	public function addImagesAction()
-	{
-		$slideshow = new Slideshow();
-		$request   = $this->getRequest();
-		$em        = $this->getDoctrine()->getEntityManager();
+     */
+    public function addImagesAction()
+    {
+        $slideshow = new Slideshow();
+        $request   = $this->getRequest();
+        $em        = $this->getDoctrine()->getEntityManager();
         $finder    = $this->getFinder();
         $images    = $finder->getSelectedImageResults();
 
-		$slideshowChoiceType = new SlideshowChoiceType();
-		$slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
-		$addImagesForm = $this->createForm($slideshowChoiceType);
+        $slideshowChoiceType = new SlideshowChoiceType();
+        $slideshowChoiceType->setPersonId($this->get('security.context')->getToken()->getUser()->getId());
+        $addImagesForm = $this->createForm($slideshowChoiceType);
         $newSlideshowForm = $this->createForm(new SlideshowType(), $slideshow);
 
-		$response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
-			'addImagesForm' => $addImagesForm->createView(),
-			'form'          => $newSlideshowForm->createView(),
-			'images'        => $images
-		));
+        $response = $this->render('BerkmanSlideshowBundle:Slideshow:addImages.html.twig', array(
+            'addImagesForm' => $addImagesForm->createView(),
+            'form'          => $newSlideshowForm->createView(),
+            'images'        => $images
+        ));
 
-		if ('POST' == $request->getMethod()) {
-			$slideshowChoice = $request->get('slideshowchoice');
+        if ('POST' == $request->getMethod()) {
+            $slideshowChoice = $request->get('slideshowchoice');
 
-			if (isset($slideshowChoice['slideshows']) && !empty($images)) {
-				foreach ($images as $image) {
-					foreach ($slideshowChoice['slideshows'] as $slideshow) {
-						$slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshow);
-						// check for update access
-						if (false === $this->get('security.context')->isGranted('EDIT', $slideshow))
-						{
-							throw new AccessDeniedException();
-						}
+            if (isset($slideshowChoice['slideshows']) && !empty($images)) {
+                foreach ($images as $image) {
+                    foreach ($slideshowChoice['slideshows'] as $slideshow) {
+                        $slideshow = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->find($slideshow);
+                        // check for update access
+                        if (false === $this->get('security.context')->isGranted('EDIT', $slideshow))
+                        {
+                            throw new AccessDeniedException();
+                        }
                         $newImage = clone $image;
                         $newImage->setFromCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getFromCatalog()->getId()));
-						$slide = new Slide($newImage);
-						$slideshow->addSlide($slide);
+                        $slide = new Slide($newImage);
+                        $slideshow->addSlide($slide);
                         $slideshow->setUpdated(new \DateTime('now'));
 
-						$em->persist($slideshow);
-						$flashMessage = count($images) . ' slides added to slideshow "' . $slideshow->getName() . '"';
-						$this->get('session')->setFlash('notice', $flashMessage);
-					}
-				}
+                        $em->persist($slideshow);
+                        $flashMessage = count($images) . ' slides added to slideshow "' . $slideshow->getName() . '"';
+                        $this->get('session')->setFlash('notice', $flashMessage);
+                    }
+                }
                 $request->getSession()->remove('finder');
-				$em->flush();
-				$response = $this->redirect($this->generateUrl('BerkmanSlideshowBundle_homepage'));
-			}
-		}
+                $em->flush();
+                $response = $this->redirect($this->generateUrl('BerkmanSlideshowBundle_homepage'));
+            }
+        }
 
         return $response;
-	}
+    }
 
     /**
      * Show the import screen
      */
     public function importAction()
     {
-		$request = $this->getRequest();
+        $request = $this->getRequest();
         $masterForm = $this->createForm(new ImportType());
-		$em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getEntityManager();
         $images = array();
         $importForms = array();
         $finder = $this->getFinder();

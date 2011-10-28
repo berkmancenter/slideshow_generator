@@ -54,25 +54,25 @@ class Image
      */
     private $from_catalog;
 
-	/**
-	 * Construct an image from its parts
-	 *
-	 * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
-	 * @param string $id1
-	 * @param string $id2
-	 * @param string $id3
-	 * @param string $id4
-	 */
-	public function __construct(Catalog $fromCatalog, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
-	{
-		$this->setFromCatalog($fromCatalog);
-		$this->setId1($id1);
-		$this->setId2($id2);
-		$this->setId3($id3);
-		$this->setId4($id4);
-		$this->setId5($id5);
-		$this->setId6($id6);
-	}
+    /**
+     * Construct an image from its parts
+     *
+     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
+     * @param string $id1
+     * @param string $id2
+     * @param string $id3
+     * @param string $id4
+     */
+    public function __construct(Catalog $fromCatalog, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
+    {
+        $this->setFromCatalog($fromCatalog);
+        $this->setId1($id1);
+        $this->setId2($id2);
+        $this->setId3($id3);
+        $this->setId4($id4);
+        $this->setId5($id5);
+        $this->setId6($id6);
+    }
 
     /**
      * Get id
@@ -234,50 +234,50 @@ class Image
         return $this->from_catalog;
     }
 
-	/**
-	 * Get the metadata for this image
-	 *
-	 * @return array An associative array where the key is the metadata field name and value is the value
-	 */
+    /**
+     * Get the metadata for this image
+     *
+     * @return array An associative array where the key is the metadata field name and value is the value
+     */
 
-	public function getMetadata()
-	{
+    public function getMetadata()
+    {
         try {
             return $this->getFromCatalog()->getFetcher()->fetchImageMetadata($this);
         } catch (\Exception $e) {
             return null;
         }
-	}
+    }
 
-	/**
-	 * Get the full image url
-	 *
-	 * @return string $imageUrl
-	 */
-	public function getImageUrl()
-	{
-		return $this->getFromCatalog()->getFetcher()->getImageUrl($this);
-	}
+    /**
+     * Get the full image url
+     *
+     * @return string $imageUrl
+     */
+    public function getImageUrl()
+    {
+        return $this->getFromCatalog()->getFetcher()->getImageUrl($this);
+    }
 
-	/**
-	 * Get the thumbnail url 
-	 *
-	 * @return string $thumbnailUrl
-	 */
-	public function getThumbnailUrl()
-	{
-		return $this->getFromCatalog()->getFetcher()->getThumbnailUrl($this);
-	}
+    /**
+     * Get the thumbnail url 
+     *
+     * @return string $thumbnailUrl
+     */
+    public function getThumbnailUrl()
+    {
+        return $this->getFromCatalog()->getFetcher()->getThumbnailUrl($this);
+    }
 
-	/**
-	 * Get the authoritative record url
-	 *
-	 * @return string $recordUrl
-	 */
-	public function getRecordUrl()
-	{
-		return $this->getFromCatalog()->getFetcher()->getRecordUrl($this);
-	}	
+    /**
+     * Get the authoritative record url
+     *
+     * @return string $recordUrl
+     */
+    public function getRecordUrl()
+    {
+        return $this->getFromCatalog()->getFetcher()->getRecordUrl($this);
+    }   
 
     public function getQRCodeUrl()
     {

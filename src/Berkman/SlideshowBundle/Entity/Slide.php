@@ -88,7 +88,7 @@ class Slide
     public function setSlideshow(\Berkman\SlideshowBundle\Entity\Slideshow $slideshow)
     {
         $this->slideshow = $slideshow;
-		$this->position = count($this->getSlideshow()->getSlides()) + 1;
+        $this->position = count($this->getSlideshow()->getSlides()) + 1;
     }
 
     /**
@@ -101,23 +101,23 @@ class Slide
         return $this->slideshow;
     }
 
-	/**
-	 * Create a slide from an Image
-	 *
-	 * @param Berkman\SlideshowBundle\Entity\Image $image
-	 */
-	public function __construct(Image $image)
-	{
-		$this->setImage($image);
-	}
+    /**
+     * Create a slide from an Image
+     *
+     * @param Berkman\SlideshowBundle\Entity\Image $image
+     */
+    public function __construct(Image $image)
+    {
+        $this->setImage($image);
+    }
 
-	/**
-	 * Use a thumnail URL as the __toString return
-	 *
-	 * @return string $thumbnailUrl
-	 */
-	public function __toString()
-	{
-		return $this->getImage()->getThumbnailUrl();
-	}
+    /**
+     * Use a thumnail URL as the __toString return
+     *
+     * @return string $thumbnailUrl
+     */
+    public function __toString()
+    {
+        return $this->getImage()->getThumbnailUrl();
+    }
 }

@@ -86,10 +86,10 @@ class Finder
         $this->selected_image_results     = array();
         $this->hierarchy_stack              = array();
         $this->results_per_page           = self::RESULTS_PER_PAGE;
-		$this->current_page               = 1;
-		if (isset($catalogs)) {
-			$this->catalogs                  = $catalogs;
-		}
+        $this->current_page               = 1;
+        if (isset($catalogs)) {
+            $this->catalogs                  = $catalogs;
+        }
     }
     
     /**
@@ -471,30 +471,30 @@ class Finder
      *
      * @return array $results
      */
-	public function findResults($keyword = null, $page = 1)
-	{
-		if (empty($keyword) && !empty($this->keyword)) {
-			$keyword = $this->keyword;
-		}
-		elseif (!empty($keyword)) {
-			$this->keyword = $keyword;
-		}
-		else {
-			throw new \ErrorException('No keyword set for search');
-		}
-		$results           = array();
+    public function findResults($keyword = null, $page = 1)
+    {
+        if (empty($keyword) && !empty($this->keyword)) {
+            $keyword = $this->keyword;
+        }
+        elseif (!empty($keyword)) {
+            $this->keyword = $keyword;
+        }
+        else {
+            throw new \ErrorException('No keyword set for search');
+        }
+        $results           = array();
         $imageResults      = array();
         $imageGroupResults = array();
-		$totalResults      = 0;
+        $totalResults      = 0;
         $numOfCatalogs        = count($this->catalogs);
         $resultsPerCatalog    = floor($this->getResultsPerPage() / $numOfCatalogs);
-		$catalogsFirstIndex   = $resultsPerCatalog * ($page - 1);
+        $catalogsFirstIndex   = $resultsPerCatalog * ($page - 1);
 
-		foreach ($this->catalogs as $catalog) {
+        foreach ($this->catalogs as $catalog) {
             $searchResults = $catalog->fetchResults($keyword, $catalogsFirstIndex, $resultsPerCatalog);
             array_splice($results, count($results), 0, $searchResults['results']);
-			$totalResults += $searchResults['totalResults'];
-		}
+            $totalResults += $searchResults['totalResults'];
+        }
 
         foreach ($results as $result) {
             if ($result instanceof Image) {
@@ -504,28 +504,28 @@ class Finder
                 $imageGroupResults[] = $this->addImageGroup($result);
             }
         }
-		$this->setCurrentImageResults($imageResults);
-		$this->setCurrentImageGroupResults($imageGroupResults);
+        $this->setCurrentImageResults($imageResults);
+        $this->setCurrentImageGroupResults($imageGroupResults);
 
         $this->setCurrentPage($page);
         $this->setTotalPages(ceil($totalResults / $this->getResultsPerPage()));
-		$this->setTotalResults($totalResults);
+        $this->setTotalResults($totalResults);
 
-		return array('results' => $results, 'totalResults' => $totalResults);
-	}
+        return array('results' => $results, 'totalResults' => $totalResults);
+    }
 
     /**
      * Get results given a imageGroup and page
      *
      * @return array $results
      */
-	public function findImageGroupResults($imageGroup, $page = 1)
-	{
-		$results           = array();
+    public function findImageGroupResults($imageGroup, $page = 1)
+    {
+        $results           = array();
         $imageResults      = array();
         $imageGroupResults = array();
-		$totalResults      = 0;
-		$firstIndex        = $this->getResultsPerPage() * ($page - 1);
+        $totalResults      = 0;
+        $firstIndex        = $this->getResultsPerPage() * ($page - 1);
 
         $searchResults = $imageGroup->getCatalog()->fetchImageGroupResults($imageGroup, $firstIndex, $this->getResultsPerPage());
         $results = $searchResults['results'];
@@ -540,11 +540,11 @@ class Finder
             }
         }
         $this->setCurrentPage($page);
-		$this->setCurrentImageResults($imageResults);
-		$this->setCurrentImageGroupResults($imageGroupResults);
+        $this->setCurrentImageResults($imageResults);
+        $this->setCurrentImageGroupResults($imageGroupResults);
         $this->setTotalPages(ceil($totalResults / $this->getResultsPerPage()));
-		$this->setTotalResults($totalResults);
+        $this->setTotalResults($totalResults);
 
-		return array('results' => $results, 'totalResults' => $totalResults);
-	}
+        return array('results' => $results, 'totalResults' => $totalResults);
+    }
 }

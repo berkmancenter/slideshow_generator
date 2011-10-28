@@ -182,9 +182,9 @@ class Slideshow
 
     public function __construct()
     {
-		$this->slide_delay = 5;
-		$this->always_show_info = false;
-		$this->display_controls = false;
+        $this->slide_delay = 5;
+        $this->always_show_info = false;
+        $this->display_controls = false;
         $this->show_qr_code = true;
         $this->published = true;
         $this->slides = new \Doctrine\Common\Collections\ArrayCollection();
@@ -197,11 +197,11 @@ class Slideshow
      */
     public function addSlide(\Berkman\SlideshowBundle\Entity\Slide $slide)
     {
-		if (!$slide->getPosition())
-			$slide->setPosition(count($this->slides) + 1);
-		if (!$slide->getSlideshow())
-			$slide->setSlideshow($this);
-		$this->slides[] = $slide;
+        if (!$slide->getPosition())
+            $slide->setPosition(count($this->slides) + 1);
+        if (!$slide->getSlideshow())
+            $slide->setSlideshow($this);
+        $this->slides[] = $slide;
     }
 
     /**
@@ -211,9 +211,9 @@ class Slideshow
      */
     public function getSlides()
     {
-		$slideArray = $this->slides->toArray();
-		usort($slideArray, function ($a, $b) { return ($a->getPosition() > $b->getPosition()) ? 1 : -1; });
-		$this->slides = new \Doctrine\Common\Collections\ArrayCollection($slideArray);
+        $slideArray = $this->slides->toArray();
+        usort($slideArray, function ($a, $b) { return ($a->getPosition() > $b->getPosition()) ? 1 : -1; });
+        $this->slides = new \Doctrine\Common\Collections\ArrayCollection($slideArray);
         return $this->slides;
     }
 

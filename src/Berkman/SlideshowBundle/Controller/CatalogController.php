@@ -203,7 +203,7 @@ class CatalogController extends Controller
 
     public function importAction($id)
     {
-		$request = $this->getRequest();
+        $request = $this->getRequest();
         if ('POST' === $request->getMethod()) {
             $finder = $this->getFinder();
             $em = $this->getDoctrine()->getEntityManager();

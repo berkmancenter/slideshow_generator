@@ -20,10 +20,10 @@ class Catalog
      */
     private $name;
 
-	/**
-	 * @var Berkman\SlideshowBundle\Fetcher $fetcher
-	 */
-	public $fetcher;
+    /**
+     * @var Berkman\SlideshowBundle\Fetcher $fetcher
+     */
+    public $fetcher;
 
     /**
      * Set id
@@ -33,7 +33,7 @@ class Catalog
     public function setId($id)
     {
         $this->id = $id;
-		$this->fetcher = $this->getFetcher(); 
+        $this->fetcher = $this->getFetcher(); 
     }
 
     /**
@@ -66,53 +66,53 @@ class Catalog
         return $this->name . ' (' . $this->getId() . ')';
     }
 
-	/**
-	 * Get the fetcher object associated with this catalog
-	 *
-	 */
-	public function getFetcher()
-	{
-		$fetcher = null;
+    /**
+     * Get the fetcher object associated with this catalog
+     *
+     */
+    public function getFetcher()
+    {
+        $fetcher = null;
 
-		if ($this->fetcher) {
-			$fetcher = $this->fetcher;
-		}
-		else {
-			//TODO: figure out a better way to do this stuff
-			$className = '\\Berkman\\SlideshowBundle\\Fetcher\\'.$this->getId().'Fetcher';
-			if (class_exists($className)) {
-				$fetcher = new $className($this);
-			}
-			else {
-				#throw some exception
-			}
-		}
-		return $fetcher;
-	}
+        if ($this->fetcher) {
+            $fetcher = $this->fetcher;
+        }
+        else {
+            //TODO: figure out a better way to do this stuff
+            $className = '\\Berkman\\SlideshowBundle\\Fetcher\\'.$this->getId().'Fetcher';
+            if (class_exists($className)) {
+                $fetcher = new $className($this);
+            }
+            else {
+                #throw some exception
+            }
+        }
+        return $fetcher;
+    }
 
-	/**
-	 * Get search results from this catalog
-	 *
-	 * @param string $keyword
-	 * @param int $startIndex
-	 * @param int $count
-	 */
-	public function fetchResults($keyword, $startIndex, $count)
-	{
-		return $this->getFetcher()->fetchResults($keyword, $startIndex, $count);
-	}
+    /**
+     * Get search results from this catalog
+     *
+     * @param string $keyword
+     * @param int $startIndex
+     * @param int $count
+     */
+    public function fetchResults($keyword, $startIndex, $count)
+    {
+        return $this->getFetcher()->fetchResults($keyword, $startIndex, $count);
+    }
 
-	/**
-	 * Get image group results from this catalog
-	 *
-	 * @param string $keyword
-	 * @param int $startIndex
-	 * @param int $count
-	 */
-	public function fetchImageGroupResults($keyword, $startIndex, $count)
-	{
-		return $this->getFetcher()->fetchImageGroupResults($keyword, $startIndex, $count);
-	}
+    /**
+     * Get image group results from this catalog
+     *
+     * @param string $keyword
+     * @param int $startIndex
+     * @param int $count
+     */
+    public function fetchImageGroupResults($keyword, $startIndex, $count)
+    {
+        return $this->getFetcher()->fetchImageGroupResults($keyword, $startIndex, $count);
+    }
 
     /**
      * @var datetime $created
