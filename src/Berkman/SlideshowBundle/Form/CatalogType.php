@@ -15,8 +15,8 @@ class CatalogType extends AbstractType
         ;
     }
 
-	public function getName()
-	{
-		return 'catalog';
-	}
+    public function getName()
+    {
+        return 'catalog';
+    }
 }
