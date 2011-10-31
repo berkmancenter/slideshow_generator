@@ -2,9 +2,10 @@
 {% import "BerkmanSlideshowBundle::macros.html.twig" as macros %}
 
 {% block body %}
-{# form_theme form 'BerkmanSlideshowBundle:Form:images.html.twig' #}
 <h2>
-{{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
+{% if finder.totalResults > 0 %}
+    {{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
+{% endif %}
 </h2>
 
 <div id="finder-tabs">
@@ -14,8 +15,9 @@
         <li><a href="#image-group-container">IMAGE GROUP RESULTS</a></li>
         {% endif %}
     </ul> 
-    <div id="image-container">
-        <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
+    {% if finder.totalResults > 0 %}
+    <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
+        <div id="image-container">
             {# form_widget(form) #}
 
             {% if images|length > 0 or imageGroups|length > 0 %}
@@ -33,26 +35,32 @@
             {% if images|length > 0 %}
             {{ macros.show_images(images, 'show_finderresults_images', 'slide_container', 'Add to slideshow') }}
             {% endif %}
-		{% if finder.currentPage > 1 %}
-		<input type="submit" name="action" value="Previous Page" />
-		{% endif %}
-        {% if finder.currentPage < finder.totalPages %}
-		<input type="submit" name="action" value="Next Page" />
-        {% endif %}
-        <input type="submit" name="action" value="Finish" />
-    </div>
+            {% if finder.currentPage > 1 %}
+            <input type="submit" name="action" value="Previous Page" />
+            {% endif %}
+            {% if finder.currentPage < finder.totalPages %}
+            <input type="submit" name="action" value="Next Page" />
+            {% endif %}
+            <input type="submit" name="action" value="Finish" />
+        </div>
 
-    {% if imageGroups|length > 0 %}
-    <div id="image-group-container">
-    {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
+        {% if imageGroups|length > 0 %}
+        <div id="image-group-container">
+            {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
+            {% endif %}
+
+            {% if imageGroupId is defined %}
+            <input type="submit" name="action" value="Back" />
+            <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
+            {% endif %}
+        </div>
+    </form> 
+    {% else %}
+        <div id="image-container">
+            <p>Sorry, but your search did not return any results.</p>
+            <a href="{{ path('BerkmanSlideshowBundle_homepage') }}" class="buttoned" title="Back to Home">Back to Home</a>
+        </div>
     {% endif %}
-        {% if imageGroupId is defined %}
-        <input type="submit" name="action" value="Back" />
-        <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
-        {% endif %}
-    </div>
-</form> 
-</div>
 </div>
 {% endblock %}
 
