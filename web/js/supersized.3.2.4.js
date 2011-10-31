@@ -456,9 +456,6 @@
                     
                     /*-----End Resize Functions-----*/
                     
-                    if (thisSlide.parents('li').hasClass('image-loading')){
-                        $('.image-loading').removeClass('image-loading');
-                    }
                     
                     // Horizontally Center
                     if (base.options.horizontal_center){
@@ -496,6 +493,9 @@
                         }
                     }
                     
+                    if (thisSlide.parents('li').hasClass('image-loading')){
+                        $('.image-loading').removeClass('image-loading');
+                    }
                 });
                 
                 // Basic image drag and right click protection
