@@ -1,3 +1,19 @@
+BerkmanFetchersOASISBundle:
+    resource: "@BerkmanFetchersOASISBundle/Resources/config/routing.yml"
+    prefix:   /
+
+BerkmanFetchersTEDBundle:
+    resource: "@BerkmanFetchersTEDBundle/Resources/config/routing.yml"
+    prefix:   /
+
+BerkmanFetchersVIABundle:
+    resource: "@BerkmanFetchersVIABundle/Resources/config/routing.yml"
+    prefix:   /
+
+BerkmanFetcherBundle:
+    resource: "@BerkmanFetcherBundle/Resources/config/routing.yml"
+    prefix:   /
+
 BerkmanSlideshowBundle:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing.yml"
     prefix:   /
