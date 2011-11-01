@@ -38,7 +38,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
     }
 
     /**
-     * Get the catalogsitory associated with this fetcher
+     * Get the catalog associated with this fetcher
      *
      * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
@@ -290,11 +290,10 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
     {
         $url = $args[0];
         $xpath = $this->fetchXpath($url);
-        $matches = array();
-        $urlPattern = '!' . str_replace(array('\{id\-1\}', '\{id\-2\}'), array('(\w*)', '([:\.\w]*)'), preg_quote(self::RECORD_URL_PATTERN)) . '!';
-        preg_match($urlPattern, $url, $matches);
-        $recordId = $matches[1];
-        $componentId = $matches[2];
+        $args = array();
+        parse_str(parse_url($url, PHP_URL_QUERY), $args);
+        $recordId = $args['recordId'];
+        $componentId = $args['componentId'];
         $metadataId = $recordId;
         $metadataSubId = null;
         $imageId = $componentId;
@@ -316,7 +315,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
 
     public function getImportFormat()
     {
-        return '"Record URL"';
+        return '"Bookmark URL"';
     }
 
     public function getImagesFromImport(Entity\Batch $batch)

@@ -41,7 +41,7 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
     }
 
     /**
-     * Get the catalogsitory associated with this fetcher
+     * Get the catalog associated with this fetcher
      *
      * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
@@ -154,7 +154,8 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
     public function importImage(array $args)
     {
         $resourceUrl = $args[0];
-        $nrsId = substr($resourceUrl, strpos($resourceUrl, ':', 5) + 1);
+        $path = parse_url($resourceUrl, PHP_URL_PATH);
+        $nrsId = substr($path, strpos($path, ':') + 1);
 
         $url = str_replace('{id-2}', $nrsId, self::METADATA_URL_PATTERN);
         $xpath = $this->fetchXpath($url);

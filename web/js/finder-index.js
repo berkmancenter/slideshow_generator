@@ -1,21 +1,24 @@
 $(function() {
     $('#finder-tabs').tabs();
     $('#slideshow-tabs').tabs();
-    var catalogs = $('#finder_catalogs').parent().hide();
-    $('#more-button').click(function() { $(catalogs).slideToggle(); });
-    $('#finder_keyword').bind({
+    var catalogs = $('#finder_catalogs').parent().hide(), input = $('#finder_keyword');
+    $(input).prev().remove();
+    $(catalogs).addClass('catalog-box').css({
+        width: $(input).outerWidth() + 'px',
+    }).offset({
+        top: $(input).position().top + $(input).outerHeight() + 10,
+        left: $(input).position().left
+    }).find('label').after('<br />');
+    $(input).bind({
         focusin: function() {
-           /*$(catalogs).css({
-                position: 'absolute',
-                left: $(this).offset().left,
-                top: $(this).offset().top + $(this).outerHeight(),
-                backgroundColor: 'white',
-                color: 'black'
-            });*/
-            /*$(catalogs).show();*/
+            $(catalogs).show();
+            $(this).data('focused', true);
         },
         focusout: function() {
-           //$('#finder_catalogs').parent().hide();
+           $(catalogs).mouseleave(function() {
+               $(this).hide();
+               $(this).unbind('mouseleave');
+           });
         }
-    }).attr('placeholder', 'Enter Keyword...').prev().remove();
+    }).attr('placeholder', 'Enter Keyword...');
 });
