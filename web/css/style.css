@@ -299,3 +299,12 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 #add-images-container h2 {
     margin-bottom: 10px;
 }
+.catalog-box {
+    position: absolute;
+    background-color: white;
+    color: black;
+    padding: 10px;
+}
+#finder_catalogs {
+    text-align: left;
+}
