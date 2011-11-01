@@ -424,7 +424,7 @@ class SlideshowController extends Controller
         if ('POST' == $request->getMethod()) {
             $masterForm->bindRequest($request);
             if ($masterForm->isValid()) {
-                $failed = 0;
+                $failed = array();
                 $file = $masterForm['attachment']->getData();
                 $file = $file->openFile();
                 $file->setFlags(\SplFileObject::READ_CSV);
@@ -434,16 +434,15 @@ class SlideshowController extends Controller
                         $args = array_slice($row, 1);
                         $catalog = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($catalog);
                         try {
-                            $images = $catalog->getFetcher()->importImage($args);
+                            $image = $catalog->getFetcher()->importImage($args);
+                            $imageId = $finder->addImage($image);
+                            $finder->addSelectedImageResult($imageId);
                         } catch (\ErrorException $e) {
-                            $failed++;
-                            continue;
+                            $failed[] = $row;
                         }
-                        $imageId = $finder->addImage();
-                        $finder->addSelectedImageResult($imageId);
                     }
                 }
-                error_debug('Failed: ' . $failed);
+                error_log(count($failed) . ' images failed to import: ' . print_r($failed, true));
                 $this->setFinder($finder);
 
                 return $this->redirect($this->generateUrl('slideshow_add_images'));
