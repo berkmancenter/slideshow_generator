@@ -1,3 +1,0 @@
-BerkmanFetcherBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: BerkmanFetcherBundle:Default:index }

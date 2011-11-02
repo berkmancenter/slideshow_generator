@@ -1,6 +1,8 @@
 $(function() {
-    $('.image-buttons').each(function() {
-        $(this).replaceWith('<a href="#" class="buttoned addImage" value="' + $(this).find('input').val() + '">Add</a>');
+    $('.metadata dd').dotdotdot();
+    $('.buttons input').each(function() {
+        $(this).prev('label').remove();
+        $(this).replaceWith('<a href="#" class="buttoned addImage" value="' + $(this).val() + '">Add</a>');
     });
     $('.imageGroup-buttons').each(function() {
         $(this).replaceWith('<a href="#" class="buttoned addImageGroup" value="' + $(this).find('input').val() + '">Add</a>');

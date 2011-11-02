@@ -20,10 +20,6 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Berkman\SlideshowBundle\BerkmanSlideshowBundle(),
-            new Berkman\FetcherBundle\BerkmanFetcherBundle(),
-            new Berkman\Fetchers\VIABundle\BerkmanFetchersVIABundle(),
-            new Berkman\Fetchers\TEDBundle\BerkmanFetchersTEDBundle(),
-            new Berkman\Fetchers\OASISBundle\BerkmanFetchersOASISBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -103,22 +103,6 @@ p {
 .centered {
     text-align: center;
 }
-.slideshows .slideshow, .image-block li {
-    display: inline-block;
-    text-align: center;
-    padding: 7px;
-    border: 10px solid #666;
-    height: 200px;
-    width: 200px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -khtml-border-radius: 3px;
-    -moz-border-radius: 3px;
-    font-size: .9em;
-    background-color: #373737;
-    margin: 4px;
-    vertical-align: top;
-}
 .slideshow-title, dt {
     font-weight: bold;
     color: #ff0103;
@@ -178,6 +162,7 @@ button, input[type=submit], .buttoned {
     height: 40px;
     vertical-align: middle;
     display: inline-block;
+    font-size: 1.2em;
 }
 button:hover, input[type=submit]:hover, .buttoned:hover {
 }
@@ -191,22 +176,6 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 }
 .image label {
     margin: 0;
-}
-.image, .image-block li {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px 5px 10px;
-}
-.image-block li {
-    overflow: hidden;
-    text-align: center;
-    height: auto;
-}
-.image-block li img {
-    margin-bottom: 10px;
-}
-.image-buttons, .imageGroup-buttons {
 }
 .image-block label{
     margin: 0;
@@ -224,13 +193,6 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
     width: 140px;
     display: inline-block;
     margin: 5px 5px 10px;
-}
-.metadata {
-    text-align: left;
-    white-space: normal;
-}
-.metadata dt {
-    margin-bottom: 4px;
 }
 #slideshow_tools {
     margin-bottom: 20px;
@@ -259,22 +221,21 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
     width: 100%;
     margin-bottom: 20px;
 }
-.scrollable::-webkit-scrollbar {
+.fancy-scroll::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
 
-.scrollable::-webkit-scrollbar-track {
+.fancy-scroll::-webkit-scrollbar-track {
     background-color: #666;
     border-radius: 2px;
 }
 
-.scrollable::-webkit-scrollbar-thumb {
+.fancy-scroll::-webkit-scrollbar-thumb {
     border-radius: 2px;
     background-color: #cc0001;
 }
 #slideshow-tools {
-    border-bottom: 1px dotted #cc0001;
     margin-bottom: 10px;
     padding: 10px;
 }
@@ -290,6 +251,9 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 }
 .float-right {
     float: right;
+}
+.float-left {
+    float: left;
 }
 #add-images-container > div {
     border-bottom: 1px dotted #cc0001;
@@ -308,3 +272,88 @@ a:link.buttoned,  a:visited.buttoned,  a:hover.buttoned,  a:active.buttoned {
 #finder_catalogs {
     text-align: left;
 }
+
+/* -- -- */
+.metadata {
+    text-align: left;
+    white-space: normal;
+    width: 43%;
+    height: 100%;
+    float: right;
+}
+.metadata dt {
+    margin-bottom: 4px;
+}
+.metadata dd {
+    max-height: 6em;
+}
+.slideshows .slideshow, .image-block li {
+    display: inline-block;
+    text-align: center;
+    padding: 12px 6px;
+    border: 10px solid #666;
+    height: 200px;
+    width: 200px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: .9em;
+    background-color: #373737;
+    margin: 4px;
+    vertical-align: top;
+}
+.image-block li {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin: 15px 5px;
+    width: 285px;
+    height: 225px;
+}
+.image-block li {
+    overflow: hidden;
+    text-align: center;
+}
+.image-block li img {
+    margin-bottom: 10px;
+}
+.image-and-buttons {
+    float: left;
+    width: 57%;
+    height: 100%;
+}
+.image {
+    height: 160px;
+    line-height: 160px;
+}
+.image img {
+    vertical-align: middle;
+}
+.record-link {
+    margin-top: 3px;
+}
+.record-link a {
+    text-decoration: underline;
+}
+#slide_container {
+    overflow-y: auto;
+    max-height: 500px;
+    border: 1px dotted #666;
+    border-width: 1px 0;
+    margin: 25px auto;
+}
+
+.submit-buttons {
+    text-align: center;
+}
+
+#slideshow-start-button {
+    margin-bottom: 10px;
+}
+
+#slideshows, #my-slideshows {
+    overflow-y: auto;
+    max-height: 252px;
+}
+

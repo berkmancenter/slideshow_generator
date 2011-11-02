@@ -35,13 +35,15 @@
             {% if images|length > 0 %}
             {{ macros.show_images(images, 'show_finderresults_images', 'slide_container', 'Add to slideshow') }}
             {% endif %}
+            <div class="submit-buttons">
             {% if finder.currentPage > 1 %}
-            <input type="submit" name="action" value="Previous Page" />
+            <input type="submit" class="float-left" name="action" value="Previous Page" />
             {% endif %}
             {% if finder.currentPage < finder.totalPages %}
-            <input type="submit" name="action" value="Next Page" />
+            <input type="submit" class="float-right" name="action" value="Next Page" />
             {% endif %}
             <input type="submit" name="action" value="Finish" />
+            </div>
         </div>
 
         {% if imageGroups|length > 0 %}
