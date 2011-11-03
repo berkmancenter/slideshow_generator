@@ -1,3 +1,5 @@
 $(function() {
-    $('#finder-tabs').tabs();
+    $('#finder-tabs').tabs({
+        show: function() { $('.metadata dd').dotdotdot(); }
+    });
 });

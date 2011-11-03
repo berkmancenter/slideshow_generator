@@ -1,29 +1,50 @@
-<h3>Instructions</h3>
-<p>
-    Upload a CSV document with formats as follows:
-</p>
-{% for catalog in catalogs %}
-<p>
-    For the {{ catalog.name }} catalog:<br />
-    "{{ catalog.id }}",{{ catalog.importFormat }}
-</p>
-{% endfor %}
-<form id="import" action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
-    {{ form_widget(master_form) }}
-    <button type="submit">Import</button>
+<h3>Spectacle Importer</h3>
+<div class="indented">
+    <h4>Instructions</h4>
+    <div class="indented">
+        <p>
+            Upload a CSV document with a line for each image, with each line having one of these formats:
+        </p>
+        <ul>
+        {% for catalog in catalogs %}
+            <li>
+                For images from the {{ catalog.name }} catalog:<br />
+                "{{ catalog.id }}",{{ catalog.importFormat }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<form action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
+    <div class="import-form">
+        {{ form_widget(master_form.attachment) }}
+        {{ form_rest(master_form) }}
+        <input type="submit" value="Import" />
+    </div>
 </form>
 
+<h3>Catalog Importers</h3>
+<ul class="indented">
 {% for catalog_id, import_form in import_forms %}     
     {% for catalog in catalogs %}
         {% if catalog.id == catalog_id %}
-        <h3>{{ catalog.name }}</h3>
-        <p>
+        <li>
+        <h4>{{ catalog.name }}</h4>
+        <div class="indented">
+            <h5>Instructions</h5>
+            <p class="indented">
                 {{ catalog.getFetcher.importInstructions }}
-        </p>
+            </p>
+
+        </div>
+        <form action="{{ path('catalog_import', { 'id': catalog_id }) }}" method="post" {{ form_enctype(import_form) }}>
+            <div class="import-form">
+            {{ form_widget(import_form.attachment) }}
+            {{ form_rest(import_form) }}
+            <input type="submit" value="Import" />
+        </form>
+        </li>
         {% endif %}
     {% endfor %}
-    <form action="{{ path('catalog_import', { 'id': catalog_id }) }}" method="post" {{ form_enctype(import_form) }}>
-        {{ form_widget(import_form) }}
-        <input type="submit" value="Import" />
-    </form>
 {% endfor %}
+</ul>

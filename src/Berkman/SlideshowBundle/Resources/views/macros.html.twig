@@ -1,43 +1,46 @@
-{% macro show_images(images, id, container_id, checkbox_text) %}
-    {% if container_id is not empty %}
-    <div id="{{ container_id }}" class="fancy-scroll">
-    {% endif %}
-    <ol id="{{ id|default('show_images') }}" class="centered image-block">
-        {% for image in images %}
-            <li>
-                <div class="image-and-buttons">
-                    <div class="image"><img src="{{ image.thumbnailUrl }}" /></div>
-                    <div class="buttons">
-                        {% if checkbox_text is not empty %}
-                        <label for="image_{{ image.id }}">{{ checkbox_text }}</label>
-                        <input type="checkbox" name="images[{{ image.id }}]" id="image_{{ image.id }}" value="{{ image.id }}"/>
-                        {% endif %}
-                        <div class="record-link"><a href="{{ image.recordUrl }}" target="_blank">View Record</a></div>
+{% macro show_images(images, list_type, list_id, checkbox_text, container_id) %}
+    <div id="{{ container_id|default('block-container') }}" class="block-container fancy-scroll">
+        <{{ list_type|default('ul') }} id="{{ list_id|default('images-list') }}" class="images">
+            {% for image in images %}
+                <li>
+                    <div class="image-and-buttons">
+                        <div class="image"><img src="{{ image.thumbnailUrl }}" /></div>
+                        <div class="buttons">
+                            {% if checkbox_text is not empty %}
+                            <label for="image_{{ image.id }}">{{ checkbox_text }}</label>
+                            <input type="checkbox" name="images[{{ image.id }}]" id="image_{{ image.id }}" value="{{ image.id }}"/>
+                            {% endif %}
+                            <div class="record-link"><a href="{{ image.recordUrl }}" target="_blank">View Record</a></div>
+                        </div>
                     </div>
-                </div>
-                <dl class="metadata">
-                    {% for key,value in image.metadata %}
-                    <dt>{{ key }}</dt><dd>{{ value }}</dd>
-                    {% endfor %}
-                </dl>
-            </li>
-        {% endfor %}
-    </ol>
-    {% if container_id is not empty %}
+                    <dl class="metadata">
+                        {% for key,value in image.metadata %}
+                        <dt>{{ key }}</dt><dd>{{ value }}</dd>
+                        {% endfor %}
+                    </dl>
+                </li>
+            {% endfor %}
+        </{{ list_type|default('ul') }}>
     </div>
-    {% endif %}
 {% endmacro %}
 
-{% macro show_imageGroups(imageGroups, id, container_id, checkbox_text) %}
-    {% if container_id is not empty %}
-    <div id="{{ container_id }}">
-    {% endif %}
-    <ol id="{{ id|default('show_imageGroups') }}" class="centered image-block">
+{% macro show_imageGroups(imageGroups, list_type, list_id, checkbox_text, container_id) %}
+    <div id="{{ container_id|default('block-container') }}" class="block-container fancy-scroll">
+        <{{ list_type|default('ul') }} id="{{ list_id|default('image-groups-list') }}" class="image-groups">
         {% for imageGroup in imageGroups %}
             <li>
-                <a href="{{ path('finder_imageGroup', { 'imageGroupId': imageGroup.id }) }}">
-                    <img src="{{ imageGroup.cover.thumbnailUrl }}"/>
-                </a>
+                <div class="image-and-buttons">
+                    <div class="image"><img src="{{ imageGroup.cover.thumbnailUrl }}" /></div>
+                    <div class="buttons">
+                        {% if checkbox_text is not empty %}
+                        <label for="imageGroup_{{ imageGroup.id }}">{{ checkbox_text }}</label>
+                        <input type="checkbox" name="imageGroups[{{ imageGroup.id }}]" id="imageGroup_{{ imageGroup.id }}" value="{{ imageGroup.id }}"/>
+                        {% endif %}
+                        <div class="record-link">
+                            <button type="submit" name="action" value="{{ imageGroup.id }}">View Group</button>
+                        </div>
+                    </div>
+                </div>
                 <dl class="metadata">
                     {% for key,value in imageGroup.metadata %}
                     <dt>{{ key }}</dt><dd>{{ value }}</dd>
@@ -57,17 +60,8 @@
                         {% endif %}
                     </dd>
                 </dl>
-                {% if checkbox_text is defined %}
-                <div class="imageGroup-buttons">
-                    <label for="imageGroup_{{ imageGroup.id }}">{{ checkbox_text }}</label>
-                    <input type="checkbox" name="imageGroups[{{ imageGroup.id }}]" id="imageGroup_{{ imageGroup.id }}" value="{{ imageGroup.id }}"/>
-                </div>
-                {% endif %}
-                <button type="submit" name="action" value="{{ imageGroup.id }}">View Image Group</button>
             </li>
         {% endfor %}
-    </ol>
-    {% if container_id is not empty %}
+        </{{ list_type|default('ul') }}>
     </div>
-    {% endif %}
 {% endmacro %}

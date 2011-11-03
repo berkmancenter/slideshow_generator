@@ -11,6 +11,7 @@
 		{% endstylesheets %}
 		{% endblock %}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic|Forum' rel='stylesheet' type='text/css'>
 		{% block javascripts %}
         {% javascripts 'js/jquery-1.6.2.js'
                        'js/jquery-ui-1.8.16.custom.min.js'
@@ -34,10 +35,14 @@
 			<div id="header">
                 <div id="branding">
                     {% image 'images/spectacle-logo.png' %}
-                    <img id="logo" src="{{ asset_url }}" title="Spectacle" width="46" height="46" />
+                    <div id="logo-image">
+                        <img src="{{ asset_url }}" title="Spectacle" width="46" height="46" />
+                    </div>
                     {% endimage %}
-                    <h1><a id="home-link" href="{{ path('BerkmanSlideshowBundle_homepage') }}">HARVARD SPECTACLE</a></h1>
-                    <div id="tagline">A SLIDESHOW MACHINE FOR HARVARD LIBRARY IMAGES</div>
+                    <div id="logo-text">
+                        <h1><a id="home-link" href="{{ path('BerkmanSlideshowBundle_homepage') }}">SPECTACLE</a></h1>
+                        <div id="tagline">A SLIDESHOW MACHINE FOR HARVARD LIBRARY IMAGES</div>
+                    </div>
                 </div>
 
 				<div id="utility">

@@ -2,24 +2,20 @@
 {% import "BerkmanSlideshowBundle::macros.html.twig" as macros %}
 
 {% block body %}
-<h2>
-{% if finder.totalResults > 0 %}
-    {{ finder.totalResults }} images for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
-{% endif %}
-</h2>
 
 <div id="finder-tabs">
     <ul>
-        <li><a href="#image-container">IMAGE RESULTS</a></li>
+        <li><a href="#image-result-container">IMAGE RESULTS</a></li>
         {% if imageGroups|length > 0 %}
-        <li><a href="#image-group-container">IMAGE GROUP RESULTS</a></li>
+        <li><a href="#image-group-result-container">IMAGE GROUP RESULTS</a></li>
         {% endif %}
     </ul> 
     {% if finder.totalResults > 0 %}
     <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
-        <div id="image-container">
-            {# form_widget(form) #}
-
+        <div id="image-result-container">
+            <h2>
+                {{ finder.totalResults }} results for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
+            </h2>
             {% if images|length > 0 or imageGroups|length > 0 %}
                 {% javascripts 'js/finder.js' %}
                     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -33,29 +29,52 @@
             {% endif %}
             
             {% if images|length > 0 %}
-            {{ macros.show_images(images, 'show_finderresults_images', 'slide_container', 'Add to slideshow') }}
+            {{ macros.show_images(images, 'ul', null, 'Add to slideshow') }}
             {% endif %}
             <div class="submit-buttons">
-            {% if finder.currentPage > 1 %}
-            <input type="submit" class="float-left" name="action" value="Previous Page" />
-            {% endif %}
-            {% if finder.currentPage < finder.totalPages %}
-            <input type="submit" class="float-right" name="action" value="Next Page" />
-            {% endif %}
-            <input type="submit" name="action" value="Finish" />
+                <span class="left col">
+                    {% if finder.currentPage > 1 %}
+                    <input type="submit" id="previous-page" name="action" value="Previous Page" />
+                    {% endif %}
+                </span>
+                <span class="center col">
+                    <input type="submit" id="finish-search" name="action" value="Finish" />
+                </span>
+                <span class="right col">
+                    {% if finder.currentPage < finder.totalPages %}
+                    <input type="submit" id="next-page" name="action" value="Next Page" />
+                    {% endif %}
+                </span>
             </div>
         </div>
 
         {% if imageGroups|length > 0 %}
-        <div id="image-group-container">
+        <div id="image-group-result-container">
+            <h2>
+                {{ finder.totalResults }} results for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
+            </h2>
             {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
-            {% endif %}
-
-            {% if imageGroupId is defined %}
-            <input type="submit" name="action" value="Back" />
-            <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
-            {% endif %}
+            <div class="submit-buttons">
+                <span class="left col">
+                    {% if finder.currentPage > 1 %}
+                    <input type="submit" id="previous-page" name="action" value="Previous Page" />
+                    {% endif %}
+                </span>
+                <span class="center col">
+                    {% if imageGroupId is defined %}
+                        <input type="submit" name="action" value="Back" />
+                        <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
+                    {% endif %}
+                    <input type="submit" id="finish-search" name="action" value="Finish" />
+                </span>
+                <span class="right col">
+                    {% if finder.currentPage < finder.totalPages %}
+                    <input type="submit" id="next-page" name="action" value="Next Page" />
+                    {% endif %}
+                </span>
+            </div>
         </div>
+        {% endif %}
     </form> 
     {% else %}
         <div id="image-container">
