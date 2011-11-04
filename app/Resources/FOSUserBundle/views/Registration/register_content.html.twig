@@ -1,9 +1,11 @@
 {% form_theme form theme %}
 
-<h2>Register</h2>
-<div class="lightWrap">
+<div class="page">
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+    <fieldset>
+    <legend>Register</legend>
     {{ form_widget(form) }}
+    </fieldset>
     <div class="centered">
         <input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>

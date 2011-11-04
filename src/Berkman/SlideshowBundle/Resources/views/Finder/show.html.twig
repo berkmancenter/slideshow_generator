@@ -34,30 +34,7 @@
             <div class="submit-buttons">
                 <span class="left col">
                     {% if finder.currentPage > 1 %}
-                    <input type="submit" id="previous-page" name="action" value="Previous Page" />
-                    {% endif %}
-                </span>
-                <span class="center col">
-                    <input type="submit" id="finish-search" name="action" value="Finish" />
-                </span>
-                <span class="right col">
-                    {% if finder.currentPage < finder.totalPages %}
-                    <input type="submit" id="next-page" name="action" value="Next Page" />
-                    {% endif %}
-                </span>
-            </div>
-        </div>
-
-        {% if imageGroups|length > 0 %}
-        <div id="image-group-result-container">
-            <h2>
-                {{ finder.totalResults }} results for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
-            </h2>
-            {{ macros.show_imageGroups(imageGroups, 'show_finderresults_imageGroups', 'slide_container', 'Add to slideshow') }}
-            <div class="submit-buttons">
-                <span class="left col">
-                    {% if finder.currentPage > 1 %}
-                    <input type="submit" id="previous-page" name="action" value="Previous Page" />
+                    <input type="submit" id="previous-page" name="action" value="&lt; Previous Page" />
                     {% endif %}
                 </span>
                 <span class="center col">
@@ -69,7 +46,34 @@
                 </span>
                 <span class="right col">
                     {% if finder.currentPage < finder.totalPages %}
-                    <input type="submit" id="next-page" name="action" value="Next Page" />
+                    <input type="submit" id="next-page" name="action" value="Next Page &gt;" />
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        {% if imageGroups|length > 0 %}
+        <div id="image-group-result-container">
+            <h2>
+                {{ finder.totalResults }} results for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
+            </h2>
+            {{ macros.show_imageGroups(imageGroups, 'ul', null, 'Add to slideshow') }}
+            <div class="submit-buttons">
+                <span class="left col">
+                    {% if finder.currentPage > 1 %}
+                    <input type="submit" id="previous-page" name="action" value="&lt; Previous Page" />
+                    {% endif %}
+                </span>
+                <span class="center col">
+                    {% if imageGroupId is defined %}
+                        <input type="submit" name="action" value="Back" />
+                        <input type="hidden" name="imageGroupId" value="{{ imageGroupId }}" />
+                    {% endif %}
+                    <input type="submit" id="finish-search" name="action" value="Finish" />
+                </span>
+                <span class="right col">
+                    {% if finder.currentPage < finder.totalPages %}
+                    <input type="submit" id="next-page" name="action" value="Next Page &gt;" />
                     {% endif %}
                 </span>
             </div>

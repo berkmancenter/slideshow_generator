@@ -458,6 +458,16 @@ class SlideshowController extends Controller
     }
 
     /**
+     * Displays the FAQ page
+     *
+     * @return Symfony Response
+     */
+    public function faqAction()
+    {
+        return $this->render('BerkmanSlideshowBundle:FAQ:show.html.twig');
+    }
+
+    /**
      * Create a form to delete a slide
      *
      * @param integer $id  Slideshow id

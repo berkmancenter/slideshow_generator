@@ -187,8 +187,8 @@ class FinderController extends Controller
             $catalogIds[] = $catalog->getId();
         }
 
-        if (in_array($request->get('action'), array('Next Page', 'Previous Page'))) {
-            $page = ($request->get('action') == 'Next Page') ?
+        if (in_array($request->get('action'), array('Next Page >', '< Previous Page'))) {
+            $page = ($request->get('action') == 'Next Page >') ?
                 $finder->getCurrentPage() + 1 : $finder->getCurrentPage() - 1;
             //This would mean we're browsing an image group
             if ($request->get('imageGroupId') != null) {

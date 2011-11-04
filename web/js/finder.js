@@ -23,11 +23,7 @@ $(function() {
                 success: function(data) {
                     $('#image-cart').show();
                     $('#image-count').html(data);
-                    $(e.target).css({
-                        'backgroundColor':'#8BBF71',
-                        'boxShadow':'0px 0px 7px #6587A8',
-                        'borderColor':'#6587A8'
-                    }).html('Added');
+                    $(e.target).addClass('added').html('Added');
                 },
                 type: 'POST'
             });

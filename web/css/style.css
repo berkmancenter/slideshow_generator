@@ -53,6 +53,24 @@ p {
 ul li {
     margin-bottom: 8px;
 }
+label {
+    min-width: 140px;
+    display: inline-block;
+}
+legend {
+    font-size: 2.2em;
+    font-weight: bold;
+}
+fieldset {
+    margin: 20px auto;
+}
+input[type=submit] {
+    font-family: "PT Sans";
+}
+textarea {
+    width: 75%;
+    height: 100px;
+}
 .flash {
     color: #2A2829;
     margin: 0 auto;
@@ -72,14 +90,6 @@ ul li {
 .error {
     background-color: #F0C0C0;
 }
-input[type=text], input[type=number], input[type=password], input[type=email] {
-    height: 40px;
-    border: 0;
-    padding: 0px 0px 0px 15px;
-    font-size: 1.5em;
-    margin: 0;
-    vertical-align: top;
-}
 button, input[type=submit], .buttoned {
     color: #FFF;
     font-weight: bold;
@@ -94,6 +104,14 @@ button, input[type=submit], .buttoned {
     vertical-align: middle;
     display: inline-block;
     font-size: 1.2em !important;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+}
+button:hover, input[type=submit]:hover, .buttoned:hover {
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FF4143), to(#6E2120));
+    background-image: -moz-linear-gradient(0% 0% 270deg,#E60103, #540100);
 }
 dt, .slideshow-title {
     font-weight: bold;
@@ -157,6 +175,11 @@ dd, .slideshow-author {
     padding: 0px 0px 30px;
     position: relative;
 }
+.page {
+    background-color: #292929;
+    padding: 20px;
+    padding-top: 5px;
+}
 /*-- Footer --*/
 #footer {
     height: 10px;
@@ -175,6 +198,16 @@ dd, .slideshow-author {
 }
 #finder_keyword {
     width: 280px;
+    height: 40px;
+    border: 0;
+    padding: 0px 0px 0px 15px;
+    font-size: 1.5em;
+    margin: 0;
+    vertical-align: top;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
 }
 .catalog-box {
     position: absolute;
@@ -250,8 +283,10 @@ dd, .slideshow-author {
 .image-groups li {
     height: 300px;
 }
-.images li img, .image-groups li img {
+.image img {
     margin-bottom: 10px;
+    max-width: 150px;
+    background-color: white;
 }
 .image-and-buttons {
     float: left;
@@ -314,6 +349,16 @@ dd, .slideshow-author {
 .right {
     text-align: right;
 }
+.added {
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8BBF71), to(#547344));
+    background-color: #8BBF71;
+    box-shadow:0px 0px 7px #6587A8;
+}
+.added:hover {
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8BBF71), to(#547344));
+    background-color: #8BBF71;
+    cursor: default;
+}
 
 /*---- Show slideshow page ----*/
 #embed_wrap {
@@ -344,6 +389,15 @@ dd, .slideshow-author {
 #slideshow-author {
     font-weight: normal;
     font-style: italic;
+}
+
+/*---- FAQ ----*/
+#faq p {
+    margin-left: 35px;
+}
+#faq ul {
+    list-style-type: disc;
+    margin-left: 70px;
 }
 /*.centered {
     text-align: center;
