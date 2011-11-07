@@ -1,0 +1,2707 @@
+<?xml version="1.0" encoding="UTF-8"?><via xmlns:xlink="http://www.w3.org/TR/xlink" xmlns:via="http://hul.harvard.edu/ois/xml/xsd/via/newvia.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://hul.harvard.edu/ois/xml/xsd/via/newvia_export.xsd" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/xsd/via/newvia_export.xsd http://hul.harvard.edu/ois/xml/xsd/via/newvia_export.xsd">
+
+<record>
+ <via_id>olvwork362417</via_id>
+ 
+  <work.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.ARCH:1131796</imagelink><restricted_image>false</restricted_image>
+   <thumblink>http://nrs.harvard.edu/urn-3:RAD.ARCH:1131796</thumblink>
+  </work.image>
+  <work.title>
+   <text>Woman with kitten Polly Ann</text>
+  </work.title>
+  <work.worktype>photographs</work.worktype>
+  
+  <work.date>ca. 1913</work.date>
+  <work.dimensions>3.5 x 3.5 inches</work.dimensions>
+  <work.associated_name>
+   <name>Radcliffe College</name>
+   <dates>n.d.</dates>
+   <place>Cambridge, Massachusetts, United States</place>
+   Radcliffe College n.d.
+  </work.associated_name>
+  <work.associated_name>
+   <name>Holman, Anna Eveleth</name>
+   <dates>1892-1969</dates>
+   Holman, Anna Eveleth 1892-1969
+  </work.associated_name>
+  
+   <work.topic>women</work.topic>
+   
+  
+  
+   <work.topic>portraits</work.topic>
+   
+  
+  
+   <work.topic>photographs</work.topic>
+  
+  
+   <work.topic>cats</work.topic>
+  
+  <work.material_or_technique>gelatin silver process</work.material_or_technique>
+  <work.related_work>
+   <text>Anna Eveleth Holman Papers, 1893-1967</text>
+  </work.related_work>
+  <work.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00768</link><description>Electronic Finding Aid available</description></work.related_info>
+  <work.use_restrictions>Radcliffe Archives:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Radcliffe Archives.</work.use_restrictions>
+  <work.repository>
+   <name>Radcliffe Archives</name>
+   <id>SC 17-1v-101</id>
+  </work.repository>
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>HUAM239588</via_id>
+ 
+  <work.image><imagelink>http://nrs.harvard.edu/urn-3:HUAM:INV184023_mddl</imagelink><restricted_image>false</restricted_image>
+   <thumblink>http://nrs.harvard.edu/urn-3:HUAM:INV184023_thumb</thumblink>
+  </work.image>
+  <work.title>
+   <text>Cat Sitting with a Kitten</text>
+  </work.title>
+  <work.item_id>
+   <type>Object Number</type>
+   <number>R4089</number>
+  </work.item_id>
+  <work.worktype>print</work.worktype>
+  <work.creator>
+   <name>Boissieu, Jean-Jacques de</name>
+   <dates>1736 - 1810</dates>
+   <nationality>French</nationality>
+   Boissieu, Jean-Jacques de 1736 - 1810
+  </work.creator>
+  
+   <work.topic>Prints</work.topic>
+  
+  
+   <work.nationality_or_culture>French</work.nationality_or_culture>
+  
+  <work.material_or_technique>Etching</work.material_or_technique>
+  <work.note>Print Authority: Cat. r. 122</work.note>
+  <work.note>Credit Line: Harvard Art Museum/Fogg Museum, Gift of Belinda L. Randall from the collection of John Witt Randall</work.note>
+  <work.copyright><statement>© President and Fellows of Harvard College</statement><link></link></work.copyright>
+  <work.repository>
+   <name>Harvard Art Museum</name>
+  </work.repository>
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvwork20023031</via_id>
+ 
+  <work.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:253602</imagelink><restricted_image>false</restricted_image>
+   <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:253603</thumblink>
+  </work.image>
+  <work.title>
+   <text>Howard Lane Blackwell and his uncle (probably Henry Browne Blackwell), resting on a lawn. Howard Lane Blackwell is lying on his side in the grass holding a kitten by its neck; Henry Browne Blackwell is asleep next to him with his hat on his chest.</text>
+  </work.title>
+  <work.worktype>photographs</work.worktype>
+  <work.worktype>gelatin silver prints</work.worktype>
+  
+  <work.date>ca. 1885-1886</work.date>
+  <work.dimensions>7x4.25 inches</work.dimensions>
+  <work.associated_name>
+   <name>Blackwell, Howard Lane</name>
+   <dates>1877-</dates>
+   <role>subject</role>
+   Blackwell, Howard Lane 1877-
+  </work.associated_name>
+  <work.associated_name>
+   <name>Blackwell, Henry Browne</name>
+   <dates>1825-1909</dates>
+   <role>subject</role>
+   Blackwell, Henry Browne 1825-1909
+  </work.associated_name>
+  
+   <work.topic>Men</work.topic>
+   
+  
+  
+   <work.topic>children</work.topic>
+   
+  
+  
+   <work.topic>aged</work.topic>
+   
+  
+  
+   <work.topic>Lawns</work.topic>
+  
+  
+   <work.topic>Sleep</work.topic>
+   
+  
+  
+   <work.topic>clothing and dress</work.topic>
+   
+  
+  
+   <work.topic>Hats</work.topic>
+   
+  
+  
+   <work.topic>pets</work.topic>
+   
+  
+  
+   <work.topic>family</work.topic>
+   
+  
+  
+   <work.topic>uncles</work.topic>
+   
+  
+  
+   <work.topic>Animals</work.topic>
+  
+  <work.note>Inscription: Verso: [crossed out: Ac] 3.</work.note>
+  <work.related_work>
+   <relationship>Is part of</relationship>
+   <text>Blackwell Family Papers. Folder: Photographs: Blackwell family arranged in birth order: Howard and Helen (Thomas) Blackwell (many taken by HLB): Howard and family (includes brother George Lawrence Blackwell). HOLLIS collection level record 002052619 . RLG collection level record MHVW91-A14.</text>
+  </work.related_work>
+  <work.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00050</link><description>Electronic Finding Aid</description></work.related_info>
+  <work.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</work.use_restrictions>
+  <work.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+   <id>MC411-1030-2</id>
+  </work.repository>
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031518</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290429</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290430</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Kitten on top of a table, pawing at a bird cage.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>10x8.125 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Recto: [scratched into negative:] 532-; Verso: 205</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-1</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031519</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290432</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290433</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat reclined on its side with a blanket over him and a towel on his forehead, as if sick (or drunk). A bottle of Bromo-Seltzer, a drinking glass, and a spoon are next to him. A photographer's backdrop is behind him.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>9.125x6.75 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: [twice:] 386 [stamped with photographer's name and address, with street address crossed out and followed by:] 6137 Glen Towers [negative sleeve:] "Drunk" cat</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-2</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031520</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290435</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290436</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat lying on a rug.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>7x8.625 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: [twice:] 387 [stamped with photographer's name and address, with street crossed out and followed by:] [in pencil:] 6137 Glen Towers</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-3</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031521</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283476</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283477</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Kitten seated on the back of a chair, in front of an open window.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>4.25x7.625 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Recto: [scratched into negative:] 5[?]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-4</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031522</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283479</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283480</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Kitten standing on the back of a chair, in front of an open window.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>8x4.625 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: {421}</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-5</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031524</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283482</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283483</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated, probably on a blanket.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>5x7 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: B 485 [stamped three times with photographer's name and address, with one of the addresses crossed out]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-7</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031525</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290438</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290439</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat reclined on a pillow. A piano is behind him, right.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>9.375x7.375 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: 838 [stamped twice with photographer's name and address, with one address crossed out]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-8</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031526</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290441</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290442</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat reclined on top of a table.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>7.375x9.375 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Cat 18 [stamped with photographer's name and address] {Boy Blue [?] 950}</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-9</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031527</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283485</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283486</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated on a table.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>3.25x6.75 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Cat 19 [in ink:] Chinchilla. [stamped twice with photographer's name and address, with one of the addresses crossed out] {Boy Blue [?]}</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-10</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031528</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283488</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283489</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated on a table.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>5.875x7.125 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: [stamped with photographer's name and address]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-11</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031529</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283491</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283492</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated on a mantle(?).</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>5x7 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Cat 30 [stamped three times with photographer's name and address, with two {Boy Blue [?]} of the addresses crossed out]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-12</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031530</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283494</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283495</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat reclined in an armchair.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>5.5x7.75 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: {964}</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-13</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031531</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290444</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290445</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>"Boy Blue" seated on top of a table next to a birdcage, looking down at a toy frog attached to a string.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>9.125x7.25 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Cat 17 [stamped twice with photographer's name and address, with one of the addresses crossed out] {Boy Blue 969}</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-14</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031532</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290447</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290448</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Boy Blue" reclined in a wicker basket filled with shredded paper</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>8x7.125 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Boy Blue [in black pencil:] 970 [in ink:] owned by - Miss Moffatt of N.Y. [stamped three times with photographer's name and address, with two addresses crossed out]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-15</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031533</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290450</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290451</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Unidentified cat (reclined in a wicker basket filled with shredded paper) and "Boy Blue" on top of a table.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>10x7.875 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: 972 [in ink:] 2 [stamped twice with photographer's name, address, and credit line]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-16</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031534</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283497</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:283498</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat reclined on top of a stool, and "dressed-up" with a teardrop necklace.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>6.125x7.875 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Caroline Scully - [in pencil:] 974 [stamped with photographer's name and address]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-17</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031535</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290453</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290454</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated on top of a stool, and "dressed-up" with a teardrop necklace.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>7.5x9.375 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Cat 10 [in ink:] Caroline Scully [in black pencil:] 975 [stamped with photographer's name and address]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-18</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031536</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290456</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290457</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated on top of a table, and "dressed-up" with a teardrop necklace.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>7.125x9 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Verso: Cat 4 [stamped with photographer's name and address]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-19</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031537</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290459</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:290460</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Cat seated on top of a stool, head turned to the right. Cat is "dressed-up" in a teardrop necklace.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>7.375x9 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Recto: [in negative[?]:] 972</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-20</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvgroup1002257</via_id>
+ 
+  <group.title>
+   <text>Twenty pet "portraits" of cats, all indoors and principally tabletop. See individual photos for additional description.</text>
+  </group.title>
+  <group.worktype>photographs</group.worktype>
+  <group.worktype>gelatin silver prints</group.worktype>
+  <group.worktype>postcards</group.worktype>
+  <group.worktype>photomontages</group.worktype>
+  <group.worktype>Christmas cards</group.worktype>
+  <group.production>
+   
+    <production_place>Hollywood, California, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  <group.production>
+   
+    <production_place>New York, New York, United States</production_place>
+    
+   
+   <role>place of production</role>
+  </group.production>
+  
+  <group.date>ca. 1903-1928</group.date>
+  
+   <group.topic>domestic animals</group.topic>
+   
+  
+  
+   <group.topic>pets</group.topic>
+   
+  
+  
+   <group.topic>Portraits</group.topic>
+   
+  
+  
+   <group.topic>household linens</group.topic>
+   
+  
+  
+   <group.topic>avaries</group.topic>
+   
+  
+  
+   <group.topic>Birds</group.topic>
+   
+  
+  
+   <group.topic>Bottles</group.topic>
+  
+  
+   <group.topic>Drinking glasses</group.topic>
+   
+  
+  
+   <group.topic>tableware</group.topic>
+   
+  
+  
+   <group.topic>Furniture</group.topic>
+   
+  
+  
+   <group.topic>Chairs</group.topic>
+  
+  
+   <group.topic>Tables</group.topic>
+   
+  
+  
+   <group.topic>Baskets</group.topic>
+   
+  
+  
+   <group.topic>Necklaces</group.topic>
+  
+  <group.note>Inscription: [See individual photos for captions.]</group.note>
+  <group.related_work>
+   <relationship>Is part of</relationship>
+   <text>Jessie Tarbox Beals Photographs. Folder: Professional Life: Pets, ca. 1905-1910: Cats [19-1]. RLG collection level record MHVW88-A481.</text>
+  </group.related_work>
+  <group.related_info><link>http://nrs.harvard.edu/urn-3:RAD.SCHL:sch00047</link><description>Electronic Finding Aid</description></group.related_info>
+  <group.repository>
+   <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+  </group.repository>
+  <group.subwork.component_id>olvwork20031538</group.subwork.component_id>
+   <group.subwork.image><imagelink>http://nrs.harvard.edu/urn-3:RAD.SCHL:285143</imagelink><restricted_image>false</restricted_image>
+    <thumblink>http://nrs.harvard.edu/urn-3:RAD.SCHL:285144</thumblink>
+   </group.subwork.image>
+   <group.subwork.title>
+    <text>Montage of eight photographs of cats, probably pinned to a wall and photographed from a number of feet away.</text>
+   </group.subwork.title>
+   <group.subwork.creator>
+    <name>Beals, Jessie Tarbox</name>
+    <dates>1870-1942</dates>
+    <place>United States</place>
+    <nationality>United States</nationality>
+    <role>photographer</role>
+    Beals, Jessie Tarbox 1870-1942
+   </group.subwork.creator>
+   
+   <group.subwork.date>ca. 1903-1928</group.subwork.date>
+   <group.subwork.dimensions>5.375x3.375 inches</group.subwork.dimensions>
+   <group.subwork.note>Inscription: [See individual photos for captions.] / Recto: Some cats I have taken Jessie Tarbox Beals 159/6th Ave N.Y. Merry Xmas. [stamped by U.S. Postal Service]; Verso: Miss Bertha Grace Bassett Moline Ill [affixed:] [United States stamp] [stamped twice by U.S. Postal Service]</group.subwork.note>
+   <group.subwork.use_restrictions>Schlesinger Library on the History of Women in America, Radcliffe Institute:This image may not be reproduced or transmitted in any form or by any means, electronic or mechanical, without permission in writing from the Schlesinger Library. Please contact the library at slref@radcliffe.edu.</group.subwork.use_restrictions>
+   <group.subwork.repository>
+    <name>Schlesinger Library on the History of Women in America, Radcliffe Institute</name>
+    <id>PC60-46-21</id>
+   </group.subwork.repository>
+  
+ 
+ 
+</record>
+
+
+<record>
+ <via_id>olvwork377224</via_id>
+ 
+  <work.image><imagelink>http://nrs.harvard.edu/urn-3:HLNC.MPCOL:4862911</imagelink><restricted_image>false</restricted_image>
+   <thumblink>http://nrs.harvard.edu/urn-3:HLNC.MPCOL:4862911</thumblink>
+  </work.image>
+  <work.title>
+   <text>Cat and kitten drinking milk, Stolac, Bosnia and Herzegovina</text>
+  </work.title>
+  <work.worktype>photographs</work.worktype>
+  <work.creator>
+   <name>Parry, Milman</name>
+   <dates>1902-1935</dates>
+   <place>United States</place>
+   <role>photographer</role>
+   Parry, Milman 1902-1935
+  </work.creator>
+  <work.creator>
+   <name>Lord, Albert Bates</name>
+   <dates>1912-1991</dates>
+   <place>United States</place>
+   <role>photographer</role>
+   Lord, Albert Bates 1912-1991
+  </work.creator>
+  
+  <work.date>between 1933 and 1935</work.date>
+  <work.dimensions>9 x 12 cm.</work.dimensions>
+  
+   <work.place_name>Stolac, Stolac, Federation of Bosnia and Herzegovina, Bosnia and Herzegovina</work.place_name>
+  
+  
+   <work.place_name>Yugoslavia</work.place_name>
+  
+  
+   <work.topic>cats</work.topic>
+  
+  <work.material_or_technique>gelatin silver process</work.material_or_technique>
+  <work.note>Inscription: Inscribed on verso: ST.</work.note>
+  <work.note>General: Photographed by Milman Parry or Albert Lord.</work.note>
+  <work.note>Historical: Born in Oakland, California, in 1902, Milman Parry was a classical scholar educated at the University of California and the Sorbonne. He taught at Harvard University from 1930 until his death in 1935. Parry pioneered the idea that Homer was an oral poet. He made two trips to Yugoslavia between 1933 and 1935 where he studied and recorded South Slavic heroic songs with the help of his assistant Albert Lord (1912-1991), a professor of Slavic and comparative literature at Harvard. Parry observed similarities between the songs he heard in Bosnia and the formulaic verse of Homer's Iliad. After his sudden death, Lord continued and expanded on Parry's research, returning to the Balkans from 1950 to 1951 and eventually documenting their work in the book The Singer of Tales (Harvard University Press, 1960).</work.note>
+  <work.copyright><statement>Copyright 2004, the Milman Parry Collection of Oral Literature and the President and Fellows of Harvard College. Please contact the curators at mpc@fas.harvard.edu with questions about the use of these materials.</statement><link></link></work.copyright>
+  <work.related_work>
+   <relationship>Part of</relationship>
+   <text>Milman Parry Collection of Oral Literature</text>
+  </work.related_work>
+  <work.related_info><link>http://nrs.harvard.edu/urn-3:hul.eresource:milparco</link><description>Milman Parry Collection of Oral Literature On-Line Database</description></work.related_info>
+  <work.use_restrictions>Milman Parry Collection of Oral Literature:Access to the Milman Parry Collection of Oral Literature housed in room C of Harvard University's Widener Library is by appointment only. Qualified scholars who wish to use the collection should contact the curatorial staff well in advance of intended visits. Prior notice of several weeks or more will ensure that researchers are able to read and audition the material which will be most useful to them.</work.use_restrictions>
+  <work.repository>
+   <name>Milman Parry Collection of Oral Literature</name>
+   <id>MPC0560</id>
+  </work.repository>
+ 
+ 
+</record>
+
+</via>
