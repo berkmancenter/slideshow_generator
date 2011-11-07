@@ -10,6 +10,7 @@ use Berkman\SlideshowBundle\Entity\Finder;
 use Berkman\SlideshowBundle\Form\SlideshowType;
 use Berkman\SlideshowBundle\Form\SlideshowChoiceType;
 use Berkman\SlideshowBundle\Form\ImportType;
+use Berkman\SlideshowBundle\Fetcher\ImportFetcherInterface;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;

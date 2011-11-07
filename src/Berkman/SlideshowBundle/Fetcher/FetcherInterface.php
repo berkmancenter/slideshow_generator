@@ -15,5 +15,4 @@ interface FetcherInterface {
     public function fetchImageMetadata(Entity\Image $image);
     public function importImage(array $args);
     public function getImportFormat();
-    public function hasCustomImporter();
 }

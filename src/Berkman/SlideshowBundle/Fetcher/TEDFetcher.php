@@ -166,11 +166,6 @@ class TEDFetcher extends Fetcher implements FetcherInterface {
         return '"Record URL (as NRS link)"';
     }
 
-    public function hasCustomImporter()
-    {
-        return false;
-    }
-
     private function getNodeContent($xpath, $nodeName, $contextNode = null)
     {
         $content = '';

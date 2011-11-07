@@ -172,6 +172,6 @@ class Catalog
 
     public function hasCustomImporter()
     {
-        return $this->getFetcher()->hasCustomImporter();
+        return $this->getFetcher() instanceof Fetcher\ImportFetcherInterface;
     }
 }

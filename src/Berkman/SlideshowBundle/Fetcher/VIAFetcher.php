@@ -1,5 +1,4 @@
 <?php
-
 namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
@@ -371,10 +370,5 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
     public function getImportInstructions()
     {
         return 'Download your portfolio from VIA, extract the contents from the ZIP file, and upload your Transformed_records.xml';
-    }
-
-    public function hasCustomImporter()
-    {
-        return true;
     }
 }
