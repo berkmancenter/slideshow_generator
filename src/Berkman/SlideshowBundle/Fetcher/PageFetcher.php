@@ -22,21 +22,24 @@ use Berkman\SlideshowBundle\Entity;
  * should be able to go back easily.
  */
 
-class PagedObjectFetcher extends Fetcher implements FetcherInterface {
+class PageFetcher extends Fetcher implements FetcherInterface {
 
     /*
-     * id_1 = paged-object id plus page number
-     * id_2 = hollis id of paged-object
-     * id_3 = image id
+     * id_1 = NRS id (which includes page number) e.g. FHCL.Hough:4730522?n=3
+     * id_2 = PDS id
+     * id_3 = hollis id of paged-object
+     * id_4 = image id
+     * id_5 = thumbnail id
+     * id_6 = page number
      */
 
     const PAGED_OBJECT_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=n&treeaction=expand&printThumbnails=true';
     const PAGED_OBJECT_LINKS_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/links/{paged-object-id}';
 
-    const RECORD_URL_PATTERN    = 'http://pds.lib.harvard.edu/pds/view/{id-1}';
-    const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/mods/hollis/{id-2}';
-    const IMAGE_URL_PATTERN     = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=2500&height=2500';
-    const THUMBNAIL_URL_PATTERN = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=150&height=150&usethumb=y';
+    const RECORD_URL_PATTERN    = 'http://nrs.harvard.edu/urn-3:{id-1}';
+    const METADATA_URL_PATTERN  = 'http://webservices.lib.harvard.edu/rest/mods/hollis/{id-3}';
+    const IMAGE_URL_PATTERN     = 'http://ids.lib.harvard.edu/ids/view/{id-4}?width=2500&height=2500';
+    const THUMBNAIL_URL_PATTERN = 'http://ids.lib.harvard.edu/ids/view/{id-4}?width=150&height=150&usethumb=y';
 
     const RESULTS_PER_PAGE = 25;
 
@@ -66,23 +69,12 @@ class PagedObjectFetcher extends Fetcher implements FetcherInterface {
     }
 
     /**
-     * Get search results
-     *
-     * @param string $keyword
-     * @param int $startIndex
-     * @param int $endIndex
-     * @return array An array of the form array('images' => $images, 'totalResults' => $totalResults)
-     */
-    public function getSearchResults($keyword, $startIndex, $endIndex) {}
-
-
-    /**
      * Get the metadata for a given image
      *
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return array An associative array where the key is the metadata field name and value is the value
      */
-    public function getMetadata(Entity\Image $image)
+    public function fetchImageMetadata(Entity\Image $image)
     {
         $metadata = array();
         $fields = array(
@@ -143,4 +135,38 @@ class PagedObjectFetcher extends Fetcher implements FetcherInterface {
     {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }   
+
+    public function getQRCodeUrl(Entity\Image $image)
+    {
+        return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
+    }
+
+    public function getImportFormat()
+    {
+        return '"Page URL as NRS link (Check "Cite This Resource")"';
+    }
+    
+    public function importImage(array $args)
+    {
+        $nrsUrl = $args[0];
+        $path = parse_url($nrsUrl, PHP_URL_PATH);
+        $nrsId = substr($path, strpos($path, ':') + 1);
+
+        $xpath = $this->fetchXpath($nrsUrl, true);
+        $xpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+
+        $matches = null;
+        $src = $xpath->query('//ns:frame[@name="citation"]')->item(0)->getAttribute('src'); 
+        preg_match('!/pds/view/(\d*)!', $src, $matches);
+        $pdsId = $matches[1];
+
+        $linksXpath = $this->fetchXpath(str_replace('{paged-object-id}', $pdsId, self::PAGED_OBJECT_LINKS_URL_PATTERN));
+        $linksXpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+        $matches = null;
+        $node = $linksXpath->query('//ns:a[@class="citLinksLine"][contains(.,"HOLLIS")]')->item(0);
+        preg_match('!HOLLIS (\d*)!', $node->textContent, $matches);
+        $hollisId = $matches[1];
+
+
+    }
 }

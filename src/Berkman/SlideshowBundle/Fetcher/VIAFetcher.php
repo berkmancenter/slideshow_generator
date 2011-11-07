@@ -3,7 +3,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherInterface, ImportFetcherInterface {
+class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherInterface, ImportFetcherInterface, SearchFetcherInterface {
 
     /*
      * id_1 = recordId

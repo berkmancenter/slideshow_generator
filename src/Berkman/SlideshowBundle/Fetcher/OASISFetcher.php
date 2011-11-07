@@ -3,7 +3,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class OASISFetcher extends Fetcher implements FetcherInterface {
+class OASISFetcher extends Fetcher implements FetcherInterface, SearchFetcherInterface {
 
     /*
      * id_1 = findingAidId - e.g. sch00055

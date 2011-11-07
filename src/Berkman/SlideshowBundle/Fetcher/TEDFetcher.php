@@ -3,7 +3,7 @@ namespace Berkman\SlideshowBundle\Fetcher;
 
 use Berkman\SlideshowBundle\Entity;
 
-class TEDFetcher extends Fetcher implements FetcherInterface {
+class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInterface {
 
     /*
      * id-1 = catalogI - e.g. mcz

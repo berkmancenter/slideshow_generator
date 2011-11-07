@@ -23,7 +23,17 @@ class Catalog
     /**
      * @var Berkman\SlideshowBundle\Fetcher $fetcher
      */
-    public $fetcher;
+    private $fetcher;
+
+    /**
+     * @var datetime $created
+     */
+    private $created;
+
+    /**
+     * @var datetime $updated
+     */
+    private $updated;
 
     /**
      * Set id
@@ -80,13 +90,10 @@ class Catalog
         else {
             //TODO: figure out a better way to do this stuff
             $className = '\\Berkman\\SlideshowBundle\\Fetcher\\'.$this->getId().'Fetcher';
-            if (class_exists($className)) {
-                $fetcher = new $className($this);
-            }
-            else {
-                #throw some exception
-            }
+            $fetcher = new $className($this);
+            $this->fetcher = $fetcher;
         }
+
         return $fetcher;
     }
 
@@ -113,16 +120,6 @@ class Catalog
     {
         return $this->getFetcher()->fetchImageGroupResults($keyword, $startIndex, $count);
     }
-
-    /**
-     * @var datetime $created
-     */
-    private $created;
-
-    /**
-     * @var datetime $updated
-     */
-    private $updated;
 
 
     /**
@@ -173,5 +170,10 @@ class Catalog
     public function hasCustomImporter()
     {
         return $this->getFetcher() instanceof Fetcher\ImportFetcherInterface;
+    }
+
+    public function isSearchable()
+    {
+        return $this->getFetcher() instanceof Fetcher\SearchFetcherInterface;
     }
 }
