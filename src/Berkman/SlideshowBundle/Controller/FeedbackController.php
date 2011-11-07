@@ -18,17 +18,33 @@ class FeedbackController extends Controller
             $form->bindRequest($request);
 
             if ($form->isValid()) {
+                $mailer = $this->get('mailer');
+
                 $message = \Swift_Message::newInstance()
-                    ->setSubject('Slideshow Generator Feedback')
+                    ->setSubject('Spectacle Feedback')
                     ->setFrom('jclark.symfony@gmail.com')
                     ->setTo('jclark+test@cyber.law.harvard.edu')
+                    ->setReturnPath('jclark+bounce@cyber.law.harvard.edu')
                     ->setBody($this->renderView('BerkmanSlideshowBundle:Feedback:email.txt.twig', array(
                         'message' => $form['message']->getData(),
                         'email' => $form['email']->getData()
                     )))
                 ;
 
-                $this->get('mailer')->send($message);
+                $mailer->send($message);
+
+                if ($form['cc']->getData() == true) {
+                    $userMessage = \Swift_Message::newInstance()
+                        ->setSubject('Spectacle Feedback')
+                        ->setFrom('jclark.symfony@gmail.com')
+                        ->setTo($form['email']->getData())
+                        ->setReturnPath('jclark+bounce@cyber.law.harvard.edu')
+                        ->setBody($this->renderView('BerkmanSlideshowBundle:Feedback:userEmail.txt.twig', array(
+                            'message' => $form['message']->getData()
+                        )))
+                    ;
+                    $mailer->send($userMessage);
+                }
 
                 $request->getSession()->setFlash('notice', 'Your feedback has been sent. Thank you!');
 
