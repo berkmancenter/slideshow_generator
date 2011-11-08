@@ -34,6 +34,7 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      */
 
     const PAGED_OBJECT_IMAGE_RECORD_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=t&n={page-number}';
+    const PAGED_OBJECT_THUMBNAIL_RECORD_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=c&n={page-number}';
     const PAGED_OBJECT_LINKS_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/links/{paged-object-id}';
 
     const RECORD_URL_PATTERN    = 'http://nrs.harvard.edu/urn-3:{id-1}?n={id-6}';
@@ -167,9 +168,12 @@ class PageFetcher extends Fetcher implements FetcherInterface {
         preg_match('!HOLLIS (\d*)!', $node->textContent, $matches);
         $hollisId = $matches[1];
 
-        $thumbnailUrl = $args[1];
+        $url = str_replace(array('{paged-object-id}', '{page-number}'), array($pdsId, $pageNumber), self::PAGED_OBJECT_THUMBNAIL_RECORD_URL_PATTERN);
+        $thumbnailRecordXpath = $this->fetchXpath($url);
+        $thumbnailRecordXpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+        $thumbnailSrc = $thumbnailRecordXpath->query('//ns:input[@id="thumbnail"]')->item(0)->getAttribute('src');
         $matches = null;
-        preg_match('!/view/(\d*)!', $thumbnailUrl, $matches);
+        preg_match('!/view/(\d*)!', $thumbnailSrc, $matches);
         $thumbnailId = $matches[1];
 
         $url = str_replace(array('{paged-object-id}', '{page-number}'), array($pdsId, $pageNumber), self::PAGED_OBJECT_IMAGE_RECORD_URL_PATTERN);
