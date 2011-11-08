@@ -439,6 +439,7 @@ class SlideshowController extends Controller
                             $imageId = $finder->addImage($image);
                             $finder->addSelectedImageResult($imageId);
                         } catch (\ErrorException $e) {
+                            error_log($e->getMessage());
                             $failed[] = $row;
                         }
                     }

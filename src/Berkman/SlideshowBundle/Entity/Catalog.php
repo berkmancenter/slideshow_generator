@@ -176,4 +176,54 @@ class Catalog
     {
         return $this->getFetcher() instanceof Fetcher\SearchFetcherInterface;
     }
+    /**
+     * @var boolean $isSearchable
+     */
+    private $isSearchable;
+
+    /**
+     * @var boolean $canImport
+     */
+    private $canImport;
+
+
+    /**
+     * Set isSearchable
+     *
+     * @param boolean $isSearchable
+     */
+    public function setIsSearchable($isSearchable)
+    {
+        $this->isSearchable = $isSearchable;
+    }
+
+    /**
+     * Get isSearchable
+     *
+     * @return boolean 
+     */
+    public function getIsSearchable()
+    {
+        return $this->isSearchable;
+    }
+
+    /**
+     * Set canImport
+     *
+     * @param boolean $canImport
+     */
+    public function setCanImport($canImport)
+    {
+        $this->canImport = $canImport;
+    }
+
+    /**
+     * Get canImport
+     *
+     * @return boolean 
+     */
+    public function getCanImport()
+    {
+        return $this->canImport;
+    }
 }

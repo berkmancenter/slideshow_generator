@@ -4,6 +4,7 @@ namespace Berkman\SlideshowBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Doctrine\ORM\EntityRepository;
 
 class FinderType extends AbstractType
 {
@@ -15,7 +16,8 @@ class FinderType extends AbstractType
                     'class' => 'Berkman\\SlideshowBundle\\Entity\\Catalog',
                     'property' => 'name',
                     'multiple' => true,
-                    'expanded' => true
+                    'expanded' => true,
+                    'query_builder' => function(EntityRepository $er) { return $er->createQueryBuilder('c')->where('c.isSearchable = ?1')->setParameter(1, true); }
                 )
             )
         ;

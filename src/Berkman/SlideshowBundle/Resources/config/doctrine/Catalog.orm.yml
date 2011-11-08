@@ -11,3 +11,7 @@ Berkman\SlideshowBundle\Entity\Catalog:
       type: datetime
     updated:
       type: datetime
+    isSearchable:
+      type: boolean
+    canImport:
+      type: boolean

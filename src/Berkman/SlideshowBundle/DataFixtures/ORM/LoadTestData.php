@@ -19,22 +19,37 @@ class LoadTestCatalogs implements FixtureInterface
 		$via->setName('Visual Information Access');
         $via->setCreated(new \DateTime('now'));
         $via->setUpdated(new \DateTime('now'));
+        $via->setIsSearchable(true);
+        $via->setCanImport(true);
 
         $oasis = new Catalog();
         $oasis->setId('OASIS');
         $oasis->setName('Online Archival Search Information System');
         $oasis->setCreated(new \DateTime('now'));
         $oasis->setUpdated(new \DateTime('now'));
+        $oasis->setIsSearchable(true);
+        $oasis->setCanImport(false);
         
         $ted = new Catalog();
         $ted->setId('TED');
         $ted->setName('Templated Databases');
         $ted->setCreated(new \DateTime('now'));
         $ted->setUpdated(new \DateTime('now'));
+        $ted->setIsSearchable(true);
+        $ted->setCanImport(false);
+
+        $page = new Catalog();
+        $page->setId('Page');
+        $page->setName('Paged Objects');
+        $page->setCreated(new \DateTime('now'));
+        $page->setUpdated(new \DateTime('now'));
+        $page->setIsSearchable(false);
+        $page->setCanImport(false);
 
 		$manager->persist($via);
         $manager->persist($oasis);
         $manager->persist($ted);
+        $manager->persist($page);
 
         // create a user
         $user = new Person();
