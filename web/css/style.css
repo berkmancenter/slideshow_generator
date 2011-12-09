@@ -10,12 +10,17 @@
  */
 
 /*---- General ----*/
+html, body {
+    height: 100%;
+}
 body {
     background-color: #000;
     color: #FFF;
     font-size: 14px;
     font-family: "PT Sans";
     overflow-y: scroll;
+    padding: 0.5% 3% 0;
+    height: 99%;
 }
 h1 {
     font-size: 3.5em;
@@ -125,7 +130,7 @@ dd, .slideshow-author {
 /*---- Template ----*/
 /*-- Header --*/
 #header {
-    margin: 10px 0 20px !important;
+    margin: 0px 0 20px !important;
 }
 #branding {
     white-space: nowrap;
@@ -171,9 +176,11 @@ dd, .slideshow-author {
 #wrapper {
     background-color: transparent;
     margin: 0px auto 0;
-    max-width: 1070px;
-    padding: 0px 0px 30px;
+    /* max-width: 1070px; 
+    padding: 0px 0px 30px; */
     position: relative;
+    min-width: 740px;
+    min-height: 100%;
 }
 .page {
     background-color: #292929;
@@ -189,6 +196,8 @@ dd, .slideshow-author {
     padding: 10px 0;
     text-align: center;
     color: white;
+    position: absolute;
+    bottom: 20px;
 }
 
 /*---- Front Page ----*/
@@ -231,7 +240,7 @@ dd, .slideshow-author {
 .block-container {
     text-align: center;
     overflow-y: auto;
-    max-height: 550px;
+    /* max-height: 550px; */
     border: 1px dotted #666;
     border-width: 1px 0 !important;
     margin: 25px auto;
@@ -336,6 +345,36 @@ dd, .slideshow-author {
 }
 
 /*---- Results Page ----*/
+#finder-results-tabs {
+    position: absolute;
+    bottom: 80px;
+    top: 100px;
+    width: 100%;
+}
+#finder-results-tabs > form {
+    height: 100%;
+}
+#image-result-container {
+    height: 100%;
+    position: relative;
+    padding: 0;
+}
+#image-result-container h2 {
+    margin: 15px;
+}
+#results-container {
+    position: absolute;
+    bottom: 100px;
+    top: 30px;
+    left: 15px;
+    right: 15px;
+}
+.submit-buttons {
+    position: absolute;
+    bottom: 65px;
+    left: 15px;
+    right: 15px;
+}
 .col {
     width: 33%;
     display: inline-block;

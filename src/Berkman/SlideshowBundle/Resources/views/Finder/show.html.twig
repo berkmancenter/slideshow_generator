@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<div id="finder-tabs">
+<div id="finder-results-tabs">
     <ul>
         <li><a href="#image-result-container">IMAGE RESULTS</a></li>
         {% if imageGroups|length > 0 %}
@@ -12,7 +12,7 @@
     </ul> 
     {% if finder.totalResults > 0 %}
     <form action="{{ path('finder_submit') }}" method="post" {# form_enctype(form) #}>
-        <div id="image-result-container">
+        <div class="result-container" id="image-result-container">
             <h2>
                 {{ finder.totalResults }} results for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
             </h2>
@@ -29,7 +29,7 @@
             {% endif %}
             
             {% if images|length > 0 %}
-            {{ macros.show_images(images, 'ul', null, 'Add to slideshow') }}
+            {{ macros.show_images(images, 'ul', null, 'Add to slideshow', 'results-container') }}
             {% endif %}
             <div class="submit-buttons">
                 <span class="left col">
@@ -53,7 +53,7 @@
         </div>
 
         {% if imageGroups|length > 0 %}
-        <div id="image-group-result-container">
+        <div class="result-container" id="image-group-result-container">
             <h2>
                 {{ finder.totalResults }} results for &quot;{{ finder.keyword }}&quot; &ndash; Page {{ finder.currentPage }} of {{ finder.totalPages }}
             </h2>
