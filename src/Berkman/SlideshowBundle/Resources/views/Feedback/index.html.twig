@@ -6,6 +6,13 @@
         <form action="{{ path('BerkmanSlideshowBundle_feedback') }}" method="post" {{ form_enctype(form) }}>
         <fieldset>
         <legend>Feedback</legend>
+        <div class="info-text">
+            <p>Thank you for letting us know what you think.</p>
+            <p>If you&apos;ve created a slideshow, tell us what motivated you to make one. Why did you do it? Who did you show it to, or share it with?</p>
+            <p>Do you have any suggestons for how we might improve Spectacle?</p>
+            <p>Please feel free to let us know that you love Spectacle. Your support and encouragement can help us justify sustaining and perhaps even further developing the service.</p>
+        </div>
+
         {{ form_widget(form) }}
         </fieldset>
         <div><button type="submit">Send</button></div>

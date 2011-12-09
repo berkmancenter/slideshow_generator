@@ -438,6 +438,12 @@ dd, .slideshow-author {
     list-style-type: disc;
     margin-left: 70px;
 }
+
+/*---- Feedback ----*/
+.info-text {
+    max-width: 600px;
+    padding: 20px;
+}
 /*.centered {
     text-align: center;
 }
