@@ -8,5 +8,15 @@
         <button type="submit">SEARCH</button>
     </div>
 
+    <div id="finder_catalogs">
+    {% for catalog in finderForm.catalogs %}
+        <div class="catalog-input">
+        <div class="left-input">{{ form_widget(catalog) }}</div>
+        {{ form_label(catalog) }}
+        {{ form_errors(catalog) }}
+        </div>
+    {% endfor %}
+    </div>
+
     {{ form_rest(finderForm) }}
 </form>

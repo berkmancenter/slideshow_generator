@@ -147,14 +147,14 @@ dd, .slideshow-author {
 }
 #home-link {
     text-decoration: none;
-    color: #ff0103;
+    color: white;
     letter-spacing: 16px;
     font-family: Forum;
     position: relative;
     left: 8px;
 }
 #tagline {
-    color: #fff;
+    color: #ccc;
     margin-top: 6px;
     font-weight: bold;
 }
@@ -199,6 +199,10 @@ dd, .slideshow-author {
     position: absolute;
     bottom: 20px;
 }
+#feedback-link {
+    color: red;
+    font-weight: bold;
+}
 
 /*---- Front Page ----*/
 #find-images {
@@ -223,6 +227,18 @@ dd, .slideshow-author {
     background-color: white;
     color: black;
     padding: 10px;
+}
+.left-input {
+    display: inline-block;
+    width: 20px;
+    vertical-align: top;
+}
+.catalog-input {
+    white-space: nowrap;
+    margin: 5px 0;
+}
+#finder_catalogs label {
+    white-space: normal;
 }
 #finder_catalogs {
     text-align: left;
