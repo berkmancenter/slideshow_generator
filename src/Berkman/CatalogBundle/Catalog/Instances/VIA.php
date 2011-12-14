@@ -1,9 +1,12 @@
 <?php
-namespace Berkman\SlideshowBundle\Fetcher;
+namespace Berkman\CatalogBundle\Catalog\Instances;
 
-use Berkman\SlideshowBundle\Entity;
+use Berkman\CatalogBundle\Catalog\Catalog;
+use Berkman\CatalogBundle\Catalog\Interfaces;
+use Berkman\CatalogBundle\Entity\Image;
+use Berkman\CatalogBundle\Entity\ImageGroup;
 
-class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherInterface, ImportFetcherInterface, SearchFetcherInterface {
+class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Interfaces\CustomImportInterface, Interfaces\ImageSearchInterface {
 
     /*
      * id_1 = recordId
@@ -13,6 +16,8 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * id_5 = imageId
      * id_6 = thumbnailId
      */
+    const NAME = 'Visual Information Access';
+    const ID = 'VIA';
 
     const SEARCH_URL_PATTERN    = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=format:matPhoto+branches-id:NET+{keyword}';
     const RECORD_URL_PATTERN    = 'http://via.lib.harvard.edu/via/deliver/deepLinkItem?recordId={id-1}&componentId={id-2}';
@@ -21,29 +26,15 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
     const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-6}';
     const QR_CODE_URL_PATTERN   = 'http://m.harvard.edu/libraries/detail?id=viaid%3A{id-1}';
 
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    private $catalog;
 
-    /**
-     * Construct the fetcher and associate with catalog
-     *
-     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    public function __construct(Entity\Catalog $catalog)
+    public function getId()
     {
-        $this->catalog = $catalog;
+        return self::ID;
     }
 
-    /**
-     * Get the catalog associated with this fetcher
-     *
-     * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    public function getCatalog()
+    public function getName()
     {
-        return $this->catalog;
+        return self::NAME;
     }
 
     /**
@@ -96,8 +87,8 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
                     $fullImageUrl = $fullImage->textContent;
                     $componentId = substr($fullImageUrl, strpos($fullImageUrl, ':', 5) + 1);
                     $imageId = $componentId;
-                    $image = new Entity\Image(
-                        $this->getCatalog(),
+                    $image = new Image(
+                        $this,
                         $recordId,
                         $componentId,
                         $metadataId,
@@ -109,7 +100,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
                         $results[] = $image;
                     } 
                     else {
-                        $imageGroup = new Entity\ImageGroup($this->getCatalog(), $recordId);
+                        $imageGroup = new ImageGroup($this, $recordId);
                         $imageGroup->addImages($image);
                         if ($imageGroup->isPublic()) {
                             $results[] = $imageGroup;
@@ -128,7 +119,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return array An associative array where the key is the metadata field name and value is the value
      */
-    public function fetchImageMetadata(Entity\Image $image)
+    public function getImageMetadata(Image $image)
     {
         $metadata = array();
         $fields = array(
@@ -160,7 +151,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
         return $metadata;
     }
 
-    public function isImagePublic(Entity\Image $image)
+    public function isImagePublic(Image $image)
     {
         $public = false;
         $xpath = $this->fetchXpath($this->fillUrl(self::METADATA_URL_PATTERN, $image));
@@ -172,7 +163,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
         return $public;
     }
 
-    public function isImageGroupPublic(Entity\ImageGroup $imageGroup)
+    public function isImageGroupPublic(ImageGroup $imageGroup)
     {
         $recordId = $imageGroup->getId1();
         $imageGroupUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);
@@ -188,7 +179,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * @param Berkman\SlideshowBundle\Entity\Image @image
      * @return string $imageUrl
      */
-    public function getImageUrl(Entity\Image $image)
+    public function getImageUrl(Image $image)
     {
         return $this->fillUrl(self::IMAGE_URL_PATTERN, $image);
     }
@@ -199,7 +190,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * @param Berkman\SlideshowBundle\Entity\Image @image
      * @return string $thumbnailUrl
      */
-    public function getThumbnailUrl(Entity\Image $image)
+    public function getImageThumbnailUrl(Image $image)
     {
         return $this->fillUrl(self::THUMBNAIL_URL_PATTERN, $image);
     }
@@ -210,12 +201,12 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return string $recordUrl
      */
-    public function getRecordUrl(Entity\Image $image)
+    public function getImageRecordUrl(Image $image)
     {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }   
 
-    public function getQRCodeUrl(Entity\Image $image)
+    public function getImageQRCodeUrl(Image $image)
     {
         return $this->fillUrl(self::QR_CODE_URL_PATTERN, $image);
     }
@@ -226,7 +217,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * @param Berkman\SlideshowBundle\Entity\ImageGroup $imageGroup
      * @return string $name
      */
-    public function fetchImageGroupMetadata(Entity\ImageGroup $imageGroup)
+    public function getImageGroupMetadata(ImageGroup $imageGroup)
     {
         $coverImage = $imageGroup->getCover();
         return $coverImage->getMetadata();
@@ -238,7 +229,7 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
      * @param Berkman\SlideshowBundle\Entity\ImageGroup $imageGroup
      * @return array
      */
-    public function fetchImageGroupResults(Entity\ImageGroup $imageGroup, $startIndex = null, $count = null)
+    public function fetchImageGroupResults(ImageGroup $imageGroup, $startIndex = null, $count = null)
     {
         $results = array();
         $recordId = $imageGroup->getId1();
@@ -263,8 +254,8 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
                     $metadataSubId = $recordIdentifier->textContent;
                     if (!empty($thumbnailId)) {
                         if ($i >= $startIndex && count($results) < $count) {
-                            $results[] = new Entity\Image(
-                                $this->getCatalog(),
+                            $results[] = new Image(
+                                $this,
                                 $recordId,
                                 $componentId,
                                 $metadataId,
@@ -300,8 +291,8 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
         $container = $link->parentNode->parentNode->parentNode;
         $thumbnailUrl = $xpath->query('.//img', $container)->item(0)->getAttribute('src');
         $thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
-        $image = new Entity\Image(
-            $this->getCatalog(),
+        $image = new Image(
+            $this,
             $recordId,
             $componentId,
             $metadataId,
@@ -317,9 +308,8 @@ class VIAFetcher extends Fetcher implements FetcherInterface, ImageGroupFetcherI
         return '"Bookmark URL"';
     }
 
-    public function getImagesFromImport(Entity\Batch $batch)
+    public function getImagesFromImport($file)
     {
-        $file = $batch->getFile();
         $fileContent = '';
         $images = array();
         $failed = 0;

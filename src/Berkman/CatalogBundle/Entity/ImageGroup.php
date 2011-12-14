@@ -1,8 +1,8 @@
 <?php
-
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Berkman\CatalogBundle\Entity\Catalog;
 
 /**
  * Berkman\SlideshowBundle\Entity\ImageGroup
@@ -25,6 +25,18 @@ class ImageGroup
     private $id_2;
 
     /**
+     * @var string $id_3
+     */
+    private $id_3;
+
+    /**
+     * @var string $id_4
+     */
+    private $id_4;
+
+
+
+    /**
      * @var Berkman\SlideshowBundle\Entity\ImageGroup
      */
     private $children;
@@ -43,11 +55,6 @@ class ImageGroup
      * @var Berkman\SlideshowBundle\Entity\Image
      */
     private $images;
-
-    /**
-     * @var boolean $public
-     */
-    private $public;
 
     public function __construct(Catalog $catalog, $id1, $id2 = null, $id3 = null, $id4 = null)
     {
@@ -127,11 +134,51 @@ class ImageGroup
     }
 
     /**
+     * Set id_3
+     *
+     * @param string $id3
+     */
+    public function setId3($id3)
+    {
+        $this->id_3 = $id3;
+    }
+
+    /**
+     * Get id_3
+     *
+     * @return string 
+     */
+    public function getId3()
+    {
+        return $this->id_3;
+    }
+
+    /**
+     * Set id_4
+     *
+     * @param string $id4
+     */
+    public function setId4($id4)
+    {
+        $this->id_4 = $id4;
+    }
+
+    /**
+     * Get id_4
+     *
+     * @return string 
+     */
+    public function getId4()
+    {
+        return $this->id_4;
+    }
+
+    /**
      * Add children
      *
      * @param Berkman\SlideshowBundle\Entity\ImageGroup $children
      */
-    public function addChildren(\Berkman\SlideshowBundle\Entity\ImageGroup $children)
+    public function addChildren(ImageGroup $children)
     {
         $this->children[] = $children;
     }
@@ -151,7 +198,7 @@ class ImageGroup
      *
      * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
      */
-    public function setCatalog(\Berkman\SlideshowBundle\Entity\Catalog $catalog)
+    public function setCatalog(Catalog $catalog)
     {
         $this->catalog = $catalog;
     }
@@ -171,7 +218,7 @@ class ImageGroup
      *
      * @param Berkman\SlideshowBundle\Entity\ImageGroup $parent
      */
-    public function setParent(\Berkman\SlideshowBundle\Entity\ImageGroup $parent)
+    public function setParent(ImageGroup $parent)
     {
         $this->parent = $parent;
     }
@@ -191,7 +238,7 @@ class ImageGroup
      *
      * @param Berkman\SlideshowBundle\Entity\Image $images
      */
-    public function addImages(\Berkman\SlideshowBundle\Entity\Image $images)
+    public function addImages(Image $images)
     {
         $this->images[] = $images;
     }
@@ -242,82 +289,12 @@ class ImageGroup
         return $this->images[0];
     }
 
-    public function getMetadata()
+    /**
+     * Pass getters and issers off to the catalog
+     */
+    public function __call($functionName, $arguments)
     {
-        return $this->catalog->getFetcher()->fetchImageGroupMetadata($this);
-    }
-
-    /**
-     * @var string $id_3
-     */
-    private $id_3;
-
-    /**
-     * @var string $id_4
-     */
-    private $id_4;
-
-
-    /**
-     * Set id_3
-     *
-     * @param string $id3
-     */
-    public function setId3($id3)
-    {
-        $this->id_3 = $id3;
-    }
-
-    /**
-     * Get id_3
-     *
-     * @return string 
-     */
-    public function getId3()
-    {
-        return $this->id_3;
-    }
-
-    /**
-     * Set id_4
-     *
-     * @param string $id4
-     */
-    public function setId4($id4)
-    {
-        $this->id_4 = $id4;
-    }
-
-    /**
-     * Get id_4
-     *
-     * @return string 
-     */
-    public function getId4()
-    {
-        return $this->id_4;
-    }
-
-    /**
-     * Get publicness of a imageGroup
-     *
-     * @return boolean
-     */
-    public function isPublic()
-    {
-        if (!isset($this->public)) {
-            $this->public = $this->getCatalog()->getFetcher()->isImageGroupPublic($this);
-        }
-        return $this->public;
-    }
-
-    /**
-     * Set publicness of a imageGroup
-     *
-     * @param boolean $public
-     */
-    public function setPublic($public)
-    {
-        $this->public = $public;
-    }
+        $nameArray = preg_split('/([[:upper:]][[:lower:]]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY)
+        $functionName = $nameArray[0] . 'ImageGroup' . array_slice($nameArray, 1);
+        return call_user_func_array(array($this->getCatalog(), $functionName), $arguments);
 }

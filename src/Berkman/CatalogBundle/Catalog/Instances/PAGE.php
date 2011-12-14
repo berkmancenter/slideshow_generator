@@ -1,8 +1,8 @@
 <?php
+namespace Berkman\CatalogBundle\Catalog\Instances;
 
-namespace Berkman\SlideshowBundle\Fetcher;
-
-use Berkman\SlideshowBundle\Entity;
+use Berkman\CatalogBundle\Catalog\Catalog;
+use Berkman\CatalogBundle\Entity\Image;
 
 /**
  * What do I want to happen here?
@@ -22,7 +22,7 @@ use Berkman\SlideshowBundle\Entity;
  * should be able to go back easily.
  */
 
-class PageFetcher extends Fetcher implements FetcherInterface {
+class PAGE extends Catalog {
 
     /*
      * id_1 = NRS id (which includes page number) e.g. FHCL.Hough:4730522?n=3
@@ -32,6 +32,9 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      * id_5 = thumbnail id
      * id_6 = page number
      */
+
+    const ID = 'PAGE';
+    const NAME = 'Paged Document Service';
 
     const PAGED_OBJECT_IMAGE_RECORD_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=t&n={page-number}';
     const PAGED_OBJECT_THUMBNAIL_RECORD_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=c&n={page-number}';
@@ -44,29 +47,14 @@ class PageFetcher extends Fetcher implements FetcherInterface {
 
     const RESULTS_PER_PAGE = 25;
 
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    private $catalog;
-
-    /**
-     * Construct the fetcher and associate with catalog
-     *
-     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    public function __construct(Entity\Catalog $catalog)
+    public function getId()
     {
-        $this->catalog = $catalog;
+        return self::ID;
     }
 
-    /**
-     * Get the catalogsitory associated with this fetcher
-     *
-     * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    public function getCatalog()
+    public function getName()
     {
-        return $this->catalog;
+        return self::NAME;
     }
 
     /**
@@ -75,7 +63,7 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return array An associative array where the key is the metadata field name and value is the value
      */
-    public function fetchImageMetadata(Entity\Image $image)
+    public function getImageMetadata(Image $image)
     {
         $metadata = array();
         $fields = array(
@@ -106,7 +94,7 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      * @param Berkman\SlideshowBundle\Entity\Image @image
      * @return string $imageUrl
      */
-    public function getImageUrl(Entity\Image $image)
+    public function getImageUrl(Image $image)
     {
         return $this->fillUrl(self::IMAGE_URL_PATTERN, $image);
     }
@@ -117,7 +105,7 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      * @param Berkman\SlideshowBundle\Entity\Image @image
      * @return string $thumbnailUrl
      */
-    public function getThumbnailUrl(Entity\Image $image)
+    public function getImageThumbnailUrl(Image $image)
     {
         return $this->fillUrl(self::THUMBNAIL_URL_PATTERN, $image);
     }
@@ -128,12 +116,12 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return string $recordUrl
      */
-    public function getRecordUrl(Entity\Image $image)
+    public function getImageRecordUrl(Image $image)
     {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }   
 
-    public function getQRCodeUrl(Entity\Image $image)
+    public function getImageQRCodeUrl(Image $image)
     {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }
@@ -192,6 +180,6 @@ class PageFetcher extends Fetcher implements FetcherInterface {
      * id_5 = thumbnail id
      * id_6 = page number
      */
-        return new Entity\Image($this->getCatalog(), $nrsId, $pdsId, $hollisId, $imageId, $thumbnailId, $pageNumber);
+        return new Image($this, $nrsId, $pdsId, $hollisId, $imageId, $thumbnailId, $pageNumber);
     }
 }

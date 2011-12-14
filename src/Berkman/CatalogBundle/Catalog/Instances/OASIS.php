@@ -1,49 +1,47 @@
 <?php
-namespace Berkman\SlideshowBundle\Fetcher;
+namespace Berkman\CatalogBundle\Catalog\Instances;
 
-use Berkman\SlideshowBundle\Entity;
+use Berkman\CatalogBundle\Catalog\Catalog;
+use Berkman\CatalogBundle\Catalog\Interfaces;
+use Berkman\CatalogBundle\Entity\Image;
 
-class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInterface {
+class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
 
     /*
-     * id-1 = catalogI - e.g. mcz
-     * id-2 = nrsId - e.g. FMUS.MCZ:2005-562425 
-     * id-3 = recordId - e.g. ARC 209-130
+     * id_1 = findingAidId - e.g. sch00055
+     * id_2 = nrsId - e.g. FHCL.HOUGH:2041389
+     * id_3 = imageId - e.g. 2425920
+     *
+        $findingAidId = $image->getId1();
+        $nrsId        = $image->getId2();
+        $imageId      = $image->getId3();
      *
      * Notes:
      * Some things need to be urlencoded sometimes (like id-6)
      *
      */
     
-    const SEARCH_URL_PATTERN    = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=system:ted+text:{keyword}+accesslevel:public+type:pds%20OR%20ids&start={start-index}&rows={count}';
-    const RECORD_URL_PATTERN    = 'http://ted.lib.harvard.edu/ted/deliver/~{id-1}/{id-3}';
-    const METADATA_URL_PATTERN  = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=system:ted+accesslevel:public+type:pds%20OR%20ids+nrsid:%22{id-2}%22';
+    const ID = 'OASIS';
+    const NAME = 'Online Archival Search Information System';
+
+    const SEARCH_URL_PATTERN    = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=text:{keyword}+accesslevel:public+type:pds%20OR%20ids&start={start-index}&rows={count}';
+    const RECORD_URL_PATTERN    = 'http://nrs.harvard.edu/urn-3:{id-2}';
+    //const RECORD_URL_PATTERN    = 'http://oasis.lib.harvard.edu/oasis/deliver/deepLink?_imageGroup=oasis&uniqueId={id-1}';
+    const METADATA_URL_PATTERN  = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=accesslevel:public+type:pds%20OR%20ids+nrsid:%22{id-2}%22';
     const IMAGE_URL_PATTERN     = 'http://nrs.harvard.edu/urn-3:{id-2}?width=2400&height=2400';
+    const IDS_IMAGE_URL_PATTERN     = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=2400&height=2400';
     const THUMBNAIL_URL_PATTERN = 'http://nrs.harvard.edu/urn-3:{id-2}?width=150&height=150&usethumb=y';
+    const IDS_THUMBNAIL_URL_PATTERN     = 'http://ids.lib.harvard.edu/ids/view/{id-3}?width=150&height=150&usethumb=y';
+    const PAGED_OBJECT_URL_PATTERN           = 'http://nrs.harvard.edu/urn-3:{id-2}?op=t';
 
-    /**
-     * @var Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    private $catalog;
-
-    /**
-     * Construct the fetcher and associate with catalog
-     *
-     * @param Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    public function __construct(Entity\Catalog $catalog)
+    public function getId()
     {
-        $this->catalog = $catalog;
+        return self::ID;
     }
 
-    /**
-     * Get the catalog associated with this fetcher
-     *
-     * @return Berkman\SlideshowBundle\Entity\Catalog $catalog
-     */
-    public function getCatalog()
+    public function getName()
     {
-        return $this->catalog;
+        return self::NAME;
     }
 
     /**
@@ -96,13 +94,25 @@ class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInter
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return array An associative array where the key is the metadata field name and value is the value
      */
-    public function fetchImageMetadata(Entity\Image $image)
+    public function getImageMetadata(Image $image)
     {
         $metadata = array();
+        $titles = array();
 
         $xpath = $this->fetchXpath($this->fillUrl(self::METADATA_URL_PATTERN, $image));
 
-        $metadata['Title'] = $this->getNodeContent($xpath, 'maintitle');
+        for ($i = 1; $i < 6; $i++) {
+            $title = $this->getNodeContent($xpath, 'objecttitle' . $i);
+            if (!empty($title)) {
+                $titles[] = $title;
+            }
+        }
+
+        if (!empty($titles)) {
+            $metadata['Title'] = implode(' — ', $titles);
+        }
+
+        $metadata['Finding Aid Title'] = $this->getNodeContent($xpath, 'maintitle');
 
         $metadata['Abstract'] = $this->getNodeContent($xpath, 'abstract');
 
@@ -115,9 +125,15 @@ class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInter
      * @param Berkman\SlideshowBundle\Entity\Image @image
      * @return string $imageUrl
      */
-    public function getImageUrl(Entity\Image $image)
+    public function getImageUrl(Image $image)
     {
-        return $this->fillUrl(self::IMAGE_URL_PATTERN, $image);
+        $pattern = self::IMAGE_URL_PATTERN; 
+        $imageId = $image->getId3();
+        if (!empty($imageId)) {
+            $pattern = self::IDS_IMAGE_URL_PATTERN;
+        } 
+
+        return $this->fillUrl($pattern, $image);
     }
 
     /**
@@ -126,9 +142,15 @@ class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInter
      * @param Berkman\SlideshowBundle\Entity\Image @image
      * @return string $thumbnailUrl
      */
-    public function getThumbnailUrl(Entity\Image $image)
+    public function getImageThumbnailUrl(Image $image)
     {
-        return $this->fillUrl(self::THUMBNAIL_URL_PATTERN, $image);
+        $pattern = self::THUMBNAIL_URL_PATTERN; 
+        $imageId = $image->getId3();
+        if (!empty($imageId)) {
+            $pattern = self::IDS_THUMBNAIL_URL_PATTERN;
+        } 
+
+        return $this->fillUrl($pattern, $image);
     }
 
     /**
@@ -137,12 +159,12 @@ class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInter
      * @param Berkman\SlideshowBundle\Entity\Image $image
      * @return string $recordUrl
      */
-    public function getRecordUrl(Entity\Image $image)
+    public function getImageRecordUrl(Image $image)
     {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }   
 
-    public function getQRCodeUrl(Entity\Image $image)
+    public function getImageQRCodeUrl($image)
     {
         return $this->getRecordUrl($image);
     }
@@ -199,9 +221,7 @@ class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInter
         $image        = null;
 
         // Get the finding aid id
-        $catalogId = $this->getNodeContent($xpath, 'repositorycode', $contextNode);
-        
-        $recordId = $this->getNodeContent($xpath, 'recordid', $contextNode);
+        $findingAidId = $this->getNodeContent($xpath, 'recordid', $contextNode);
 
         // Get the NRS id
         $nrsId = $this->getNodeContent($xpath, 'nrsid', $contextNode);
@@ -211,7 +231,28 @@ class TEDFetcher extends Fetcher implements FetcherInterface, SearchFetcherInter
 
         // If it's an image, create it and add it to results
         if ($type == 'ids') {
-                $image = new Entity\Image($this->getCatalog(), $catalogId, $nrsId, $recordId);
+                $image = new Image($this, $findingAidId, $nrsId);
+        }
+        // If it's a paged-object, we need to get the actual ID, as there doesn't appear to be
+        // an NRS link directly to the image
+        elseif ($type == 'pds') {
+            $objectUrl = str_replace('{id-2}', $nrsId, self::PAGED_OBJECT_URL_PATTERN);
+            $documentXpath = $this->fetchXpath($objectUrl, true);
+            $documentXpath->registerNamespace('ns', 'http://www.w3.org/1999/xhtml');
+
+            $imageNode = $documentXpath->query('//ns:img[contains(@src,"ids.lib.harvard.edu")]')->item(0);
+            if ($imageNode) {
+                $url = $imageNode->getAttribute('src');
+                $matches = array();
+                preg_match('!/ids/view/(\d+)\D!', $url, $matches);
+                if (isset($matches[1])) {
+                    $imageId = $matches[1];
+                }
+            }
+
+            if (isset($imageId)) {
+                $image = new Image($this, $findingAidId, $nrsId, $imageId);
+            }
         }
 
         if (isset($image)) {

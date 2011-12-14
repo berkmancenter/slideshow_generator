@@ -10,14 +10,19 @@ class FinderType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
+        /*$catalogChoices = array();
+        foreach ($catalogs as $catalog) {
+            if ($catalog->hasImageSearch() || $catalog->hasImageGroupSeach()) {
+                $catalogChoices[$catalog->getId()] = $catalog->getName();
+            }
+        }*/
+
         $builder
             ->add('keyword', null, array( 'label' => 'Keyword'))
-            ->add('catalogs', 'entity', array(
-                    'class' => 'Berkman\\SlideshowBundle\\Entity\\Catalog',
-                    'property' => 'name',
+            ->add('catalogs', 'choice', array(
+                    'choices' => $options['data']['choices'],
                     'multiple' => true,
-                    'expanded' => true,
-                    'query_builder' => function(EntityRepository $er) { return $er->createQueryBuilder('c')->where('c.isSearchable = ?1')->setParameter(1, true); }
+                    'expanded' => true
                 )
             )
         ;

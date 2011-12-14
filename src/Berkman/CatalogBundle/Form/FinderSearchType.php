@@ -1,22 +1,23 @@
 <?php
 
-namespace Berkman\SlideshowBundle\Form;
+namespace Berkman\CatalogBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Doctrine\ORM\EntityRepository;
 
-class CatalogType extends AbstractType
+class FinderSearchType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('id')
-            ->add('name')
+            ->add('keyword', null, array( 'label' => 'Keyword'))
+            ->add('catalogs')
         ;
     }
 
     public function getName()
     {
-        return 'catalog';
+        return 'finder';
     }
 }

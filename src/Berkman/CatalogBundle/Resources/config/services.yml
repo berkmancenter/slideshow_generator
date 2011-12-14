@@ -1,0 +1,11 @@
+parameters:
+    berkman_catalog.catalog_manager.class: Berkman\CatalogBundle\Entity\CatalogManager
+    berkman_catalog.finder.class: Berkman\CatalogBundle\Entity\Finder
+
+services:
+    berkman_catalog.catalog_manager:
+        class: %berkman_catalog.catalog_manager.class%
+        arguments: [%berkman_catalog.active_catalogs%]
+    berkman_catalog.finder:
+        class: %berkman_catalog.finder.class%
+        arguments: [@?berkman_catalog.catalog_manager]

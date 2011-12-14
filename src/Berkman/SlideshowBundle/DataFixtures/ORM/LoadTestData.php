@@ -3,6 +3,8 @@
 namespace Berkman\SlideshowBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Berkman\SlideshowBundle\Entity\Catalog;
 use Berkman\SlideshowBundle\Entity\Person;
 use Berkman\SlideshowBundle\Entity\Slideshow;
@@ -10,46 +12,21 @@ use Berkman\SlideshowBundle\Entity\Slide;
 use Berkman\SlideshowBundle\Entity\Image;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
-class LoadTestCatalogs implements FixtureInterface
+class LoadTestCatalogs implements FixtureInterface, ContainerAwareInterface
 {
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
 	public function load($manager)
 	{
-		$via = new Catalog();
-		$via->setId('VIA');
-		$via->setName('Visual Information Access');
-        $via->setCreated(new \DateTime('now'));
-        $via->setUpdated(new \DateTime('now'));
-        $via->setIsSearchable(true);
-        $via->setCanImport(true);
-
-        $oasis = new Catalog();
-        $oasis->setId('OASIS');
-        $oasis->setName('Online Archival Search Information System');
-        $oasis->setCreated(new \DateTime('now'));
-        $oasis->setUpdated(new \DateTime('now'));
-        $oasis->setIsSearchable(true);
-        $oasis->setCanImport(false);
-        
-        $ted = new Catalog();
-        $ted->setId('TED');
-        $ted->setName('Templated Databases');
-        $ted->setCreated(new \DateTime('now'));
-        $ted->setUpdated(new \DateTime('now'));
-        $ted->setIsSearchable(true);
-        $ted->setCanImport(false);
-
-        $page = new Catalog();
-        $page->setId('Page');
-        $page->setName('Paged Objects');
-        $page->setCreated(new \DateTime('now'));
-        $page->setUpdated(new \DateTime('now'));
-        $page->setIsSearchable(false);
-        $page->setCanImport(false);
-
-		$manager->persist($via);
-        $manager->persist($oasis);
-        $manager->persist($ted);
-        $manager->persist($page);
+        $catalogManager = $this->container->get('berkman_catalog.catalog_manager');
+		$via = 'VIA';
+		$oasis = 'OASIS';
+		$ted = 'TED';
 
         // create a user
         $user = new Person();

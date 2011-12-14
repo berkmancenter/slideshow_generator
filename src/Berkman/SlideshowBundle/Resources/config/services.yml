@@ -1,5 +1,9 @@
+parameters:
+    berkman_slideshow.image.class: Berkman\SlideshowBundle\Entity\Image
+    berkman_slideshow.image_group.class: Berkman\SlideshowBundle\Entity\ImageGroup
+
 services:
-    slideshow_twig_extension:
-        class: Berkman\SlideshowBundle\Twig\Extension\SlideshowExtension
-        tags: 
-            - { name: twig.extension }
+    berkman_slideshow.image:
+        class: %berkman_slideshow.image.class%
+    berkman_slideshow.image_group:
+        class: %berkman_slideshow.image_group.class%

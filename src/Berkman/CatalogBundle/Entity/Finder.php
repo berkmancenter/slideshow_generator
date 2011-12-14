@@ -1,21 +1,19 @@
 <?php
-
-namespace Berkman\SlideshowBundle\Entity;
+namespace Berkman\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Berkman\SlideshowBundle\Entity\Finder
+ *
+ * Notes:
+ *   This has an image collection and an image group collection.
+ *   Every image and imageGroup is assigned an ID based on the count
+ *   Current and selected images and image groups are just arrays of the IDs
  */
 class Finder
 {
     const RESULTS_PER_PAGE = 25;
-
-    /**
-     * @var integer $id
-     */
-    private $id;
 
     /**
      * @var string $keyword
@@ -23,9 +21,9 @@ class Finder
     private $keyword;
 
     /**
-     * @var array $hierarchy_stack
+     * @var array $history_stack
      */
-    private $hierarchy_stack;
+    private $history_stack;
 
     /**
      * @var integer $current_page
@@ -77,18 +75,18 @@ class Finder
      */
     private $selected_image_results;
 
-    public function __construct($catalogs = null)
+    public function __construct($catalogManager = null)
     {
         $this->images                     = array();
         $this->imageGroups                = array();
         $this->current_image_results      = array();
         $this->current_imageGroup_results = array();
         $this->selected_image_results     = array();
-        $this->hierarchy_stack              = array();
+        $this->history_stack              = array();
         $this->results_per_page           = self::RESULTS_PER_PAGE;
         $this->current_page               = 1;
-        if (isset($catalogs)) {
-            $this->catalogs                  = $catalogs;
+        if (isset($catalogManager)) {
+            $this->catalogs               = $catalogManager->getCatalog();
         }
     }
     
@@ -446,24 +444,24 @@ class Finder
         $this->selected_image_results = $selectedImageResults;
     }
 
-    public function getHierarchyStack()
+    public function getHistoryStack()
     {
-        return $this->hierarchy_stack;
+        return $this->history_stack;
     }
 
-    public function setHierarchyStack(array $stack)
+    public function setHistoryStack(array $stack)
     {
-        $this->hierarchy_stack = $stack;
+        $this->history_stack = $stack;
     }
 
-    public function pushHierarchyStack($uri)
+    public function pushHistoryStack($uri)
     {
-        $this->hierarchy_stack[] = $uri;
+        $this->history_stack[] = $uri;
     }
 
-    public function popHierarchyStack()
+    public function popHistoryStack()
     {
-        return array_pop($this->hierarchy_stack);
+        return array_pop($this->history_stack);
     }
 
     /**

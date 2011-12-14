@@ -1,8 +1,8 @@
 <?php
-
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Berkman\CatalogBundle\Entity\Catalog;
 
 /**
  * Berkman\SlideshowBundle\Entity\Image
@@ -45,14 +45,9 @@ class Image
     private $id_6;
 
     /**
-     * @var boolean $public
-     */
-    private $public;
-
-    /**
      * @var Berkman\SlideshowBundle\Entity\Catalog
      */
-    private $from_catalog;
+    private $catalog;
 
     /**
      * Construct an image from its parts
@@ -63,9 +58,9 @@ class Image
      * @param string $id3
      * @param string $id4
      */
-    public function __construct(Catalog $fromCatalog, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
+    public function __construct(Catalog $catalog, $id1, $id2 = null, $id3 = null, $id4 = null, $id5 = null, $id6 = null)
     {
-        $this->setFromCatalog($fromCatalog);
+        $this->setCatalog($catalog);
         $this->setId1($id1);
         $this->setId2($id2);
         $this->setId3($id3);
@@ -219,9 +214,9 @@ class Image
      *
      * @param Berkman\SlideshowBundle\Entity\Catalog $fromCatalog
      */
-    public function setFromCatalog(\Berkman\SlideshowBundle\Entity\Catalog $fromCatalog)
+    public function setCatalog(Catalog $catalog)
     {
-        $this->from_catalog = $fromCatalog;
+        $this->catalog = $catalog;
     }
 
     /**
@@ -229,81 +224,18 @@ class Image
      *
      * @return Berkman\SlideshowBundle\Entity\Catalog $fromCatalog
      */
-    public function getFromCatalog()
+    public function getCatalog()
     {
-        return $this->from_catalog;
+        return $this->catalog;
     }
 
     /**
-     * Get the metadata for this image
-     *
-     * @return array An associative array where the key is the metadata field name and value is the value
+     * Pass getters and issers off to the catalog
      */
-
-    public function getMetadata()
+    public function __call($functionName, $arguments)
     {
-        try {
-            return $this->getFromCatalog()->getFetcher()->fetchImageMetadata($this);
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * Get the full image url
-     *
-     * @return string $imageUrl
-     */
-    public function getImageUrl()
-    {
-        return $this->getFromCatalog()->getFetcher()->getImageUrl($this);
-    }
-
-    /**
-     * Get the thumbnail url 
-     *
-     * @return string $thumbnailUrl
-     */
-    public function getThumbnailUrl()
-    {
-        return $this->getFromCatalog()->getFetcher()->getThumbnailUrl($this);
-    }
-
-    /**
-     * Get the authoritative record url
-     *
-     * @return string $recordUrl
-     */
-    public function getRecordUrl()
-    {
-        return $this->getFromCatalog()->getFetcher()->getRecordUrl($this);
-    }   
-
-    public function getQRCodeUrl()
-    {
-        return $this->getFromCatalog()->getFetcher()->getQRCodeUrl($this);
-    }
-
-    /**
-     * Set public
-     *
-     * @param boolean $public
-     */
-    public function setPublic($public)
-    {
-        $this->public = $public;
-    }
-
-    /**
-     * Get public
-     *
-     * @return boolean 
-     */
-    public function isPublic()
-    {
-        if (!isset($this->public)) {
-            $this->public = $this->getFromCatalog()->getFetcher()->isImagePublic($this);
-        }
-        return $this->public;
+        $nameArray = preg_split('/([[:upper:]][[:lower:]]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY)
+        $functionName = $nameArray[0] . 'Image' . array_slice($nameArray, 1);
+        return call_user_func_array(array($this->getCatalog(), $functionName), $arguments);
     }
 }
