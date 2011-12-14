@@ -2,6 +2,7 @@
 namespace Berkman\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Berkman\CatalogBundle\Catalog\Catalog;
 
 /**
  * Berkman\SlideshowBundle\Entity\Finder
@@ -86,7 +87,7 @@ class Finder
         $this->results_per_page           = self::RESULTS_PER_PAGE;
         $this->current_page               = 1;
         if (isset($catalogManager)) {
-            $this->catalogs               = $catalogManager->getCatalog();
+            $this->catalogs               = $catalogManager->getCatalogs();
         }
     }
     
@@ -209,7 +210,7 @@ class Finder
      *
      * @param Berkman\SlideshowBundle\Entity\Catalog $catalogs
      */
-    public function addCatalogs(\Berkman\SlideshowBundle\Entity\Catalog $catalogs)
+    public function addCatalogs(Catalog $catalogs)
     {
         $this->catalogs[] = $catalogs;
     }
@@ -234,11 +235,15 @@ class Finder
      */
     public function getCatalogs()
     {
-        if ($this->catalogs instanceof ArrayCollection) {
-            return $this->catalogs;
-        }
-        else {
-            return new ArrayCollection($this->catalogs);
+        return $this->catalogs;
+    }
+
+    public function getCatalog($id)
+    {
+        foreach($this->catalogs as $catalog) {
+            if ($catalog->getId() == $id) {
+                return $catalog;
+            }
         }
     }
 

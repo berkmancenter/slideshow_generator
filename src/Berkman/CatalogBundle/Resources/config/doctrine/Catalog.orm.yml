@@ -1,4 +1,4 @@
-Berkman\CatalogBundle\Entity\Catalog:
+Berkman\CatalogBundle\Catalog\Catalog:
   type: entity
   id:
     id:

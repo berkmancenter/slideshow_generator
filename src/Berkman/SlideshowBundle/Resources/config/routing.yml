@@ -1,22 +1,10 @@
-BerkmanSlideshowBundle_catalog:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/catalog.yml"
-    prefix:   /catalog
-
 BerkmanSlideshowBundle_slideshow:
     resource: "@BerkmanSlideshowBundle/Resources/config/routing/slideshow.yml"
     prefix:   /slideshow
 
-BerkmanSlideshowBundle_finder:
-    resource: "@BerkmanSlideshowBundle/Resources/config/routing/finder.yml"
-    prefix:   /find
-
 BerkmanSlideshowBundle_feedback:
     pattern:  /feedback
     defaults: { _controller: BerkmanSlideshowBundle:Feedback:index }
-
-BerkmanSlideshowBundle_homepage:
-    pattern:  /
-    defaults: { _controller: BerkmanSlideshowBundle:Finder:index }
 
 BerkmanSlideshowBundle_faqs: 
     pattern: /faq

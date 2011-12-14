@@ -1,3 +1,12 @@
-BerkmanCatalogBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: BerkmanCatalogBundle:Default:index }
+BerkmanSlideshowBundle_homepage:
+    pattern:  /
+    defaults: { _controller: BerkmanCatalogBundle:Finder:index }
+
+BerkmanSlideshowBundle_catalog:
+    resource: "@BerkmanCatalogBundle/Resources/config/routing/catalog.yml"
+    prefix:   /catalog
+
+BerkmanSlideshowBundle_finder:
+    resource: "@BerkmanCatalogBundle/Resources/config/routing/finder.yml"
+    prefix:   /find
+

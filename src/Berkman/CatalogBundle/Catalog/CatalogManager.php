@@ -5,10 +5,10 @@ class CatalogManager {
 
     private $catalogs;
 
-    public function __construct(array $catalogSlugs)
+    public function __construct(array $catalogIds)
     {
-        foreach ($catalogSlugs as $catalogSlug) {
-            $className = '\\Berkman\\CatalogBundle\\Catalog\\Instances\\' . $catalogSlug;
+        foreach ($catalogIds as $catalogId) {
+            $className = '\\Berkman\\CatalogBundle\\Catalog\\Instances\\' . $catalogId;
             $this->addCatalog(new $className());
         }
     }

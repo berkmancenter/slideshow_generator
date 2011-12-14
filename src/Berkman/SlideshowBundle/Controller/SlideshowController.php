@@ -422,34 +422,6 @@ class SlideshowController extends Controller
             }
         }
 
-        if ('POST' == $request->getMethod()) {
-            $masterForm->bindRequest($request);
-            if ($masterForm->isValid()) {
-                $failed = array();
-                $file = $masterForm['attachment']->getData();
-                $file = $file->openFile();
-                $file->setFlags(\SplFileObject::READ_CSV);
-                foreach ($file as $row) {
-                    if (isset($row[1])) {
-                        $catalog = $row[0];
-                        $args = array_slice($row, 1);
-                        $catalog = $em->getRepository('BerkmanSlideshowBundle:Catalog')->find($catalog);
-                        try {
-                            $image = $catalog->getFetcher()->importImage($args);
-                            $imageId = $finder->addImage($image);
-                            $finder->addSelectedImageResult($imageId);
-                        } catch (\ErrorException $e) {
-                            error_log($e->getMessage());
-                            $failed[] = $row;
-                        }
-                    }
-                }
-                error_log(count($failed) . ' images failed to import: ' . print_r($failed, true));
-                $this->setFinder($finder);
-
-                return $this->redirect($this->generateUrl('slideshow_add_images'));
-            }
-        }
 
         return $this->render('BerkmanSlideshowBundle:Slideshow:import.html.twig', array(
             'master_form' => $masterForm->createView(),

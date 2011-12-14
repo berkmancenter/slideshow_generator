@@ -5,9 +5,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Cookie;
 
 use Berkman\CatalogBundle\Entity\Finder;
-use Berkman\SlideshowBundle\Form\FinderType;
-use Berkman\SlideshowBundle\Form\FinderResultsType;
-use Berkman\SlideshowBundle\Form\ImportType;
+use Berkman\CatalogBundle\Form\Finder\SearchType;
+use Berkman\CatalogBundle\Form\Finder\SelectType;
+use Berkman\CatalogBundle\Form\Finder\MasterImportType;
+use Berkman\CatalogBundle\Form\Finder\CustomImportType;
+use Berkman\CatalogBundle\Form\ImportType;
 
 /**
  * Finder controller.
@@ -32,8 +34,9 @@ class FinderController extends Controller
         $em         = $this->getDoctrine()->getEntityManager();
         $slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
         $finder     = new Finder($this->container->get('berkman_catalog.catalog_manager'));
-        $finderForm = $this->createForm(new FinderSearchType(), $finder);
-        $importForm = $this->createForm(new FinderImportType(), $finder);
+        $finderForm = $this->createForm(new SearchType(), $finder);
+        $masterImportForm = $this->createForm(new MasterImportType($finder));
+        $customImportForm = $this->createForm(new CustomImportType(), $finder);
         $request    = $this->getRequest();
 
         if ('POST' === $request->getMethod()) {

@@ -164,7 +164,7 @@ class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
         return $this->fillUrl(self::RECORD_URL_PATTERN, $image);
     }   
 
-    public function getImageQRCodeUrl($image)
+    public function getImageQRCodeUrl(Image $image)
     {
         return $this->getRecordUrl($image);
     }

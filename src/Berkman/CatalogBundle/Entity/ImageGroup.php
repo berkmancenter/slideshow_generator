@@ -2,7 +2,7 @@
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Berkman\CatalogBundle\Entity\Catalog;
+use Berkman\CatalogBundle\Catalog\Catalog;
 
 /**
  * Berkman\SlideshowBundle\Entity\ImageGroup

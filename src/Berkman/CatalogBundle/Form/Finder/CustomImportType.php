@@ -1,23 +1,20 @@
 <?php
-
-namespace Berkman\CatalogBundle\Form;
+namespace Berkman\CatalogBundle\Form\Finder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
-use Doctrine\ORM\EntityRepository;
 
-class FinderSearchType extends AbstractType
+class CustomImportType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('keyword', null, array( 'label' => 'Keyword'))
-            ->add('catalogs')
+            ->add('attachment', 'file')
         ;
     }
 
     public function getName()
     {
-        return 'finder';
+        return 'custom_import';
     }
 }
