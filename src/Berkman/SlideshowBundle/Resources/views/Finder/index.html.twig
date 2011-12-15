@@ -38,7 +38,7 @@
                     <li class="slideshow">
                         <a href="{{ path('slideshow_show', { 'id': slideshow.id }) }}">
                             {% if slideshow.slides[0] is defined %}
-                            <img src="{{ slideshow.slides[0].image.thumbnailUrl }}" alt="{{ slideshow.id }}" />
+                            <img src="{{ slideshow.slides[0].thumbnailUrl }}" alt="{{ slideshow.id }}" />
                             <div class="slideshow-title">{{ slideshow.name }}</div>
                             <div class="slideshow-author">by {{ slideshow.person.username }}</div>
                             {% endif %}

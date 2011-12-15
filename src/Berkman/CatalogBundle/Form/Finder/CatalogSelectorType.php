@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Berkman\CatalogBundle\Entity\Finder;
 use Berkman\CatalogBundle\Form\Finder\DataTransformer\FinderToCatalogsTransformer;
 
-class SearchType extends AbstractType
+class CatalogSelectorType extends AbstractType
 {
     /*private $choices;
 
@@ -23,14 +23,29 @@ class SearchType extends AbstractType
 
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder
-            ->add('keyword', 'text', array( 'label' => 'Keyword'))
-            ->add('catalogs', 'catalog_selector', $options)
-        ;
+        $transformer = new FinderToCatalogsTransformer();
+        $builder->prependClientTransformer($transformer);
+    }
+
+    public function getParent(array $options)
+    {
+        return 'choice';
+    }
+
+    public function getDefaultOptions(array $options)
+    {
+        $defaultOptions = array(
+            'multiple'          => true,
+            'expanded'          => true,
+            'choices'           => 
+        );
+
+        $options = array_replace($defaultOptions, $options);
+        return $defaultOptions;
     }
 
     public function getName()
     {
-        return 'finder_search';
+        return 'catalog_selector';
     }
 }

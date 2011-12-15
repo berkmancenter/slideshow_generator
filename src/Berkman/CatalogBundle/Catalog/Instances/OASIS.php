@@ -1,8 +1,8 @@
 <?php
 namespace Berkman\CatalogBundle\Catalog\Instances;
 
-use Berkman\CatalogBundle\Catalog\Catalog;
 use Berkman\CatalogBundle\Catalog\Interfaces;
+use Berkman\CatalogBundle\Entity\Catalog;
 use Berkman\CatalogBundle\Entity\Image;
 
 class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
@@ -21,8 +21,8 @@ class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
      *
      */
     
-    const ID = 'OASIS';
-    const NAME = 'Online Archival Search Information System';
+    private $id = 'OASIS';
+    private $name = 'Online Archival Search Information System';
 
     const SEARCH_URL_PATTERN    = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=text:{keyword}+accesslevel:public+type:pds%20OR%20ids&start={start-index}&rows={count}';
     const RECORD_URL_PATTERN    = 'http://nrs.harvard.edu/urn-3:{id-2}';
@@ -36,12 +36,12 @@ class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
 
     public function getId()
     {
-        return self::ID;
+        return $this->id;
     }
 
     public function getName()
     {
-        return self::NAME;
+        return $this->name;
     }
 
     /**

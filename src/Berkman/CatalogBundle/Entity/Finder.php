@@ -2,7 +2,7 @@
 namespace Berkman\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Berkman\CatalogBundle\Catalog\Catalog;
+use Berkman\CatalogBundle\Entity\Catalog;
 
 /**
  * Berkman\SlideshowBundle\Entity\Finder

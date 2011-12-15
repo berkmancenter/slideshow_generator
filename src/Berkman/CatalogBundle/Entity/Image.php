@@ -1,8 +1,9 @@
 <?php
-namespace Berkman\SlideshowBundle\Entity;
+namespace Berkman\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Berkman\CatalogBundle\Entity\Catalog;
+use Berkman\CatalogBundle\Catalog\CatalogManager;
 
 /**
  * Berkman\SlideshowBundle\Entity\Image
@@ -216,7 +217,7 @@ class Image
      */
     public function setCatalog(Catalog $catalog)
     {
-        $this->catalog = $catalog;
+        $this->catalog = $catalog->getId();
     }
 
     /**
@@ -226,16 +227,18 @@ class Image
      */
     public function getCatalog()
     {
-        return $this->catalog;
+        $catalogManager = new CatalogManager;
+        return $catalogManager->getCatalog($this->catalog);
     }
 
     /**
-     * Pass getters and issers off to the catalog
+     * Pass getters off to the catalog
      */
     public function __call($functionName, $arguments)
     {
-        $nameArray = preg_split('/([[:upper:]][[:lower:]]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY)
-        $functionName = $nameArray[0] . 'Image' . array_slice($nameArray, 1);
-        return call_user_func_array(array($this->getCatalog(), $functionName), $arguments);
+        $nameArray = preg_split('/([A-Z][a-z]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+        if ($nameArray[0] != 'get') { array_unshift($nameArray, 'get'); }
+        $functionName = $nameArray[0] . 'Image' . implode('', array_slice($nameArray, 1));
+        return call_user_func_array(array($this->getCatalog(), $functionName), array($this));
     }
 }

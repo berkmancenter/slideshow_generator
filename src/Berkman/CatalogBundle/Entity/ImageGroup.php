@@ -1,8 +1,8 @@
 <?php
-namespace Berkman\SlideshowBundle\Entity;
+namespace Berkman\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Berkman\CatalogBundle\Catalog\Catalog;
+use Berkman\CatalogBundle\Entity\Catalog;
 
 /**
  * Berkman\SlideshowBundle\Entity\ImageGroup
@@ -294,7 +294,7 @@ class ImageGroup
      */
     public function __call($functionName, $arguments)
     {
-        $nameArray = preg_split('/([[:upper:]][[:lower:]]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY)
+        $nameArray = preg_split('/([[:upper:]][[:lower:]]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
         $functionName = $nameArray[0] . 'ImageGroup' . array_slice($nameArray, 1);
         return call_user_func_array(array($this->getCatalog(), $functionName), $arguments);
 }

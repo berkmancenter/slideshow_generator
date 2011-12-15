@@ -6,7 +6,7 @@
             Upload a CSV document with a line for each image, with each line having one of these formats:
         </p>
         <ul>
-        {% for catalog in catalogs %}
+        {% for catalog in finder.catalogs %}
             <li>
                 For images from the {{ catalog.name }} catalog:<br />
                 "{{ catalog.id }}",{{ catalog.importFormat }}
@@ -15,17 +15,16 @@
         </ul>
     </div>
 </div>
-<form action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(master_form) }}>
+<form action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(masterImportForm) }}>
     <div class="import-form">
-        {{ form_widget(master_form.attachment) }}
-        {{ form_rest(master_form) }}
+        {{ form_widget(masterImportForm) }}
         <input type="submit" value="Import" />
     </div>
 </form>
 
 <h3>Catalog Importers</h3>
 <ul class="indented">
-{% for catalog_id, import_form in import_forms %}     
+{# {% for catalog_id, import_form in import_forms %}     
     {% for catalog in catalogs %}
         {% if catalog.id == catalog_id %}
         <li>
@@ -37,14 +36,14 @@
             </p>
 
         </div>
-        <form action="{{ path('catalog_import', { 'id': catalog_id }) }}" method="post" {{ form_enctype(import_form) }}>
+#} 
+        <form action="{{ path('catalog_import', { 'id': 'VIA' }) }}" method="post" {{ form_enctype(customImportForm) }}>
             <div class="import-form">
-            {{ form_widget(import_form.attachment) }}
-            {{ form_rest(import_form) }}
+            {{ form_widget(customImportForm) }}
             <input type="submit" value="Import" />
         </form>
         </li>
-        {% endif %}
+       {# {% endif %} 
     {% endfor %}
-{% endfor %}
+{% endfor %} #}
 </ul>

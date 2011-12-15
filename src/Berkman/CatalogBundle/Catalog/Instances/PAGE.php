@@ -1,7 +1,7 @@
 <?php
 namespace Berkman\CatalogBundle\Catalog\Instances;
 
-use Berkman\CatalogBundle\Catalog\Catalog;
+use Berkman\CatalogBundle\Entity\Catalog;
 use Berkman\CatalogBundle\Entity\Image;
 
 /**
@@ -33,8 +33,8 @@ class PAGE extends Catalog {
      * id_6 = page number
      */
 
-    const ID = 'PAGE';
-    const NAME = 'Paged Document Service';
+    private $id = 'PAGE';
+    private $name = 'Paged Document Service';
 
     const PAGED_OBJECT_IMAGE_RECORD_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=t&n={page-number}';
     const PAGED_OBJECT_THUMBNAIL_RECORD_URL_PATTERN = 'http://pds.lib.harvard.edu/pds/view/{paged-object-id}?op=c&n={page-number}';
@@ -49,12 +49,12 @@ class PAGE extends Catalog {
 
     public function getId()
     {
-        return self::ID;
+        return $this->id;
     }
 
     public function getName()
     {
-        return self::NAME;
+        return $this->name;
     }
 
     /**

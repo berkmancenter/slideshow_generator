@@ -2,6 +2,7 @@ parameters:
     berkman_catalog.catalog_manager.class: Berkman\CatalogBundle\Catalog\CatalogManager
     berkman_catalog.finder.class: Berkman\CatalogBundle\Entity\Finder
     berkman_catalog.form_type.master_import.class: Berkman\CatalogBundle\Form\Finder\MasterImportType
+    berkman_catalog.form_type.catalog_selector.class: Berkman\CatalogBundle\Form\Finder\CatalogSelectorType
 
 services:
     berkman_catalog.catalog_manager:
@@ -15,3 +16,7 @@ services:
         arguments: [@berkman_catalog.finder]
         tags:
             - { name: form.type, alias: master_import }
+    berkman_catalog.form_type.catalog_selector:
+        class: %berkman_catalog.form_type.catalog_selector.class%
+        tags:
+            - { name: form.type, alias: catalog_selector }

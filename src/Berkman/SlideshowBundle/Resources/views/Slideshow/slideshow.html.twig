@@ -74,12 +74,12 @@
 			var slideshow_slides = [
 				{% for slide in slideshow.slides %}
 					{
-						image: '{{ slide.image.imageUrl|raw }}',
-                        thumb: '{{ slide.image.thumbnailUrl|raw }}',
-						url: '{{ slide.image.recordUrl|raw }}',
-                        qrCodeUrl: '{{ slide.image.qrCodeUrl|raw }}',
+						image: '{{ slide.Url|raw }}',
+                        thumb: '{{ slide.thumbnailUrl|raw }}',
+						url: '{{ slide.recordUrl|raw }}',
+                        qrCodeUrl: '{{ slide.qrCodeUrl|raw }}',
 						metadata: {
-							{% for key, value in slide.image.metadata %}
+							{% for key, value in slide.metadata %}
 							'{{ key }}': '{{- value -}}' {{ not loop.last ? ',' : '' }}
 							{% endfor %}
 						}

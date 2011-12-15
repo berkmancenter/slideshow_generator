@@ -31,19 +31,18 @@ class FinderController extends Controller
      */
     public function indexAction()
     {
+        $request    = $this->getRequest();
         $em         = $this->getDoctrine()->getEntityManager();
         $slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
-        $finder     = new Finder($this->container->get('berkman_catalog.catalog_manager'));
+        $finder     = $this->container->get('berkman_catalog.finder');
         $finderForm = $this->createForm(new SearchType(), $finder);
         $masterImportForm = $this->createForm(new MasterImportType($finder));
-        $customImportForm = $this->createForm(new CustomImportType(), $finder);
-        $request    = $this->getRequest();
+        $customImportForm = $this->createForm(new CustomImportType($finder));
 
         if ('POST' === $request->getMethod()) {
             $finderForm->bindRequest($request);
 
             if ($finderForm->isValid()) {
-                $catalogIds = array();
                 $catalogs = $finder->getCatalogs();
                 foreach ($catalogs as $catalog) {
                     $catalogIds[] = $catalog->getId();
@@ -59,8 +58,10 @@ class FinderController extends Controller
         else {
             return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
                 'slideshows' => $slideshows,
-                'importForm' => $importForm->createView(),
-                'finderForm'  => $finderForm->createView()
+                'masterImportForm' => $masterImportForm->createView(),
+                'customImportForm' => $customImportForm->createView(),
+                'finderForm'  => $finderForm->createView(),
+                'finder' => $finder
             ));
         }
 

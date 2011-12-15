@@ -6,6 +6,8 @@ Berkman\CatalogBundle\Entity\Image:
       generator:
         strategy: AUTO
   fields:
+    catalog:
+      type: string
     id_1:
       type: string
     id_2:
@@ -23,6 +25,3 @@ Berkman\CatalogBundle\Entity\Image:
     id_6:
       type: string
       nullable: TRUE
-  manyToOne:
-    catalog:
-      targetEntity: Catalog

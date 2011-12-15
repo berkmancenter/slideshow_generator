@@ -3,6 +3,7 @@
 namespace Berkman\SlideshowBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Berkman\CatalogBundle\Entity\Image;
 
 /**
  * Berkman\SlideshowBundle\Entity\Slide
@@ -65,7 +66,7 @@ class Slide
      *
      * @param Berkman\SlideshowBundle\Entity\Image $image
      */
-    public function setImage(\Berkman\SlideshowBundle\Entity\Image $image)
+    public function setImage(Image $image)
     {
         $this->image = $image;
     }
@@ -85,7 +86,7 @@ class Slide
      *
      * @param Berkman\SlideshowBundle\Entity\Slideshow $slideshow
      */
-    public function setSlideshow(\Berkman\SlideshowBundle\Entity\Slideshow $slideshow)
+    public function setSlideshow(Slideshow $slideshow)
     {
         $this->slideshow = $slideshow;
         $this->position = count($this->getSlideshow()->getSlides()) + 1;
@@ -111,13 +112,9 @@ class Slide
         $this->setImage($image);
     }
 
-    /**
-     * Use a thumnail URL as the __toString return
-     *
-     * @return string $thumbnailUrl
-     */
-    public function __toString()
+    public function __call($functionName, $arguments)
     {
-        return $this->getImage()->getThumbnailUrl();
+        return call_user_func_array(array($this->getImage(), $functionName), $arguments);
     }
+
 }

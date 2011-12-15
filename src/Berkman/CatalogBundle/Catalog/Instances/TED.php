@@ -1,8 +1,8 @@
 <?php
 namespace Berkman\CatalogBundle\Catalog\Instances;
 
-use Berkman\CatalogBundle\Catalog\Catalog;
 use Berkman\CatalogBundle\Catalog\Interfaces;
+use Berkman\CatalogBundle\Entity\Catalog;
 use Berkman\CatalogBundle\Entity\Image;
 
 class TED extends Catalog implements Interfaces\ImageSearchInterface {
@@ -16,8 +16,8 @@ class TED extends Catalog implements Interfaces\ImageSearchInterface {
      * Some things need to be urlencoded sometimes (like id-6)
      *
      */
-    const ID = 'TED';
-    const NAME = 'Templated Database';
+    private $id = 'TED';
+    private $name = 'Templated Database';
     
     const SEARCH_URL_PATTERN    = 'http://oasistest.lib.harvard.edu:9003/solr/select?q=system:ted+text:{keyword}+accesslevel:public+type:pds%20OR%20ids&start={start-index}&rows={count}';
     const RECORD_URL_PATTERN    = 'http://ted.lib.harvard.edu/ted/deliver/~{id-1}/{id-3}';
@@ -27,12 +27,12 @@ class TED extends Catalog implements Interfaces\ImageSearchInterface {
 
     public function getId()
     {
-        return self::ID;
+        return $this->id;
     }
 
     public function getName()
     {
-        return self::NAME;
+        return $this->name;
     }
 
     /**

@@ -1,16 +1,16 @@
 finder_index:
     pattern: /
-    defaults: { _controller: "BerkmanSlideshowBundle:Finder:index" }
+    defaults: { _controller: "BerkmanCatalogBundle:Finder:index" }
 
 finder_imageGroup:
     pattern: /imageGroup/{imageGroupId}/{page}
-    defaults: { _controller: "BerkmanSlideshowBundle:Finder:showImageGroup", page: 1 }
+    defaults: { _controller: "BerkmanCatalogBundle:Finder:showImageGroup", page: 1 }
 
 finder_show:
     pattern:  /{catalogs}/{keyword}/{page}
-    defaults: { _controller: "BerkmanSlideshowBundle:Finder:show", page: 1 }
+    defaults: { _controller: "BerkmanCatalogBundle:Finder:show", page: 1 }
 
 finder_submit:
     pattern: /submit
-    defaults: { _controller: "BerkmanSlideshowBundle:Finder:submit" }
+    defaults: { _controller: "BerkmanCatalogBundle:Finder:submit" }
     requirements: { _method: post }

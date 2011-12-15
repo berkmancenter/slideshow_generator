@@ -5,11 +5,10 @@ namespace Berkman\SlideshowBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Berkman\SlideshowBundle\Entity\Catalog;
 use Berkman\SlideshowBundle\Entity\Person;
 use Berkman\SlideshowBundle\Entity\Slideshow;
 use Berkman\SlideshowBundle\Entity\Slide;
-use Berkman\SlideshowBundle\Entity\Image;
+use Berkman\CatalogBundle\Entity\Image;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class LoadTestCatalogs implements FixtureInterface, ContainerAwareInterface
@@ -24,9 +23,9 @@ class LoadTestCatalogs implements FixtureInterface, ContainerAwareInterface
 	public function load($manager)
 	{
         $catalogManager = $this->container->get('berkman_catalog.catalog_manager');
-		$via = 'VIA';
-		$oasis = 'OASIS';
-		$ted = 'TED';
+		$via = $catalogManager->getCatalog('VIA');
+		$oasis = $catalogManager->getCatalog('OASIS');
+		$ted = $catalogManager->getCatalog('TED');
 
         // create a user
         $user = new Person();
@@ -783,7 +782,7 @@ class LoadTestCatalogs implements FixtureInterface, ContainerAwareInterface
 
         foreach ($images as $image) {
             // make a reflection object 
-            $reflectionObj = new \ReflectionClass('Berkman\SlideshowBundle\Entity\Image'); 
+            $reflectionObj = new \ReflectionClass('Berkman\CatalogBundle\Entity\Image'); 
 
             // use Reflection to create a new instance, using the $args 
             $image = $reflectionObj->newInstanceArgs($image);

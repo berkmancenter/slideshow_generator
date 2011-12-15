@@ -1,5 +1,5 @@
 <?php
-namespace Berkman\CatalogBundle\Catalog;
+namespace Berkman\CatalogBundle\Entity;
 
 use Berkman\CatalogBundle\Catalog\Interfaces;
 use Berkman\CatalogBundle\Entity\Image;
@@ -12,6 +12,9 @@ abstract class Catalog {
      * @param string $url
      * @return DOMXPath $xpath
      */
+    private $id;
+    private $name;
+
     public function fetchXpath($url, $followRedirects = false)
     {
         $doc = new \DOMDocument();
@@ -62,7 +65,7 @@ abstract class Catalog {
         return $this instanceOf Interfaces\ImageSearchInterface;
     }
 
-    public function hasImageGroupSeach()
+    public function hasImageGroupSearch()
     {
         return $this instanceOf Interfaces\ImageGroupSearchInterface;
     }

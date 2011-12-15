@@ -1,10 +1,10 @@
 <?php
 namespace Berkman\CatalogBundle\Catalog\Instances;
 
-use Berkman\CatalogBundle\Catalog\Catalog;
 use Berkman\CatalogBundle\Catalog\Interfaces;
 use Berkman\CatalogBundle\Entity\Image;
 use Berkman\CatalogBundle\Entity\ImageGroup;
+use Berkman\CatalogBundle\Entity\Catalog;
 
 class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Interfaces\CustomImportInterface, Interfaces\ImageSearchInterface {
 
@@ -16,8 +16,8 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
      * id_5 = imageId
      * id_6 = thumbnailId
      */
-    const NAME = 'Visual Information Access';
-    const ID = 'VIA';
+    private $name = 'Visual Information Access';
+    private $id = 'VIA';
 
     const SEARCH_URL_PATTERN    = 'http://webservices.lib.harvard.edu/rest/hollis/search/dc/?curpage={page}&q=format:matPhoto+branches-id:NET+{keyword}';
     const RECORD_URL_PATTERN    = 'http://via.lib.harvard.edu/via/deliver/deepLinkItem?recordId={id-1}&componentId={id-2}';
@@ -29,12 +29,12 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
 
     public function getId()
     {
-        return self::ID;
+        return $this->id;
     }
 
     public function getName()
     {
-        return self::NAME;
+        return $this->name;
     }
 
     /**

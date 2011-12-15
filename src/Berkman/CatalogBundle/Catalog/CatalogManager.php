@@ -3,19 +3,24 @@ namespace Berkman\CatalogBundle\Catalog;
 
 class CatalogManager {
 
-    private $catalogs;
+    private $catalogs = array();
 
-    public function __construct(array $catalogIds)
+    public function __construct(array $catalogIds = array())
     {
         foreach ($catalogIds as $catalogId) {
-            $className = '\\Berkman\\CatalogBundle\\Catalog\\Instances\\' . $catalogId;
-            $this->addCatalog(new $className());
+            $this->addCatalogById($catalogId);
         }
     }
 
     public function addCatalog($catalog)
     {
         $this->catalogs[] = $catalog;
+    }
+
+    public function addCatalogById($catalogId)
+    {
+        $className = '\\Berkman\\CatalogBundle\\Catalog\\Instances\\' . $catalogId;
+        $this->addCatalog(new $className());
     }
 
     public function getCatalogs()
@@ -25,10 +30,16 @@ class CatalogManager {
 
     public function getCatalog($id)
     {
+        $selectedCatalog = null;
         foreach ($this->catalogs as $catalog) {
             if ($catalog->getId() == $id) {
-                return $catalog;
+                $selectedCatalog = $catalog;
             }
         }
+        if ($selectedCatalog === null) {
+            $this->addCatalogById($id);
+            $selectedCatalog = $this->getCatalog($id);
+        }
+        return $selectedCatalog;
     }
 }
