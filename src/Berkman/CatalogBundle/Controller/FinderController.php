@@ -35,7 +35,8 @@ class FinderController extends Controller
         $em         = $this->getDoctrine()->getEntityManager();
         $slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
         $finder     = $this->container->get('berkman_catalog.finder');
-        $finderForm = $this->createForm(new SearchType(), $finder);
+        $catalogManager = $this->container->get('berkman_catalog.catalog_manager');
+        $finderForm = $this->createForm(new SearchType($catalogManager), $finder);
         $masterImportForm = $this->createForm(new MasterImportType($finder));
         $customImportForm = $this->createForm(new CustomImportType($finder));
 
@@ -81,16 +82,16 @@ class FinderController extends Controller
     public function showAction($catalogs, $keyword, $page = 1)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findBy(array(
+        /*$catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findBy(array(
             'id' => explode('_', $catalogs)
         ));
         if (!$catalogs) {
             throw $this->createNotFoundException('Unable to find Catalogs.');
-        }
+        }*/
 
         $finder = $this->getFinder();
-        $finder->setHierarchyStack(array($this->getRequest()->getUri()));
-        $finder->setCatalogs($catalogs);
+        $finder->setHistoryStack(array($this->getRequest()->getUri()));
+        //$finder->setCatalogs($catalogs);
         $output = $finder->findResults($keyword, $page);
 
         $this->setFinder($finder);
@@ -226,7 +227,7 @@ class FinderController extends Controller
     {
         $finder = $this->getRequest()->getSession()->get('finder');
         if (!$finder) {
-            $finder = new Entity\Finder();
+            $finder = new Finder();
             $this->setFinder($finder);
         }
 
@@ -238,7 +239,7 @@ class FinderController extends Controller
      *
      * @param Berkman\SlideshowBundle\Entity\Finder $finder
      */
-    private function setFinder(Entity\Finder $finder)
+    private function setFinder(Finder $finder)
     {
         $this->getRequest()->getSession()->set('finder', $finder);
     }

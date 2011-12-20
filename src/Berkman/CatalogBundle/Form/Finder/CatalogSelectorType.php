@@ -5,25 +5,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Doctrine\ORM\EntityRepository;
 use Berkman\CatalogBundle\Entity\Finder;
-use Berkman\CatalogBundle\Form\Finder\DataTransformer\FinderToCatalogsTransformer;
+use Berkman\CatalogBundle\Form\Finder\DataTransformer\CatalogsToArrayTransformer;
+use Berkman\CatalogBundle\Form\Finder\ChoiceList\CatalogChoiceList;
 
 class CatalogSelectorType extends AbstractType
 {
-    /*private $choices;
-
-    public function __construct(Finder $finder)
-    {
-        foreach($finder->getCatalogs() as $catalog) {
-            if ($catalog->hasImageSearch() || $catalog->hasImageGroupSearch()) {
-                $this->choices[$catalog->getId()] = $catalog->getName();
-            }
-        }
-    }
-     */
 
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $transformer = new FinderToCatalogsTransformer();
+        $transformer = new CatalogsToArrayTransformer($options['catalog_manager']);
         $builder->prependClientTransformer($transformer);
     }
 
@@ -37,10 +27,15 @@ class CatalogSelectorType extends AbstractType
         $defaultOptions = array(
             'multiple'          => true,
             'expanded'          => true,
-            'choices'           => 
+            'catalog_manager'   => null
         );
 
         $options = array_replace($defaultOptions, $options);
+
+        $defaultOptions['choice_list'] = new CatalogChoiceList($options['catalog_manager']);
+        if (is_object($options['data'])) {
+            $defaultOptions['data'] = $options['data']->getCatalog();
+        }
         return $defaultOptions;
     }
 
