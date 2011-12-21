@@ -252,7 +252,7 @@ class ImageGroup
     {
         if ($this->images->count() < 2) {
             $images = new \Doctrine\Common\Collections\ArrayCollection();
-            $results = $this->getCatalog()->getFetcher()->fetchImageGroupResults($this, 0, 100);
+            $results = $this->getCatalog()->fetchImageGroupResults($this, 0, 100);
             foreach ($results['results'] as $result) {
                 if ($result instanceof Image) {
                     $images[] = $result;

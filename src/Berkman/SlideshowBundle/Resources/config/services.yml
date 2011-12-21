@@ -1,9 +1,14 @@
 parameters:
     berkman_slideshow.image.class: Berkman\SlideshowBundle\Entity\Image
     berkman_slideshow.image_group.class: Berkman\SlideshowBundle\Entity\ImageGroup
+    berkman_slideshow.twig.extension.class: Berkman\SlideshowBundle\Twig\Extension\SlideshowExtension
 
 services:
     berkman_slideshow.image:
         class: %berkman_slideshow.image.class%
     berkman_slideshow.image_group:
         class: %berkman_slideshow.image_group.class%
+    berkman_slideshow.twig.extension:
+        class: %berkman_slideshow.twig.extension.class%
+        tags:
+            - { name: twig.extension } 

@@ -6,10 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Berkman\SlideshowBundle\Entity\Slideshow;
 use Berkman\SlideshowBundle\Entity\Slide;
-use Berkman\SlideshowBundle\Entity\Finder;
+use Berkman\CatalogBundle\Entity\Finder;
 use Berkman\SlideshowBundle\Form\SlideshowType;
 use Berkman\SlideshowBundle\Form\SlideshowChoiceType;
-use Berkman\SlideshowBundle\Form\ImportType;
+use Berkman\CatalogBundle\Form\Finder\MasterImportType;
 use Berkman\SlideshowBundle\Fetcher\ImportFetcherInterface;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -164,12 +164,13 @@ class SlideshowController extends Controller
                 $slideshow->setPerson($user);
                 $slideshow->setCreated(new \DateTime('now'));
                 $finder = $this->getFinder();
+                $catalogManager = $this->get('berkman_catalog.catalog_manager');
 
                 if ($finder) {
                     $images = $finder->getSelectedImageResults();
                     foreach ($images as $image) {
                         $newImage = clone $image;
-                        $newImage->setCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getCatalog()->getId()));
+                        $newImage->setCatalog($image->getCatalog());
                         $slide = new Slide($newImage);
                         $slideshow->addSlide($slide);
                     }
@@ -410,15 +411,15 @@ class SlideshowController extends Controller
     public function importAction()
     {
         $request = $this->getRequest();
-        $masterForm = $this->createForm(new ImportType());
+        $masterForm = $this->createForm(new MasterImportType());
         $em = $this->getDoctrine()->getEntityManager();
         $images = array();
         $importForms = array();
         $finder = $this->getFinder();
-        $catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findAll();
+        $catalogs = $this->get('berkman_catalog.catalog_manager')->getCatalogs();
         foreach ($catalogs as $catalog) {
             if ($catalog->hasCustomImporter()) {
-                $importForms[$catalog->getId()] = $this->createForm(new ImportType())->createView();
+                $importForms[$catalog->getId()] = $this->createForm(new MasterImportType())->createView();
             }
         }
 

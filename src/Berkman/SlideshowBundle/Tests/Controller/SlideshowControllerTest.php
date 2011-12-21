@@ -16,9 +16,8 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
 
         // Fill in the form and submit it
-        $form = $crawler->selectButton('Search')->form(array(
-            'finder[keyword]'  => 'kitten',
-            'finder[catalogs][VIA]' => true
+        $form = $crawler->selectButton('SEARCH')->form(array(
+            'finder_search[keyword]'  => 'kitten'
         ));
 
         $client->submit($form);
@@ -26,20 +25,20 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
         $crawler = $client->getCrawler();
 
-        $this->assertTrue($crawler->filter('h2:contains("images for \\\"kitten\\\"")')->count() > 0);
+        $this->assertTrue($crawler->filter('h2:contains("results for \\\"kitten\\\"")')->count() > 0);
 
         $form = $crawler->selectButton('Finish')->form(array(
             'images[0]' => true,
             'images[1]' => true,
             'images[2]' => true,
-            'imageGroups[6]' => true 
+            'imageGroups[0]' => true 
         ));
 
         $client->submit($form);
 
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
         $crawler = $client->getCrawler();
-        $this->assertTrue($crawler->filter('h2:contains("Login")')->count() > 0);
+        $this->assertTrue($crawler->filter('legend:contains("Login")')->count() > 0);
 
         $form = $crawler->selectButton('Login')->form(array(
             '_username' => 'justin',
@@ -61,11 +60,11 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
         $crawler = $client->getCrawler();
         $this->assertTrue($crawler->filter('div:contains("New slideshow \\\"Kittens\\\" created")')->count() > 0);
-        $this->assertTrue($crawler->filter('h2:contains("Kittens by justin")')->count() > 0);
+        $this->assertTrue($crawler->filter('h2:contains("Kittens")')->count() > 0);
 
         $crawler = $client->click($crawler->selectLink('Edit')->link());
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
-        $this->assertTrue($crawler->filter('h2:contains("Edit Slideshow")')->count() > 0);
+        $this->assertTrue($crawler->filter('a:contains("EDIT SLIDESHOW")')->count() > 0);
 
         $form = $crawler->selectButton('Update')->form(array(
             'slideshow[always_show_info]' => true

@@ -571,5 +571,7 @@ class Finder
                 }
             }
         }
+
+        return $failed;
     }
 }

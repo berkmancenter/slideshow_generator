@@ -20,11 +20,12 @@ class SlideshowType extends AbstractType
             ->add('published', 'checkbox', array('required' => false))
         ;
 
-        if ($builder->getData()->getId()) {
-            $slideshowId = $builder->getData()->getId();
+        if ($options['data']->getId()) {
+            $slideshowId = $options['data']->getId();
 
             $builder->add('slides', null, array(
                 'expanded' => true,
+                'property' => 'thumbnailUrl',
                 'query_builder' => function(EntityRepository $er) use ($slideshowId) {
                     return $er->createQueryBuilder('s')->where('s.slideshow = ?1')->orderBy('s.position', 'ASC')->setParameter(1, $slideshowId);
                 }

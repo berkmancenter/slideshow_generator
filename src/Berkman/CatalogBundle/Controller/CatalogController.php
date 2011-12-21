@@ -68,7 +68,7 @@ class CatalogController extends Controller
 
                 $file = $file->openFile();
                 $batch = new Batch($file, $request->getSession());
-                $images = $catalog->getFetcher()->getImagesFromImport($batch);
+                $images = $catalog->getImagesFromImport($batch);
 
                 foreach ($images as $image) {
                     $imageId = $finder->addImage($image);

@@ -102,6 +102,11 @@ class Slide
         return $this->slideshow;
     }
 
+    public function getThumbnailUrl()
+    {
+        return $this->getImage()->getThumbnailUrl();
+    }
+
     /**
      * Create a slide from an Image
      *

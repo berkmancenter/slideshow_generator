@@ -73,7 +73,6 @@ class FinderController extends Controller
                 'finder' => $finder
             ));
         }
-
     }
 
     /**
