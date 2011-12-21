@@ -314,7 +314,7 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
         return '"Bookmark URL"';
     }
 
-    public function getImagesFromImport($file)
+    public function getImagesFromImport(\SplFileObject $file)
     {
         $fileContent = '';
         $images = array();
@@ -333,7 +333,6 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
         $totalRecords = $records->length;
         $count = 0;
         foreach ($records as $record) {
-            $batch->setProgress(round($count / $totalRecords * 100));
             $count++;
             $viaId = null;
             $componentId = null;
