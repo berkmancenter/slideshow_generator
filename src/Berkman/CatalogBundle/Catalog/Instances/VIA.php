@@ -96,13 +96,13 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
                         $imageId,
                         $thumbnailId
                     );
-                    if ($numberOfImages->textContent == 1 && $image->isPublic()) {
+                    if ($numberOfImages->textContent == 1 && $this->isImagePublic($image)) {
                         $results[] = $image;
                     } 
                     else {
                         $imageGroup = new ImageGroup($this, $recordId);
                         $imageGroup->addImages($image);
-                        if ($imageGroup->isPublic()) {
+                        if ($this->isImageGroupPublic($imageGroup)) {
                             $results[] = $imageGroup;
                         }
                     }
@@ -151,7 +151,13 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
         return $metadata;
     }
 
-    public function isImagePublic(Image $image)
+    public function getImageAltText(Image $image)
+    {
+        $metadata = $this->getImageMetadata($image);
+        return $metadata['Title'];
+    }
+
+    private function isImagePublic(Image $image)
     {
         $public = false;
         $xpath = $this->fetchXpath($this->fillUrl(self::METADATA_URL_PATTERN, $image));
@@ -163,7 +169,7 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
         return $public;
     }
 
-    public function isImageGroupPublic(ImageGroup $imageGroup)
+    private function isImageGroupPublic(ImageGroup $imageGroup)
     {
         $recordId = $imageGroup->getId1();
         $imageGroupUrl = str_replace('{id-3}', $recordId, self::METADATA_URL_PATTERN);

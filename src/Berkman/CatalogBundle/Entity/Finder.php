@@ -550,4 +550,26 @@ class Finder
 
         return array('results' => $results, 'totalResults' => $totalResults);
     }
+
+    public function masterImport($file)
+    {
+        $failed = array();
+        $file = $file->openFile();
+        $file->setFlags(\SplFileObject::READ_CSV);
+        foreach ($file as $row) {
+            if (isset($row[1])) {
+                $catalog = $row[0];
+                $args = array_slice($row, 1);
+                $catalog = $this->getCatalog($catalog);
+                try {
+                    $image = $catalog->importImage($args);
+                    $imageId = $this->addImage($image);
+                    $this->addSelectedImageResult($imageId);
+                } catch (\ErrorException $e) {
+                    error_log($e->getMessage());
+                    $failed[] = $row;
+                }
+            }
+        }
+    }
 }

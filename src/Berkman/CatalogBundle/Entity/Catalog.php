@@ -79,4 +79,5 @@ abstract class Catalog {
     abstract public function getImageRecordUrl(Image $image);
     abstract public function getImageQRCodeUrl(Image $image);
     abstract public function getImageMetadata(Image $image);
+    abstract public function getImageAltText(Image $image);
 }

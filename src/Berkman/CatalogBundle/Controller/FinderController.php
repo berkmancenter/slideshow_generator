@@ -34,11 +34,19 @@ class FinderController extends Controller
         $request    = $this->getRequest();
         $em         = $this->getDoctrine()->getEntityManager();
         $slideshows = $em->getRepository('BerkmanSlideshowBundle:Slideshow')->findAll();
-        $finder     = $this->container->get('berkman_catalog.finder');
-        $catalogManager = $this->container->get('berkman_catalog.catalog_manager');
+        $finder     = $this->get('berkman_catalog.finder');
+        $catalogManager = $this->get('berkman_catalog.catalog_manager');
         $finderForm = $this->createForm(new SearchType($catalogManager), $finder);
-        $masterImportForm = $this->createForm(new MasterImportType($finder));
-        $customImportForm = $this->createForm(new CustomImportType($finder));
+        $customImportForms = array();
+        $masterImportForm = $this->createForm(new MasterImportType());
+        foreach ($catalogManager->getCatalogs() as $catalog) {
+            if ($catalog->hasCustomImporter()) {
+                $customImportForms[$catalog->getId()] = $this
+                    ->createForm(new CustomImportType(), null, array('catalog' => $catalog))
+                    ->createView()
+                ;
+            }
+        }
 
         if ('POST' === $request->getMethod()) {
             $finderForm->bindRequest($request);
@@ -50,7 +58,7 @@ class FinderController extends Controller
                 }
 
                 return $this->redirect($this->generateUrl('finder_show', array(
-                    'catalogs'   => implode('_', $catalogIds),
+                    'catalogIds'   => implode('_', $catalogIds),
                     'keyword' => $finder->getKeyword(),
                     'page'    => 1
                 )));
@@ -60,7 +68,7 @@ class FinderController extends Controller
             return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
                 'slideshows' => $slideshows,
                 'masterImportForm' => $masterImportForm->createView(),
-                'customImportForm' => $customImportForm->createView(),
+                'customImportForms' => $customImportForms,
                 'finderForm'  => $finderForm->createView(),
                 'finder' => $finder
             ));
@@ -79,19 +87,18 @@ class FinderController extends Controller
      *
      * Note: These next two functions pretty much repeat each other - they shouldn't
      */
-    public function showAction($catalogs, $keyword, $page = 1)
+    public function showAction($catalogIds, $keyword, $page = 1)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        /*$catalogs = $em->getRepository('BerkmanSlideshowBundle:Catalog')->findBy(array(
-            'id' => explode('_', $catalogs)
-        ));
-        if (!$catalogs) {
-            throw $this->createNotFoundException('Unable to find Catalogs.');
-        }*/
+        $catalogManager = $this->get('berkman_catalog.catalog_manager');
+        $catalogs = array();
+        foreach (explode('_', $catalogIds) as $catalogId) {
+            $catalogs[] = $catalogManager->getCatalog($catalogId);
+        }
 
         $finder = $this->getFinder();
         $finder->setHistoryStack(array($this->getRequest()->getUri()));
-        //$finder->setCatalogs($catalogs);
+        $finder->setCatalogs($catalogs);
         $output = $finder->findResults($keyword, $page);
 
         $this->setFinder($finder);
@@ -114,10 +121,9 @@ class FinderController extends Controller
      */
     public function showImageGroupAction($imageGroupId, $page = 1)
     {
-        $em = $this->getDoctrine()->getEntityManager();
         $finder = $this->getFinder();
         if ($page == 1) {
-            $finder->pushHierarchyStack($this->getRequest()->getUri());
+            $finder->pushHistoryStack($this->getRequest()->getUri());
         }
 
         $imageGroup = $finder->getImageGroup($imageGroupId);
@@ -195,15 +201,15 @@ class FinderController extends Controller
             }
             else {
                 $response = $this->redirect($this->generateUrl('finder_show', array(
-                    'catalogs' => implode('_', $catalogIds),
+                    'catalogIds' => implode('_', $catalogIds),
                     'keyword' => $finder->getKeyword(),
                     'page' => $page
                 )));
             }
         }
         elseif ($request->get('action') == 'Back') {
-            $finder->popHierarchyStack();
-            $uri = $finder->popHierarchyStack();
+            $finder->popHistoryStack();
+            $uri = $finder->popHistoryStack();
             $response = $this->redirect($uri);
         }
         elseif ($request->get('action') != 'Finish') {
@@ -215,6 +221,11 @@ class FinderController extends Controller
         $this->setFinder($finder);
 
         return $response;
+    }
+
+    public function customImportAction()
+    {
+
     }
 
     /**

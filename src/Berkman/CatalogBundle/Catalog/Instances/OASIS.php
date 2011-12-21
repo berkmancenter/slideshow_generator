@@ -119,6 +119,12 @@ class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
         return $metadata;
     }
 
+    public function getImageAltText(Image $image)
+    {
+        $metadata = $this->getImageMetadata($image);
+        return $metadata['Title'];
+    }
+
     /**
      * Get the full image url for a given image object
      *

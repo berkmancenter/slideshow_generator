@@ -26,25 +26,5 @@ class MasterImportToFinderTransformer implements DataTransformerInterface
             return null;
         }
 
-        $failed = array();
-        $file = $file->openFile();
-        $file->setFlags(\SplFileObject::READ_CSV);
-        foreach ($file as $row) {
-            if (isset($row[1])) {
-                $catalog = $row[0];
-                $args = array_slice($row, 1);
-                $catalog = $this->finder->getCatalog($catalog);
-                try {
-                    $image = $catalog->importImage($args);
-                    $imageId = $this->finder->addImage($image);
-                    $this->finder->addSelectedImageResult($imageId);
-                } catch (\ErrorException $e) {
-                    error_log($e->getMessage());
-                    $failed[] = $row;
-                }
-            }
-        }
-
-        return $this->finder;
     }
 }

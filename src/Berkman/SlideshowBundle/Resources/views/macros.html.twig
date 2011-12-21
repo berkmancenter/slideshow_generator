@@ -4,7 +4,7 @@
             {% for image in images %}
                 <li>
                     <div class="image-and-buttons">
-                        <div class="image"><img src="{{ image.thumbnailUrl }}" /></div>
+                        <div class="image"><img src="{{ image.thumbnailUrl }}" alt="{{ image.altText }}" /></div>
                         <div class="buttons">
                             {% if checkbox_text is not empty %}
                             <label for="image_{{ image.id }}">{{ checkbox_text }}</label>

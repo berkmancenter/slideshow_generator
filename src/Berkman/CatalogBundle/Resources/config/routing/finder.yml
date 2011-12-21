@@ -7,10 +7,15 @@ finder_imageGroup:
     defaults: { _controller: "BerkmanCatalogBundle:Finder:showImageGroup", page: 1 }
 
 finder_show:
-    pattern:  /{catalogs}/{keyword}/{page}
+    pattern:  /{catalogIds}/{keyword}/{page}
     defaults: { _controller: "BerkmanCatalogBundle:Finder:show", page: 1 }
 
 finder_submit:
     pattern: /submit
     defaults: { _controller: "BerkmanCatalogBundle:Finder:submit" }
+    requirements: { _method: post }
+
+finder_custom_import:
+    pattern: /customImport
+    defaults: { _controller: "BerkmanCatalogBundle:Finder:customImport" }
     requirements: { _method: post }

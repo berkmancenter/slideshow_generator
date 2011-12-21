@@ -294,7 +294,9 @@ class ImageGroup
      */
     public function __call($functionName, $arguments)
     {
-        $nameArray = preg_split('/([[:upper:]][[:lower:]]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
-        $functionName = $nameArray[0] . 'ImageGroup' . array_slice($nameArray, 1);
-        return call_user_func_array(array($this->getCatalog(), $functionName), $arguments);
+        $nameArray = preg_split('/([A-Z][a-z]+)/', $functionName, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+        if ($nameArray[0] != 'get') { array_unshift($nameArray, 'get'); }
+        $functionName = $nameArray[0] . 'ImageGroup' . implode('', array_slice($nameArray, 1));
+        return call_user_func_array(array($this->getCatalog(), $functionName), array($this));
+    }
 }

@@ -169,7 +169,7 @@ class SlideshowController extends Controller
                     $images = $finder->getSelectedImageResults();
                     foreach ($images as $image) {
                         $newImage = clone $image;
-                        $newImage->setFromCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getFromCatalog()->getId()));
+                        $newImage->setCatalog($em->find('BerkmanSlideshowBundle:Catalog', $image->getCatalog()->getId()));
                         $slide = new Slide($newImage);
                         $slideshow->addSlide($slide);
                     }
