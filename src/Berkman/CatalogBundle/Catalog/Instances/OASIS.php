@@ -122,7 +122,7 @@ class OASIS extends Catalog implements Interfaces\ImageSearchInterface {
     public function getImageAltText(Image $image)
     {
         $metadata = $this->getImageMetadata($image);
-        return $metadata['Title'];
+        return reset($metadata);
     }
 
     /**
