@@ -37,16 +37,8 @@ class FinderController extends Controller
         $finder     = $this->get('berkman_catalog.finder');
         $catalogManager = $this->get('berkman_catalog.catalog_manager');
         $finderForm = $this->createForm(new SearchType($catalogManager), $finder);
-        $customImportForms = array();
         $masterImportForm = $this->createForm(new MasterImportType());
-        foreach ($catalogManager->getCatalogs() as $catalog) {
-            if ($catalog->hasCustomImporter()) {
-                $customImportForms[$catalog->getId()] = $this
-                    ->createForm(new CustomImportType(), null, array('catalog' => $catalog))
-                    ->createView()
-                ;
-            }
-        }
+        $customImportForm = $this->createForm(new CustomImportType(), null, array('catalogs' => $finder->getCatalogs()));
 
         if ('POST' === $request->getMethod()) {
             $finderForm->bindRequest($request);
@@ -68,7 +60,7 @@ class FinderController extends Controller
             return $this->render('BerkmanSlideshowBundle:Finder:index.html.twig', array(
                 'slideshows' => $slideshows,
                 'masterImportForm' => $masterImportForm->createView(),
-                'customImportForms' => $customImportForms,
+                'customImportForm' => $customImportForm->createView(),
                 'finderForm'  => $finderForm->createView(),
                 'finder' => $finder
             ));
@@ -224,7 +216,44 @@ class FinderController extends Controller
 
     public function customImportAction()
     {
+        $request = $this->getRequest();
+        $finder = $this->getFinder();
+        $customImportForm = $this->createForm(new CustomImportType(), null, array('catalogs' => $finder->getCatalogs()));
+        if ('POST' === $request->getMethod()) {
+            $customImportForm->bindRequest($request);
+            if ($customImportForm->isValid()) {
+                $data = $customImportForm->getData();
+                foreach ($data as $catalogId => $file) {
+                    $file = $file->openFile();
+                    $finder->customImport($catalogId, $file);
+                }
+                $this->setFinder($finder);
 
+                return $this->redirect($this->generateUrl('slideshow_add_images'));
+            }
+        }
+    }
+
+    public function masterImportAction()
+    {
+        $request = $this->getRequest();
+        $finder = $this->getFinder();
+        $masterForm = $this->createForm(new MasterImportType());
+        if ('POST' == $request->getMethod()) {
+            $masterForm->bindRequest($request);
+            if ($masterForm->isValid()) {
+                $file = $masterForm['file']->getData();
+                $file = $file->openFile();
+                $failed = $finder->masterImport($file);
+                if (!empty($failed)) {
+                    $request->getSession()->setFlash('error', count($failed) . ' failed to import');
+                }
+                $this->setFinder($finder);
+                return $this->redirect($this->generateUrl('slideshow_add_images'));
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -237,7 +266,7 @@ class FinderController extends Controller
     {
         $finder = $this->getRequest()->getSession()->get('finder');
         if (!$finder) {
-            $finder = new Finder();
+            $finder = $this->get('berkman_catalog.finder');
             $this->setFinder($finder);
         }
 

@@ -554,12 +554,12 @@ class Finder
     public function masterImport($file)
     {
         $failed = array();
-        $file = $file->openFile();
         $file->setFlags(\SplFileObject::READ_CSV);
         foreach ($file as $row) {
             if (isset($row[1])) {
-                $catalog = $row[0];
+                $catalog = strtoupper($row[0]);
                 $args = array_slice($row, 1);
+                echo $catalog . ' - ';
                 $catalog = $this->getCatalog($catalog);
                 try {
                     $image = $catalog->importImage($args);
@@ -573,5 +573,16 @@ class Finder
         }
 
         return $failed;
+    }
+
+    public function customImport($catalogId, $file)
+    {
+        $catalog = $this->getCatalog($catalogId);
+        $images = $catalog->getImagesFromImport($file);
+
+        foreach ($images as $image) {
+            $imageId = $this->addImage($image);
+            $this->addSelectedImageResult($imageId);
+        }
     }
 }

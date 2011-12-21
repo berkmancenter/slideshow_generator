@@ -15,7 +15,7 @@
         </ul>
     </div>
 </div>
-<form action="{{ path('slideshow_import') }}" method="post" {{ form_enctype(masterImportForm) }}>
+<form action="{{ path('finder_master_import') }}" method="post" {{ form_enctype(masterImportForm) }}>
     <div class="import-form">
         {{ form_widget(masterImportForm) }}
         <input type="submit" value="Import" />
@@ -25,22 +25,20 @@
 <h3>Catalog Importers</h3>
 <form action="{{ path('finder_custom_import') }}" method="post" {{ form_enctype(masterImportForm) }}>
 <ul class="indented">
-{% for catalog_id, import_form in customImportForms %}     
-    {% for catalog in finder.catalogs %}
-        {% if catalog.id == catalog_id %}
+{% for child in customImportForm if child.vars.type is defined and child.vars.type == 'file' %}     
+    {% set catalog = finder.getCatalog(child.vars.name) %}
         <li>
-        <h4>{{ catalog.name }}</h4>
+        <h4>{{ catalog.id }}</h4>
         <div class="indented">
             <h5>Instructions</h5>
             <p class="indented">
                 {{ catalog.importInstructions }}
             </p>
         </div>
-        {{ form_widget(import_form) }}
+        {{ form_widget(child) }}
         </li>
-       {% endif %} 
-    {% endfor %}
 {% endfor %}
 </ul>
+{{ form_rest(customImportForm) }}
 <input type="submit" value="Import" />
 </form>

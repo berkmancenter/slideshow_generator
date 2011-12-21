@@ -8,7 +8,11 @@ class CustomImportType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add($options['catalog']->getId() . '_import', 'file');
+        foreach ($options['catalogs'] as $catalog) {
+            if ($catalog->hasCustomImporter()) {
+                $builder->add($catalog->getId(), 'file');
+            }
+        }
     }
 
     public function getName()
@@ -18,6 +22,6 @@ class CustomImportType extends AbstractType
 
     public function getDefaultOptions(array $options)
     {
-        return array('catalog' => null);
+        return array('catalogs' => array());
     }
 }
