@@ -288,25 +288,27 @@ class VIA extends Catalog implements Interfaces\ImageGroupSearchInterface, Inter
         $xpath = $this->fetchXpath($url);
         $args = array();
         parse_str(parse_url($url, PHP_URL_QUERY), $args);
-        $recordId = $args['recordId'];
-        $componentId = $args['componentId'];
-        $metadataId = $recordId;
-        $metadataSubId = null;
-        $imageId = $componentId;
-        $link = $xpath->query('//a[.="View large image"]')->item(0);
-        $container = $link->parentNode->parentNode->parentNode;
-        $thumbnailUrl = $xpath->query('.//img', $container)->item(0)->getAttribute('src');
-        $thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
-        $image = new Image(
-            $this,
-            $recordId,
-            $componentId,
-            $metadataId,
-            $metadataSubId,
-            $imageId,
-            $thumbnailId
-        );
-        return $image;
+        if (isset($args['recordId'], $args['componentId'])) {
+            $recordId = $args['recordId'];
+            $componentId = $args['componentId'];
+            $metadataId = $recordId;
+            $metadataSubId = null;
+            $imageId = $componentId;
+            $link = $xpath->query('//a[.="View large image"]')->item(0);
+            $container = $link->parentNode->parentNode->parentNode;
+            $thumbnailUrl = $xpath->query('.//img', $container)->item(0)->getAttribute('src');
+            $thumbnailId = substr($thumbnailUrl, strpos($thumbnailUrl, ':', 5) + 1);
+            $image = new Image(
+                $this,
+                $recordId,
+                $componentId,
+                $metadataId,
+                $metadataSubId,
+                $imageId,
+                $thumbnailId
+            );
+            return $image;
+        }
     }
 
     public function getImportFormat()

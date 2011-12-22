@@ -139,7 +139,7 @@ class TED extends Catalog implements Interfaces\ImageSearchInterface {
 
     public function getImageQRCodeUrl(Image $image)
     {
-        return $this->getRecordUrl($image);
+        return $this->getImageRecordUrl($image);
     }
 
     public function importImage(array $args)

@@ -559,14 +559,13 @@ class Finder
             if (isset($row[1])) {
                 $catalog = strtoupper($row[0]);
                 $args = array_slice($row, 1);
-                echo $catalog . ' - ';
                 $catalog = $this->getCatalog($catalog);
-                try {
-                    $image = $catalog->importImage($args);
+                $image = $catalog->importImage($args);
+                if ($image) {
                     $imageId = $this->addImage($image);
                     $this->addSelectedImageResult($imageId);
-                } catch (\ErrorException $e) {
-                    error_log($e->getMessage());
+                }
+                else {
                     $failed[] = $row;
                 }
             }
